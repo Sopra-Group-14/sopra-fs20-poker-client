@@ -4,18 +4,22 @@ export const Button = styled.button`
   &:hover {
     transform: translateY(-2px);
   }
-  padding: 6px;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 13px;
+
+  font-family: Pontano Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
   text-align: center;
-  color: rgba(255, 255, 255, 1);
+  padding: 6px;
+  margin-top: 15px; 
+  color: #000000;
   width: ${props => props.width || null};
   height: 35px;
   border: none;
-  border-radius: 20px;
+  border-radius: 16px;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
-  background: rgb(16, 89, 255);
   transition: all 0.3s ease;
+  background: #C14E4E;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;

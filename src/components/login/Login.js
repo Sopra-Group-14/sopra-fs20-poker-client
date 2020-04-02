@@ -13,6 +13,7 @@ const FormContainer = styled.div`
   align-items: center;
   min-height: 300px;
   justify-content: center;
+  
 `;
 
 const Form = styled.div`
@@ -20,19 +21,24 @@ const Form = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 60%;
-  height: 375px;
-  font-size: 16px;
-  font-weight: 300;
+  height: 375px; 
+  font-family: Pontano Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  color: black;
   padding-left: 37px;
   padding-right: 37px;
-  border-radius: 5px;
-  background: linear-gradient(rgb(27, 124, 186), rgb(2, 46, 101));
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  background: #C4C4C4;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 19px;
+
+
 `;
 
 const InputField = styled.input`
   &::placeholder {
-    color: rgba(255, 255, 255, 1.0);
+    color: dark grey;
   }
   height: 35px;
   padding-left: 15px;
@@ -41,19 +47,22 @@ const InputField = styled.input`
   border-radius: 20px;
   margin-bottom: 20px;
   background: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: black;
 `;
 
 const Label = styled.label`
-  color: white;
+  color: black;
   margin-bottom: 10px;
   text-transform: uppercase;
 `;
 
 const ButtonContainer = styled.div`
+  flex-direction: column;
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  align-items: center;
+
 `;
 
 /**
@@ -75,7 +84,7 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: null,
+      password: null,
       username: null
     };
   }
@@ -88,7 +97,7 @@ class Login extends React.Component {
     try {
       const requestBody = JSON.stringify({
         username: this.state.username,
-        name: this.state.name
+        password: this.state.password
       });
       const response = await api.post('/users', requestBody);
 
@@ -137,22 +146,30 @@ class Login extends React.Component {
                 this.handleInputChange('username', e.target.value);
               }}
             />
-            <Label>Name</Label>
+            <Label>Password</Label>
             <InputField
               placeholder="Enter here.."
               onChange={e => {
-                this.handleInputChange('name', e.target.value);
+                this.handleInputChange('password', e.target.value);
               }}
             />
             <ButtonContainer>
               <Button
-                disabled={!this.state.username || !this.state.name}
+                disabled={!this.state.username || !this.state.password}
                 width="50%"
                 onClick={() => {
                   this.login();
                 }}
               >
                 Login
+              </Button>
+              <Button
+                  width="50%"
+                  onClick={() => {
+                  this.props.history.push("/welcomepage")
+                  }}
+              >
+                go back
               </Button>
             </ButtonContainer>
           </Form>
