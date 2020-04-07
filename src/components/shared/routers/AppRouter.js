@@ -23,7 +23,7 @@ class AppRouter extends React.Component {
     return (
       <BrowserRouter>
         <Switch>
-          <div>
+        <React.Fragment>
             <Route
               path="/game"
               render={() => (
@@ -74,7 +74,7 @@ class AppRouter extends React.Component {
                   )}
               />
             <Route path="/" exact render={() => <Redirect to={"/welcomepage"} />} />
-          </div>
+          </React.Fragment>
         </Switch>
       </BrowserRouter>
     );

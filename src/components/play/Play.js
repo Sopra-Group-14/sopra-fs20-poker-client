@@ -60,8 +60,8 @@ class Play extends React.Component {
     constructor() {
         super();
         this.state = {
-            name: null,
-            username: null
+
+            username: User.username
         };
     }
 
