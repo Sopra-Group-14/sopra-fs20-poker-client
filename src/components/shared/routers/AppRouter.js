@@ -7,6 +7,7 @@ import Login from "../../login/Login";
 import Welcomepage from "../../welcomepage/Welcomepage";
 import Dashboard from "../../dashboard/Dashboard";
 import Registration from "../../registration/Registration";
+import Play from "../../play/Play";
 
 /**
  * Main router of your application.
@@ -63,6 +64,13 @@ class AppRouter extends React.Component {
                   exact
                   render={() => (
                       <Registration />
+                  )}
+              />
+              <Route
+                  path="/play"
+                  exact
+                  render={() => (
+                      <Play />
                   )}
               />
             <Route path="/" exact render={() => <Redirect to={"/game"} />} />
