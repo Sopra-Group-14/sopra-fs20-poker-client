@@ -73,7 +73,7 @@ class AppRouter extends React.Component {
                       <Play />
                   )}
               />
-            <Route path="/" exact render={() => <Redirect to={"/game"} />} />
+            <Route path="/" exact render={() => <Redirect to={"/welcomepage"} />} />
           </div>
         </Switch>
       </BrowserRouter>
