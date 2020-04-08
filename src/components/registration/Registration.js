@@ -100,16 +100,19 @@ class Registration extends React.Component {
                 username: this.state.username,
                 password: this.state.password,
             });
+
             const response = await api.post('/registration', requestBody);
+            //Backend with Postman: const response = await api.post('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/registration', requestBody);
 
             // Get the returned user and update a new object.
             const user = new User(response.data);
 
-            // Store the token into the local storage.
+            // Store the token and id into the local storage.
             localStorage.setItem('token', user.token);
+            localStorage.setItem('id', user.id);
 
             // Registration successfully worked --> navigate to the route /game in the GameRouter
-            this.props.history.push(`/game`);
+            this.props.history.push(`/dashboard`);
         } catch (error) {
             alert(`Something went wrong during the registration: \n${handleError(error)}`);
         }

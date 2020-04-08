@@ -61,11 +61,57 @@ class Dashboard extends React.Component {
         super();
         this.state = {
             name: null,
-            username: null
+            username: null,
+            spectator: "spectator",
+            player: "player",
+
         };
     }
 
-    componentDidMount() {}
+    async watchGame() {
+        try {
+            const requestBody = JSON.stringify({
+                spectator: this.state.spectator,
+                token: localStorage.getItem("token")
+            });
+            await api.put('/users/' + localStorage.getItem("id") + '/mode', requestBody);
+            //Backend with Postman: const response = await api.put('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/' + localStorage.getItem("id") + '/mode', requestBody);
+            //const user = new User(response.data);
+            //localStorage.setItem("id", user.id)
+
+
+        } catch (error) {
+            alert(`Something went wrong when trying to watch a game: \n${handleError(error)}`);
+        }
+
+    }
+
+    async playGame() {
+        try {
+            const requestBody = JSON.stringify({
+                player: this.state.player,
+                token: localStorage.getItem("token")
+            });
+            await api.put('/users/' + localStorage.getItem("id") + '/mode', requestBody);
+
+        } catch (error) {
+            alert(`Something went wrong when trying to play a game: \n${handleError(error)}`);
+        }
+
+    }
+
+    async logout() {
+        try {
+            const requestBody = JSON.stringify({
+                token: localStorage.getItem("token")
+            });
+            await api.put('/logout', requestBody);
+
+        } catch (error) {
+            alert(`Something went wrong when trying to logout: \n${handleError(error)}`);
+        }
+
+    }
 
     render() {
         return (
@@ -84,6 +130,7 @@ class Dashboard extends React.Component {
                         <Button
 
                             onClick={() => {
+                                this.watchGame();
                                 this.props.history.push(`/gamelist`);
                             }}
                         >
@@ -93,6 +140,7 @@ class Dashboard extends React.Component {
 
                         <Button
                             onClick={() => {
+                                this.playGame();
                                 this.props.history.push(`/account`);
                             }}
                         >
