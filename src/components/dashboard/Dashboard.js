@@ -106,6 +106,8 @@ class Dashboard extends React.Component {
                 token: localStorage.getItem("token")
             });
             await api.put('/logout', requestBody);
+            localStorage.setItem("token", null);
+            localStorage.setItem("id", null);
 
         } catch (error) {
             alert(`Something went wrong when trying to logout: \n${handleError(error)}`);
@@ -149,6 +151,7 @@ class Dashboard extends React.Component {
 
                         <Button
                             onClick={() => {
+                                this.logout();
                                 this.props.history.push(`/welcomepage`);
                             }}
                         >
