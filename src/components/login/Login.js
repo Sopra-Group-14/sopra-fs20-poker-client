@@ -75,17 +75,12 @@ const ButtonContainer = styled.div`
  * @Class
  */
 class Login extends React.Component {
-  /**
-   * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
-   * The constructor for a React component is called before it is mounted (rendered).
-   * In this case the initial state is defined in the constructor. The state is a JS object containing two fields: name and username
-   * These fields are then handled in the onChange() methods in the resp. InputFields
-   */
-  constructor() {
-    super();
+
+  constructor(props) {
+    super(props);
     this.state = {
-      password: null,
-      username: null
+        username : null,
+        password: null
     };
   }
   /**
@@ -99,7 +94,9 @@ class Login extends React.Component {
         username: this.state.username,
         password: this.state.password
       });
-      const response = await api.post('/users', requestBody);
+
+      const response = await api.put('/login', requestBody);
+
 
       // Get the returned user and update a new object.
       const user = new User(response.data);
@@ -108,8 +105,7 @@ class Login extends React.Component {
       localStorage.setItem('token', user.token);
       localStorage.setItem('id', user.id);
 
-      // Login successfully worked --> navigate to the route /game in the GameRouter
-      this.props.history.push(`/game`);
+      this.props.history.push(`/dashboard`);
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }
@@ -122,7 +118,7 @@ class Login extends React.Component {
    */
   handleInputChange(key, value) {
     // Example: if the key is username, this statement is the equivalent to the following one:
-    // this.setState({'username': value});
+
     this.setState({ [key]: value });
   }
 

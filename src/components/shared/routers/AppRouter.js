@@ -7,6 +7,7 @@ import Login from "../../login/Login";
 import Welcomepage from "../../welcomepage/Welcomepage";
 import Dashboard from "../../dashboard/Dashboard";
 import Registration from "../../registration/Registration";
+import Play from "../../play/Play";
 
 /**
  * Main router of your application.
@@ -22,23 +23,13 @@ class AppRouter extends React.Component {
     return (
       <BrowserRouter>
         <Switch>
-          <div>
-            <Route
-              path="/game"
-              render={() => (
-                <GameGuard>
-                  <GameRouter base={"/game"} />
-                </GameGuard>
-              )}
-            />
+        <React.Fragment>
 
             <Route
               path="/login"
               exact
               render={() => (
-                <LoginGuard>
                   <Login />
-                </LoginGuard>
               )}
             />
 
@@ -65,8 +56,15 @@ class AppRouter extends React.Component {
                       <Registration />
                   )}
               />
-            <Route path="/" exact render={() => <Redirect to={"/game"} />} />
-          </div>
+              <Route
+                  path="/play"
+                  exact
+                  render={() => (
+                      <Play />
+                  )}
+              />
+            <Route path="/" exact render={() => <Redirect to={"/welcomepage"} />} />
+          </React.Fragment>
         </Switch>
       </BrowserRouter>
     );

@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { BaseContainer } from '../../helpers/layout';
+import { api, handleError } from '../../helpers/api';
+import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 
@@ -53,12 +56,12 @@ const ButtonContainer = styled.div`
  * https://reactjs.org/docs/react-component.html
  * @Class
  */
-class Welcomepage extends React.Component {
+class Play extends React.Component {
     constructor() {
         super();
         this.state = {
-            name: null,
-            username: null
+
+            username: User.username
         };
     }
 
@@ -69,33 +72,33 @@ class Welcomepage extends React.Component {
             <FormContainer>
                 <Form>
                     <ButtonContainer>
-                            <Button
-                                height="30%"
-                                onClick={() => {
-                                    this.props.history.push(`/login`);
-                                }}
-                            >
-                                Login
-                            </Button>
+                        <Button
+                            height="30%"
+                            onClick={() => {
+                                this.props.history.push(`/createagame`);
+                            }}
+                        >
+                            Create a game
+                        </Button>
 
-                            <Button
+                        <Button
 
-                                onClick={() => {
-                                    this.props.history.push(`/registration`);
-                                }}
-                            >
-                                Registration
-                            </Button>
+                            onClick={() => {
+                                this.props.history.push(`/joinagame`);
+                            }}
+                        >
+                            Join a game
+                        </Button>
 
 
-                            <Button
-                                onClick={() => {
-                                    this.props.history.push(`/spectator`);
-                                }}
-                            >
-                                Spectator
-                            </Button>
-                   </ButtonContainer>
+                        <Button
+                            onClick={() => {
+                                this.props.history.push(`/dashboard`);
+                            }}
+                        >
+                            go Back
+                        </Button>
+                    </ButtonContainer>
                 </Form>
             </FormContainer>
         );
@@ -106,4 +109,4 @@ class Welcomepage extends React.Component {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default withRouter(Welcomepage);
+export default withRouter(Play);
