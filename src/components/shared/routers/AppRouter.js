@@ -24,22 +24,12 @@ class AppRouter extends React.Component {
       <BrowserRouter>
         <Switch>
         <React.Fragment>
-            <Route
-              path="/game"
-              render={() => (
-                <GameGuard>
-                  <GameRouter base={"/game"} />
-                </GameGuard>
-              )}
-            />
 
             <Route
               path="/login"
               exact
               render={() => (
-                <LoginGuard>
                   <Login />
-                </LoginGuard>
               )}
             />
 
