@@ -172,7 +172,6 @@ class GameSettings extends React.Component {
                         >
                             Split Limit
                         </ButtonGreen>
-
                         <ButtonGreen
                             onClick={() => {
                                 this.setState({limit: "fixed"});
