@@ -9,6 +9,7 @@ import Dashboard from "../../dashboard/Dashboard";
 import Registration from "../../registration/Registration";
 import Play from "../../play/Play";
 import GameSettings from "../../gamesettings/GameSettings";
+import Lobby from "../../lobby/Lobby";
 
 /**
  * Main router of your application.
@@ -69,6 +70,13 @@ class AppRouter extends React.Component {
                 exact
                 render={() => (
                     <GameSettings />
+                )}
+            />
+            <Route
+                path="/lobby"
+                exact
+                render={() => (
+                    <Lobby />
                 )}
             />
             <Route path="/" exact render={() => <Redirect to={"/welcomepage"} />} />

@@ -17,7 +17,7 @@ const UserName = styled.div`
 `;
 
 
-const Id = styled.div`
+const UserStatus = styled.div`
   margin-left: auto;
   margin-right: 10px;
   font-weight: bold;
@@ -35,7 +35,7 @@ const Player = ({ user }) => {
   return (
     <Container>
        <UserName>{user.username}</UserName>
-      <Id>Id: {user.id}</Id>
+       <UserStatus> {user.status}</UserStatus>
     </Container>
   );
 };
