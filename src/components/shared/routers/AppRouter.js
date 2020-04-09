@@ -8,6 +8,7 @@ import Welcomepage from "../../welcomepage/Welcomepage";
 import Dashboard from "../../dashboard/Dashboard";
 import Registration from "../../registration/Registration";
 import Play from "../../play/Play";
+import GameSettings from "../../gamesettings/GameSettings";
 
 /**
  * Main router of your application.
@@ -63,6 +64,13 @@ class AppRouter extends React.Component {
                       <Play />
                   )}
               />
+            <Route
+                path="/createagame"
+                exact
+                render={() => (
+                    <GameSettings />
+                )}
+            />
             <Route path="/" exact render={() => <Redirect to={"/welcomepage"} />} />
           </React.Fragment>
         </Switch>

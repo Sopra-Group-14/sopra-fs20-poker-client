@@ -96,7 +96,7 @@ class Play extends React.Component {
                                 this.props.history.push(`/dashboard`);
                             }}
                         >
-                            go Back
+                            Go Back
                         </Button>
                     </ButtonContainer>
                 </Form>

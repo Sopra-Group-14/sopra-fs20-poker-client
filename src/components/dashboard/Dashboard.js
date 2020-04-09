@@ -77,7 +77,7 @@ class Dashboard extends React.Component {
             await api.put('/users/' + localStorage.getItem("id") + '/mode', requestBody);
             //Backend with Postman: const response = await api.put('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/' + localStorage.getItem("id") + '/mode', requestBody);
             //const user = new User(response.data);
-            //localStorage.setItem("id", user.id)
+            //alert(user.id)
 
 
         } catch (error) {
