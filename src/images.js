@@ -50,14 +50,14 @@ import spade_j from './graphics/pik_j.jpg';
 import spade_q from './graphics/pik_Q.jpg';
 import spade_k from './graphics/pik_K.jpg';
 import spade_a from './graphics/pik_A.jpg';
-
+import back from './graphics/back.jpg';
 
 
 
 
 const graphicsList = [
     heart_A,
-    { key:'hk' , heart_K},
+    heart_K,
     heart_Q,
     heart_J,
     heart_10,
@@ -108,7 +108,7 @@ const graphicsList = [
     spade_q,
     spade_k,
     spade_a,
-
+    back,
 
 
 ];

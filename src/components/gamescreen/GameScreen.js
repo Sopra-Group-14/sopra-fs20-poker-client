@@ -7,9 +7,7 @@ import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import chips from '../../graphics/chips.png';
-import herz_A from '../../graphics/herz_A.jpg';
 import GameLog from "../shared/models/GameLog";
-
 import {graphicsList} from '../../images'
 
 
@@ -139,11 +137,7 @@ class GameScreen extends React.Component {
 
     async displayHandCards() {
         try {
-            const requestBody = JSON.stringify({
-                token: localStorage.getItem("token")
-            });
            const cardlist =  await api.get('/games/{gamesID}/players/{playerID}/hand');
-           return cardlist;
 
         } catch (error) {
             alert(`Something went wrong when trying to logout: \n${handleError(error)}`);
@@ -195,7 +189,7 @@ class GameScreen extends React.Component {
                         <PotContainer>  <img width={80}  src={chips} />
                             <label>POT: 3000</label></PotContainer>
                         <CardContainer>
-                        <img width={95}  src={graphicsList['hk']} />
+                        <img width={95}  src={graphicsList[46]} />
                         </CardContainer>
                     <CardContainer>
                         <img width={95}  src={graphicsList[5]} />
@@ -207,7 +201,7 @@ class GameScreen extends React.Component {
                         <img width={95}  src={graphicsList[3]} />
                     </CardContainer>
                     <CardContainer>
-                        <img width={95}  src={graphicsList[7]} />
+                        <img width={95}  src={graphicsList[52]} />
                     </CardContainer>
 
                         </TableCardContainer>
@@ -246,7 +240,7 @@ class GameScreen extends React.Component {
 
                     <HandCardContainer>
                         <CardContainer>
-                            <img width={95}  src={graphicsList[2]} />
+                            <img width={95}  src={graphicsList[50]} />
                         </CardContainer>
                         <CardContainer>
                             <img width={95}  src={graphicsList[20]}/>
