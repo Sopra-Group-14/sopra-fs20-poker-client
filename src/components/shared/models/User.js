@@ -9,6 +9,7 @@ class User {
     this.token = null;
     this.status = null;
     this.ready = null;
+    this.credit = null;
     Object.assign(this, data);
   }
 }

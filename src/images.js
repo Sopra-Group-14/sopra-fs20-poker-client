@@ -54,8 +54,8 @@ import back from './graphics/back.jpg';
 
 
 
-
 const graphicsList = [
+  //  { id: 'heart_A', src: './graphics/herz_A.jpg', title: 'foo', description: 'bar' },
     heart_A,
     heart_K,
     heart_Q,
@@ -75,7 +75,7 @@ const graphicsList = [
     diamond_5,
     diamond_6,
     diamond_7,
-    diamond_8,
+    {"id":"d8", "link":diamond_8},
     diamond_9,
     diamond_10,
     diamond_j,

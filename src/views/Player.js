@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import chips from '../graphics/chips.png';
 
 const Container = styled.div`
   margin: 6px 0;
@@ -17,7 +18,7 @@ const UserName = styled.div`
 `;
 
 
-const UserStatus = styled.div`
+const UserCredit = styled.div`
   margin-left: auto;
   margin-right: 10px;
   font-weight: bold;
@@ -35,7 +36,8 @@ const Player = ({ user }) => {
   return (
     <Container>
        <UserName>{user.username}</UserName>
-       <UserStatus> {user.status}</UserStatus>
+       <img width={80}  src={chips} />
+        <UserCredit> {user.credit}</UserCredit>
     </Container>
   );
 };

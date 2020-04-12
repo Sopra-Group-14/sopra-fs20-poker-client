@@ -9,6 +9,7 @@ import { Button } from '../../views/design/Button';
 import chips from '../../graphics/chips.png';
 import GameLog from "../shared/models/GameLog";
 import {graphicsList} from '../../images'
+import Player from "../../views/Player";
 
 
 const PlayersContainer = styled.div`
@@ -21,6 +22,18 @@ const PlayersContainer = styled.div`
 `;
 const PlayerContainer = styled.div`
      background: #417D44; 
+     width: 100px;
+     height: 119px;
+     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+     border-radius: 8px;
+      display: flex; 
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+  `;
+const ActivePlayerContainer = styled.div`
+     background: #417D44;
+     border: 1px solid #FFFFFF;
      width: 100px;
      height: 119px;
      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -127,8 +140,12 @@ class GameScreen extends React.Component {
     constructor() {
         super();
         this.state = {
-            username: null,
-            tablecards: null
+            username: 'lara',
+            tablecards: null,
+            handcard1: null,
+            handcard2: null,
+            currentUser: 'lara3',
+            players:[ {id:4, username: 'lara4', credit:50 }, {id:1, username: 'lara', credit:15 },  {id:2, username: 'lara2', credit:30 },  {id:3, username: 'lara3', credit:50 }],
 
         };
     }
@@ -139,13 +156,22 @@ class GameScreen extends React.Component {
         try {
            const cardlist =  await api.get('/games/{gamesID}/players/{playerID}/hand');
 
+           this.state.handcard1 = cardlist[0];
+           this.state.handcard2 = cardlist[1];
+
         } catch (error) {
             alert(`Something went wrong when trying to logout: \n${handleError(error)}`);
         }
 
     }
 
+    async currentPlayer(){
+        localStorage.setItem("gameId", "2");
+        const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+        const gamelog = new GameLog(response.data);
+        this.state.currentUser = gamelog.playerName;
 
+    }
     async displayTableCards() {
         try {
             localStorage.setItem("gameId", "2");
@@ -164,23 +190,33 @@ class GameScreen extends React.Component {
     render() {
         return (
             <BaseContainer>
-
                 <PlayersContainer>
-                     <PlayerContainer>
-                         <label>Player1</label>
-                         <img width={80}  src={chips} />
-                         <label> 300 </label>
-                     </PlayerContainer>
-                     <PlayerContainer>
-                         <label>Player2</label>
-                         <img width={80}  src={chips} />
-                         <label> 300 </label>
-                     </PlayerContainer>
-                    <PlayerContainer>
-                        <label>Player3</label>
-                        <img width={80}  src={chips}/>
-                        <label> 300 </label>
-                    </PlayerContainer>
+                    {this.state.players.map(user => {
+                        if(user.username === this.state.username){
+                            return;
+                        }
+                        else if (user.username === this.state.currentUser){
+                            return(
+                                <ActivePlayerContainer key={user.id}>
+                                    <label>{user.username}</label>
+                                    <img width={80}  src={chips} />
+                                    <label> {user.credit} </label>
+                                </ActivePlayerContainer>
+                            )
+                        }
+
+                    else {
+                            return (
+                                <PlayerContainer key={user.id}>
+                                    <label>{user.username}</label>
+                                    <img width={80}  src={chips} />
+                                    <label> {user.credit} </label>
+                                </PlayerContainer>
+                            );
+                        }
+                    })}
+
+
 
                 </PlayersContainer>
 
@@ -213,6 +249,7 @@ class GameScreen extends React.Component {
                     <ButtonContainer>
                         <Button
                             height="30%"
+                            disabled={!(this.state.username == this.state.currentUser)}
                             onClick={() => {
                                 //this.displayTableCards();
                                 this.props.history.push(`/play`);
@@ -222,6 +259,7 @@ class GameScreen extends React.Component {
                         </Button>
                         <Button
                             height="30%"
+                            disabled={!(this.state.username == this.state.currentUser)}
                             onClick={() => {
                                 this.props.history.push(`/play`);
                             }}
@@ -230,6 +268,7 @@ class GameScreen extends React.Component {
                         </Button>
                         <Button
                             height="30%"
+                            disabled={!(this.state.username == this.state.currentUser)}
                             onClick={() => {
                                 this.props.history.push(`/play`);
                             }}
@@ -240,10 +279,10 @@ class GameScreen extends React.Component {
 
                     <HandCardContainer>
                         <CardContainer>
-                            <img width={95}  src={graphicsList[50]} />
+                            <img width={95}  src={graphicsList[43]} />
                         </CardContainer>
                         <CardContainer>
-                            <img width={95}  src={graphicsList[20]}/>
+                            <img width={95}  src={graphicsList[40] } />
                         </CardContainer>
                     </HandCardContainer>
                     <PotContainer>
