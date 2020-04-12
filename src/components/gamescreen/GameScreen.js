@@ -1,13 +1,15 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
-import herz_A from '../../graphics/herz_A.jpg';
 import chips from '../../graphics/chips.png';
+import herz_A from '../../graphics/herz_A.jpg';
 
+import {graphicsList} from '../../images'
 
 
 const PlayersContainer = styled.div`
@@ -117,11 +119,10 @@ const ControlContainer= styled.div`
 
 `;
 
-function importAll(r) {
-    return r.keys().map(r);
-}
 
-const images = importAll(require.context('../../graphics/', false, /\.(png|jpe?g)$/));
+
+
+
 
 class GameScreen extends React.Component {
     constructor() {
@@ -141,7 +142,6 @@ class GameScreen extends React.Component {
                 token: localStorage.getItem("token")
             });
            const cardlist =  await api.get('/games/{gamesID}/players/{playerID}/hand');
-
            return cardlist;
 
         } catch (error) {
@@ -157,17 +157,17 @@ class GameScreen extends React.Component {
                 <PlayersContainer>
                      <PlayerContainer>
                          <label>Player1</label>
-                         <img width={80}  src={chips} ></img>
+                         <img width={80}  src={chips} />
                          <label> 300 </label>
                      </PlayerContainer>
                      <PlayerContainer>
                          <label>Player2</label>
-                         <img width={80}  src={chips} ></img>
+                         <img width={80}  src={chips} />
                          <label> 300 </label>
                      </PlayerContainer>
                     <PlayerContainer>
                         <label>Player3</label>
-                        <img width={80}  src={chips} ></img>
+                        <img width={80}  src={chips}/>
                         <label> 300 </label>
                     </PlayerContainer>
 
@@ -175,22 +175,22 @@ class GameScreen extends React.Component {
 
 
                     <TableCardContainer>
-                        <PotContainer>  <img width={80}  src={chips} ></img>
+                        <PotContainer>  <img width={80}  src={chips} />
                             <label>POT: 3000</label></PotContainer>
                         <CardContainer>
-                        <img width={95}  src={herz_A} ></img>
+                        <img width={95}  src={graphicsList['hk']} />
                         </CardContainer>
                     <CardContainer>
-                        <img width={95}  src={herz_A} ></img>
+                        <img width={95}  src={graphicsList[5]} />
                     </CardContainer>
                     <CardContainer>
-                        <img width={95}  src={herz_A} ></img>
+                        <img width={95}  src={graphicsList[0]} />
                     </CardContainer>
                     <CardContainer>
-                        <img width={95}  src={herz_A} ></img>
+                        <img width={95}  src={graphicsList[3]} />
                     </CardContainer>
                     <CardContainer>
-                        <img width={95}  src={herz_A} ></img>
+                        <img width={95}  src={graphicsList[7]} />
                     </CardContainer>
 
                         </TableCardContainer>
@@ -228,14 +228,14 @@ class GameScreen extends React.Component {
 
                     <HandCardContainer>
                         <CardContainer>
-                            <img width={95}  src={herz_A} ></img>
+                            <img width={95}  src={graphicsList[2]} />
                         </CardContainer>
                         <CardContainer>
-                            <img width={95}  src={herz_A} ></img>
+                            <img width={95}  src={graphicsList[20]}/>
                         </CardContainer>
                     </HandCardContainer>
                     <PotContainer>
-                        <img width={80}  src={chips} ></img>
+                        <img width={80}  src={chips} />
                         <label>3000</label>
                     </PotContainer>
                 </ControlContainer>
