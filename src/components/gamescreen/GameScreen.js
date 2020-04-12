@@ -8,6 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import chips from '../../graphics/chips.png';
 import herz_A from '../../graphics/herz_A.jpg';
+import GameLog from "../shared/models/GameLog";
 
 import {graphicsList} from '../../images'
 
@@ -129,7 +130,7 @@ class GameScreen extends React.Component {
         super();
         this.state = {
             username: null,
-
+            tablecards: null
 
         };
     }
@@ -146,6 +147,22 @@ class GameScreen extends React.Component {
 
         } catch (error) {
             alert(`Something went wrong when trying to logout: \n${handleError(error)}`);
+        }
+
+    }
+
+
+    async displayTableCards() {
+        try {
+            localStorage.setItem("gameId", "2");
+            const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+            const gamelog = new GameLog(response.data);
+            this.state.tablecards = gamelog.revealedCards;
+            alert(this.state.tablecards)
+
+
+        } catch (error) {
+            alert(`Something went wrong when trying to get the tablecards: \n${handleError(error)}`);
         }
 
     }
@@ -203,6 +220,7 @@ class GameScreen extends React.Component {
                         <Button
                             height="30%"
                             onClick={() => {
+                                //this.displayTableCards();
                                 this.props.history.push(`/play`);
                             }}
                         >
