@@ -156,11 +156,11 @@ class GameScreen extends React.Component {
            try {
          //  const player =  await api.get('/games/{gamesID}/players/{playerID}');
            //const handCards = player.hand
-          const  handCards = [{Suit: 'HEARTS',Rank: 'ACE'},{Suit: 'HEARTS', Rank: 'KING'},{Suit: 'DIAMONDS',Rank: 'FIVE'}]
-           let handcard1 = handCards[2].Suit + handCards[2].Rank;    // create String like CLUBSACE or HEARTSTwo
-           let handcard2 = handCards[1].Suit + handCards[1].Rank;
-           let card = graphicsList.find(data => data.name == handcard1);
-           let card2 = graphicsList.find(data => data.name == handcard2);
+          const  handCards = [{Suit: 'HEARTS',Rank: 'ACE'},{Suit: 'HEARTS', Rank: 'KING'},{Suit:'SPADES',Rank:'EIGHT'},{Suit:'CLUBS',Rank:'JOKER'} ]
+           let handcard1 = handCards[2].Suit + handCards[2].Rank;
+           let handcard2 = handCards[3].Suit + handCards[3].Rank;
+           let card = graphicsList.find(data => data.name === handcard1);
+           let card2 = graphicsList.find(data => data.name === handcard2);
 
            this.state.posh1 = card.src;
            this.state.posh2 = card2.src;
