@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { BaseContainer } from '../../helpers/layout';
 import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
-import { withRouter } from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import chips from '../../graphics/chips.png';
 import GameLog from "../shared/models/GameLog";
@@ -142,22 +142,28 @@ class GameScreen extends React.Component {
         this.state = {
             username: 'lara',
             tablecards: null,
-            handcard1: null,
-            handcard2: null,
+
             currentUser: 'lara3',
             players:[ {id:4, username: 'lara4', credit:50 }, {id:1, username: 'lara', credit:15 },  {id:2, username: 'lara2', credit:30 },  {id:3, username: 'lara3', credit:50 }],
-
+            posh1: null,
+            posh2:null,
         };
     }
 
 
 
     async displayHandCards() {
-        try {
-           const cardlist =  await api.get('/games/{gamesID}/players/{playerID}/hand');
+           try {
+         //  const player =  await api.get('/games/{gamesID}/players/{playerID}');
+           //const handCards = player.hand
+          const  handCards = [{Suit: 'HEARTS',Rank: 'ACE'},{Suit: 'HEARTS', Rank: 'KING'},{Suit: 'DIAMONDS',Rank: 'FIVE'}]
+           let handcard1 = handCards[2].Suit + handCards[2].Rank;    // create String like CLUBSACE or HEARTSTwo
+           let handcard2 = handCards[1].Suit + handCards[1].Rank;
+           let card = graphicsList.find(data => data.name == handcard1);
+           let card2 = graphicsList.find(data => data.name == handcard2);
 
-           this.state.handcard1 = cardlist[0];
-           this.state.handcard2 = cardlist[1];
+           this.state.posh1 = card.src;
+           this.state.posh2 = card2.src;
 
         } catch (error) {
             alert(`Something went wrong when trying to logout: \n${handleError(error)}`);
@@ -170,8 +176,8 @@ class GameScreen extends React.Component {
         const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
         const gamelog = new GameLog(response.data);
         this.state.currentUser = gamelog.playerName;
-
     }
+
     async displayTableCards() {
         try {
             localStorage.setItem("gameId", "2");
@@ -187,7 +193,9 @@ class GameScreen extends React.Component {
 
     }
 
+
     render() {
+        this.displayHandCards();
         return (
             <BaseContainer>
                 <PlayersContainer>
@@ -279,10 +287,10 @@ class GameScreen extends React.Component {
 
                     <HandCardContainer>
                         <CardContainer>
-                            <img width={95}  src={graphicsList[43]} />
+                            <img width={95}  src={this.state.posh1} />
                         </CardContainer>
                         <CardContainer>
-                            <img width={95}  src={graphicsList[40] } />
+                            <img width={95}  src={this.state.posh2} />
                         </CardContainer>
                     </HandCardContainer>
                     <PotContainer>

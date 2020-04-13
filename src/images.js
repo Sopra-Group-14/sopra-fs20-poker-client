@@ -1,4 +1,4 @@
-import heart_A from './graphics/herz_A.jpg';
+import HEARTSACE from './graphics/herz_A.jpg';
 import heart_K from './graphics/herz_K.jpg';
 import heart_Q from './graphics/herz_Q.jpg';
 import heart_J from './graphics/herz_j.jpg';
@@ -55,9 +55,8 @@ import back from './graphics/back.jpg';
 
 
 const graphicsList = [
-  //  { id: 'heart_A', src: './graphics/herz_A.jpg', title: 'foo', description: 'bar' },
-    heart_A,
-    heart_K,
+    {name:"HEARTSACE", src:HEARTSACE},
+    {name: "HEARTSKING",src:heart_K},
     heart_Q,
     heart_J,
     heart_10,
@@ -72,10 +71,10 @@ const graphicsList = [
     diamond_2,
     diamond_3,
     diamond_4,
-    diamond_5,
+    {name: "DIAMONDSFIVE",src: diamond_5},
     diamond_6,
     diamond_7,
-    {"id":"d8", "link":diamond_8},
+    diamond_8,
     diamond_9,
     diamond_10,
     diamond_j,
