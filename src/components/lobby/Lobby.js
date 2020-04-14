@@ -89,15 +89,15 @@ class Lobby extends React.Component {
     componentDidMount() {
 
         try {
-            const response =  api.get('/game/{gameid}');
+            localStorage.setItem("gameId", "2");
+            const response =  api.get('/games/'+ localStorage.getItem("gameId"));
 
             // Get the returned user and update a new object.
             const game = new GameModel(response.data);
-           // GameModel.thisGame = game;
-            GameModel.thisGame = {gameName:'ourGame' , bigBlind: 'lara1', smallBlind: 'lara2', gameCreator: '1',
+            GameModel.thisGame = game;
+           /* GameModel.thisGame = {gameName:'ourGame' , bigBlind: 'lara1', smallBlind: 'lara2', gameCreator: '1',
                 users: [{username:'lara', id: '1', status:'ready'}, {username:'lara2', id: '2'}, {username:'Lara3', id: '3', status:'ready'}, {username:'Lara4', id: '4'}]
-            };
-            this.setState(GameModel.thisGame);
+            };*/
 
 
         } catch (error) {
@@ -107,7 +107,7 @@ class Lobby extends React.Component {
     }
     async playerReady() {
         try{
-        const response = api.get('/games/{gameID}')
+        const response = api.get('/games/'+localStorage.getItem("gameId"));
         const players = response.users;
         for (User.user in players) {
             if (User.user.status === 'ready') {
@@ -125,7 +125,7 @@ class Lobby extends React.Component {
 
     async startGame(){
         try {
-            const response = api.put('/games/{gameID}/gameStart');
+            const response = api.put('/games/'+localStorage.getItem("gameId")+'/gameStart');
             this.props.history.push("/gameScreen")
         }
         catch(error){
@@ -161,7 +161,7 @@ class Lobby extends React.Component {
                     <ButtonContainer>
 
                         <Button
-                            disabled={!(this.playerReady()==true)}
+                            disabled={!(this.playerReady() === true)}
                             onClick={() => {
                                 this.startGame();
 
