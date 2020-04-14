@@ -143,7 +143,7 @@ class GameScreen extends React.Component {
             username: 'lara',
             tablecards: null,
 
-            currentUser: 'lara3',
+            currentUser: 'lara',
             players:[ {id:4, username: 'lara4', credit:50 }, {id:1, username: 'lara', credit:15 },  {id:2, username: 'lara2', credit:30 },  {id:3, username: 'lara3', credit:50 }],
             posh1: null,
             posh2:null,
@@ -154,8 +154,8 @@ class GameScreen extends React.Component {
 
     async displayHandCards() {
            try {
-         //  const player =  await api.get('/games/{gamesID}/players/{playerID}');
-           //const handCards = player.hand
+          // const player =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
+          // const handCards = player.hand;
           const  handCards = [{Suit: 'HEARTS',Rank: 'ACE'},{Suit: 'HEARTS', Rank: 'KING'},{Suit:'SPADES',Rank:'EIGHT'},{Suit:'CLUBS',Rank:'JOKER'} ]
            let handcard1 = handCards[2].Suit + handCards[2].Rank;
            let handcard2 = handCards[3].Suit + handCards[3].Rank;
@@ -192,6 +192,20 @@ class GameScreen extends React.Component {
         }
 
     }
+
+    async call(){
+        localStorage.setItem("playerId", "1");
+
+        const requestBody = JSON.stringify({
+           action: "CALL",
+           amount: 0,
+           token: localStorage.getItem("token") ,
+        });
+         await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+
+    }
+
+
 
 
     render() {
@@ -257,17 +271,16 @@ class GameScreen extends React.Component {
                     <ButtonContainer>
                         <Button
                             height="30%"
-                            disabled={!(this.state.username == this.state.currentUser)}
+                            disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
-                                //this.displayTableCards();
-                                this.props.history.push(`/play`);
+                                this.call();
                             }}
                         >
                             Call
                         </Button>
                         <Button
                             height="30%"
-                            disabled={!(this.state.username == this.state.currentUser)}
+                            disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
                                 this.props.history.push(`/play`);
                             }}
@@ -276,7 +289,7 @@ class GameScreen extends React.Component {
                         </Button>
                         <Button
                             height="30%"
-                            disabled={!(this.state.username == this.state.currentUser)}
+                            disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
                                 this.props.history.push(`/play`);
                             }}
