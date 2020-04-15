@@ -164,9 +164,13 @@ class GameScreen extends React.Component {
 
     async displayHandCards() {
            try {
+           /*
+           Backend with Postman:
            localStorage.setItem("gameId", "2");
            localStorage.setItem("playerId", "1");
            const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
+            */
+           const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
            const player = response.data;
            this.state.handcards = player.hand;
 
@@ -182,8 +186,12 @@ class GameScreen extends React.Component {
 
     async displayTableCards() {
         try {
+            /*
+            Backend with Postman:
             localStorage.setItem("gameId", "2");
             const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+            */
+            const response = await api.get('/games/' + localStorage.getItem("gameId"));
             let gamelog = new GameLog(response.data);
             this.state.tablecards = gamelog.revealedCards;
             this.setState({ ["tablecard1"]: this.getImageOfCard(this.state.tablecards[0])});
@@ -200,8 +208,12 @@ class GameScreen extends React.Component {
     }
 
     async currentPlayer(){
+        /*
+        Backend with Postman:
         localStorage.setItem("gameId", "2");
         const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+         */
+        const response = await api.get('/games/' + localStorage.getItem("gameId"));
         const gamelog = new GameLog(response.data);
         this.state.currentUser = gamelog.playerName;
     }
