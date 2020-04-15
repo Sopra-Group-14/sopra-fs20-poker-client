@@ -1,15 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
-import { BaseContainer } from '../../helpers/layout';
-import { api, handleError } from '../../helpers/api';
-import User from '../shared/models/User';
-import { withRouter} from 'react-router-dom';
-import { Button } from '../../views/design/Button';
+import {BaseContainer} from '../../helpers/layout';
+import {api, handleError} from '../../helpers/api';
+import {withRouter} from 'react-router-dom';
+import {Button} from '../../views/design/Button';
 import chips from '../../graphics/chips.png';
 import GameLog from "../shared/models/GameLog";
 import {graphicsList} from '../../images'
-import Player from "../../views/Player";
+import Card from "../shared/models/Card";
 
 
 const PlayersContainer = styled.div`
@@ -142,31 +140,61 @@ class GameScreen extends React.Component {
         this.state = {
             username: 'lara',
             tablecards: null,
+            handcards: null,
 
             currentUser: 'lara',
             players:[ {id:4, username: 'lara4', credit:50 }, {id:1, username: 'lara', credit:15 },  {id:2, username: 'lara2', credit:30 },  {id:3, username: 'lara3', credit:50 }],
             posh1: null,
             posh2:null,
+
+            tablecard1:null,
+            tablecard2:null,
+            tablecard3:null,
+            tablecard4:null,
+            tablecard5:null
+
         };
     }
 
+    getImageOfCard(card){
+        let cardname = card.mySuit + card.myRank;
+        return graphicsList.find(data => data.name === cardname).src;
+    }
 
 
     async displayHandCards() {
            try {
-          // const player =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
-          // const handCards = player.hand;
-          const  handCards = [{Suit: 'HEARTS',Rank: 'ACE'},{Suit: 'HEARTS', Rank: 'KING'},{Suit:'SPADES',Rank:'EIGHT'},{Suit:'CLUBS',Rank:'JOKER'} ]
-           let handcard1 = handCards[2].Suit + handCards[2].Rank;
-           let handcard2 = handCards[3].Suit + handCards[3].Rank;
-           let card = graphicsList.find(data => data.name === handcard1);
-           let card2 = graphicsList.find(data => data.name === handcard2);
+           localStorage.setItem("gameId", "2");
+           localStorage.setItem("playerId", "1");
+           const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
+           const player = response.data;
+           this.state.handcards = player.hand;
 
-           this.state.posh1 = card.src;
-           this.state.posh2 = card2.src;
+           this.setState({ ["posh1"]: this.getImageOfCard(this.state.handcards[0])});
+           this.setState({ ["posh2"]: this.getImageOfCard(this.state.handcards[1])});
+
 
         } catch (error) {
-            alert(`Something went wrong when trying to logout: \n${handleError(error)}`);
+            alert(`Something went wrong when trying to load the hand cards: \n${handleError(error)}`);
+        }
+
+    }
+
+    async displayTableCards() {
+        try {
+            localStorage.setItem("gameId", "2");
+            const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+            let gamelog = new GameLog(response.data);
+            this.state.tablecards = gamelog.revealedCards;
+            this.setState({ ["tablecard1"]: this.getImageOfCard(this.state.tablecards[0])});
+            this.setState({ ["tablecard2"]: this.getImageOfCard(this.state.tablecards[1])});
+            this.setState({ ["tablecard3"]: this.getImageOfCard(this.state.tablecards[2])});
+            this.setState({ ["tablecard4"]: this.getImageOfCard(this.state.tablecards[3])});
+            this.setState({ ["tablecard5"]: this.getImageOfCard(this.state.tablecards[4])});
+
+
+        } catch (error) {
+            alert(`Something went wrong when trying to get the tablecards: \n${handleError(error)}`);
         }
 
     }
@@ -176,21 +204,6 @@ class GameScreen extends React.Component {
         const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
         const gamelog = new GameLog(response.data);
         this.state.currentUser = gamelog.playerName;
-    }
-
-    async displayTableCards() {
-        try {
-            localStorage.setItem("gameId", "2");
-            const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-            const gamelog = new GameLog(response.data);
-            this.state.tablecards = gamelog.revealedCards;
-            alert(this.state.tablecards)
-
-
-        } catch (error) {
-            alert(`Something went wrong when trying to get the tablecards: \n${handleError(error)}`);
-        }
-
     }
 
     async call(){
@@ -205,11 +218,13 @@ class GameScreen extends React.Component {
 
     }
 
-
+    componentDidMount() {
+        this.displayHandCards();
+        this.displayTableCards();
+    }
 
 
     render() {
-        this.displayHandCards();
         return (
             <BaseContainer>
                 <PlayersContainer>
@@ -243,29 +258,27 @@ class GameScreen extends React.Component {
                 </PlayersContainer>
 
 
+
                     <TableCardContainer>
                         <PotContainer>  <img width={80}  src={chips} />
                             <label>POT: 3000</label></PotContainer>
                         <CardContainer>
-                        <img width={95}  src={graphicsList[46]} />
+                        <img width={95}  src={this.state.tablecard1} />
                         </CardContainer>
                     <CardContainer>
-                        <img width={95}  src={graphicsList[5]} />
+                        <img width={95}  src={this.state.tablecard2} />
                     </CardContainer>
                     <CardContainer>
-                        <img width={95}  src={graphicsList[0]} />
+                        <img width={95}  src={this.state.tablecard3} />
                     </CardContainer>
                     <CardContainer>
-                        <img width={95}  src={graphicsList[3]} />
+                        <img width={95}  src={this.state.tablecard4} />
                     </CardContainer>
                     <CardContainer>
-                        <img width={95}  src={graphicsList[52]} />
+                        <img width={95}  src={this.state.tablecard5} />
                     </CardContainer>
 
                         </TableCardContainer>
-
-
-
 
                 <ControlContainer>
                     <ButtonContainer>
@@ -282,7 +295,6 @@ class GameScreen extends React.Component {
                             height="30%"
                             disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
-                                this.props.history.push(`/play`);
                             }}
                         >
                             Raise
