@@ -10,6 +10,7 @@ class User {
     this.status = null;
     this.ready = null;
     this.credit = null;
+    this.action = null;
     Object.assign(this, data);
   }
 }

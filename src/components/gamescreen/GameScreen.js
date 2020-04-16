@@ -234,6 +234,7 @@ class GameScreen extends React.Component {
            action: "CALL",
            amount: 0,
            token: localStorage.getItem("token") ,
+
         });
          await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
 
@@ -268,6 +269,7 @@ class GameScreen extends React.Component {
                                     <label>{user.username}</label>
                                     <img width={80}  src={chips} />
                                     <label> {user.credit} </label>
+                                    <label>{user.action}</label>
                                 </PlayerContainer>
                             );
                         }

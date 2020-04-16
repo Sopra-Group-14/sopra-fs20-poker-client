@@ -36,8 +36,9 @@ const Player = ({ user }) => {
   return (
     <Container>
        <UserName>{user.username}</UserName>
-       <img width={80}  src={chips} />
+        <img width={80}  src={chips} />
         <UserCredit> {user.credit}</UserCredit>
+        <UserCredit>{user.action}</UserCredit>
     </Container>
   );
 };

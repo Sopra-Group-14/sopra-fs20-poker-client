@@ -75,7 +75,10 @@ class Lobby extends React.Component {
             id: User.id,
             ready: User.ready,
             username: User.username,
-            players: [{username:'lara', id: '1', status:'ready'}, {username:'lara2', id: '2'}],
+            players: [],
+            gameName: null,
+            bigBlind: null,
+            smallBlind: null,
         };
 
 
@@ -84,16 +87,12 @@ class Lobby extends React.Component {
     componentDidMount() {
 
         try {
-          //  localStorage.setItem("gameId", "1");
-            const response =  api.get('/games/'+ localStorage.getItem("gameId"));
+           const response =  api.get('/games/'+ localStorage.getItem("gameId"));
 
             // Get the returned user and update a new object.
             const game = new GameModel(response.data);
-            this.setState('players' , game.players);
-
-           /* GameModel.thisGame = {gameName:'ourGame' , bigBlind: 'lara1', smallBlind: 'lara2', gameCreator: '1',
-                users: [{username:'lara', id: '1', status:'ready'}, {username:'lara2', id: '2'}, {username:'Lara3', id: '3', status:'ready'}, {username:'Lara4', id: '4'}]
-            };*/
+            this.state.players = game.players;
+            this.state.gameName= response.data.gameName;
 
 
         } catch (error) {
@@ -137,12 +136,14 @@ class Lobby extends React.Component {
         return (
             <FormContainer>
                 <Form>
-                    <h2>Name of the Game: {localStorage.getItem("gameName")} </h2>
+                    <h2>Name of the Game: {this.state.gameName} </h2>
                     <label>
                         List of all the Players:
                              {this.state.players.map(player => {
                                      return (
-                                         <label>{player.username}</label>
+                                         <label>
+                                         <h4>{player.username}</h4>
+                                         </label>
                                      )
                                  })}
 
