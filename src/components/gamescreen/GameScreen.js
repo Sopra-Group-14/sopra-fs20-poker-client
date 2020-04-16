@@ -8,6 +8,7 @@ import chips from '../../graphics/chips.png';
 import GameLog from "../shared/models/GameLog";
 import {graphicsList} from '../../images'
 import Card from "../shared/models/Card";
+import Slider from "../Slider/Slider";
 
 
 const PlayersContainer = styled.div`
@@ -99,7 +100,22 @@ const InputField = styled.input`
   margin-left: 5px;
   margin-bottom: 10px;
 
-  height: 70px;
+  height: 30px;
+  width: 190px;
+  background: rgba(255, 255, 255);
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  color: black;
+`;
+
+const InputFieldRaise = styled.input`
+  &::placeholder {
+    color: dark grey;
+  }
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-bottom: -3px;
+
+  height: 30px;
   width: 190px;
   background: rgba(255, 255, 255);
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -112,9 +128,17 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   width: 200px;
   display: flex;
-  justify-content: 'center';
-  
+  justify-content: 'center';  
 `;
+
+const ButtonContainerRow = styled.div`
+  margin: auto;
+  flex-direction: row;
+  width: 200px;
+  display: flex;
+  justify-content: 'center';  
+`;
+
 const ControlContainer= styled.div`
   margin: auto;
   margin-top: 60px;
@@ -151,7 +175,13 @@ class GameScreen extends React.Component {
             tablecard2:null,
             tablecard3:null,
             tablecard4:null,
-            tablecard5:null
+            tablecard5:null,
+
+            raiseamount: null,
+            inputfieldvisible: false,
+            raisebuttonvisible: true,
+            raise_cancel_buttonvisible: false,
+            checkvisible: true
 
         };
     }
@@ -227,24 +257,84 @@ class GameScreen extends React.Component {
         this.state.currentUser = gamelog.playerName;
     }
 
+    async displayCallOrCheck(){
+        localStorage.setItem("gameId", "2");
+        const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+        const gamelog = new GameLog(response.data);
+        if(gamelog.amountToCall === 0){
+            this.handleInputChange("checkvisible", true)
+        }
+        else{
+            this.handleInputChange("checkvisible", false)
+        }
+    }
+
     async call(){
         localStorage.setItem("playerId", "1");
 
         const requestBody = JSON.stringify({
-           action: "CALL",
-           amount: 0,
-           token: localStorage.getItem("token") ,
+            action: "CALL",
+            amount: 0,
+            token: localStorage.getItem("token") ,
 
         });
-         await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+    }
 
+    async check(){
+        localStorage.setItem("playerId", "1");
+
+        const requestBody = JSON.stringify({
+            action: "CHECK",
+            amount: 0,
+            token: localStorage.getItem("token") ,
+
+        });
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+    }
+
+    async fold(){
+        localStorage.setItem("playerId", "1");
+
+        const requestBody = JSON.stringify({
+            action: "FOLD",
+            amount: 0,
+            token: localStorage.getItem("token") ,
+
+        });
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+    }
+
+    async raise(){
+        localStorage.setItem("playerId", "1");
+
+        const requestBody = JSON.stringify({
+            action: "RAISE",
+            amount: this.state.raiseamount,
+            token: localStorage.getItem("token") ,
+
+        });
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+    }
+
+    handleInputChange(key, value) {
+        // Example: if the key is username, this statement is the equivalent to the following one:
+        // this.setState({'username': value});
+        this.setState({ [key]: value });
     }
 
     componentDidMount() {
         this.displayHandCards();
         this.displayTableCards();
+        this.displayCallOrCheck();
     }
 
+
+/*
+{this.state.inputfieldvisible ? <Slider
+    color={"#C14E4E"}
+    /> : null}
+ */
     render() {
         return (
             <BaseContainer>
@@ -279,8 +369,6 @@ class GameScreen extends React.Component {
 
                 </PlayersContainer>
 
-
-
                     <TableCardContainer>
                         <PotContainer>  <img width={80}  src={chips} />
                             <label>POT: 3000</label></PotContainer>
@@ -304,7 +392,7 @@ class GameScreen extends React.Component {
 
                 <ControlContainer>
                     <ButtonContainer>
-                        <Button
+                        {!this.state.checkvisible ? <Button
                             height="30%"
                             disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
@@ -312,20 +400,74 @@ class GameScreen extends React.Component {
                             }}
                         >
                             Call
-                        </Button>
-                        <Button
+                        </Button> : null}
+
+                        {this.state.checkvisible ? <Button
                             height="30%"
                             disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
+                                this.check();
+                            }}
+                        >
+                            Check
+                        </Button> : null}
+
+
+                        {this.state.raisebuttonvisible ? <Button
+                            height="30%"
+                            //disabled={!(this.state.username === this.state.currentUser)}
+                            onClick={() => {
+                                this.handleInputChange("inputfieldvisible", true);
+                                this.handleInputChange("raise_cancel_buttonvisible", true);
+                                this.handleInputChange("raisebuttonvisible", false);
                             }}
                         >
                             Raise
-                        </Button>
+                        </Button> : null}
+
+                        {this.state.raise_cancel_buttonvisible ? <ButtonContainerRow>
+                        {this.state.raise_cancel_buttonvisible ? <Button
+                            height="30%"
+                            width="50%"
+                            disabled={this.state.raiseamount === null || this.state.raiseamount === ""}
+                            onClick={() => {
+                                this.raise();
+                                //alert(this.state.raiseamount)
+                            }}
+                        >
+                            Raise
+                        </Button> : null}
+
+                        {this.state.raise_cancel_buttonvisible ? <Button
+                            height="30%"
+                            width="50%"
+                            style = {{marginLeft: 5}}
+                            //disabled={!(this.state.username === this.state.currentUser)}
+                            onClick={() => {
+                                this.handleInputChange("raise_cancel_buttonvisible", false);
+                                this.handleInputChange("raisebuttonvisible", true);
+                                this.handleInputChange("inputfieldvisible", false);
+
+
+                            }}
+                        >
+                            Cancel
+                        </Button> : null}
+                        </ButtonContainerRow> : null}
+
+
+                        {this.state.inputfieldvisible ? <InputFieldRaise
+                            placeholder="Enter here.."
+                            onChange={e => {
+                                this.handleInputChange('raiseamount', e.target.value);
+                            }}
+                        /> : null}
+
                         <Button
                             height="30%"
                             disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
-                                this.props.history.push(`/play`);
+                                this.fold();
                             }}
                         >
                             Fold
@@ -373,6 +515,8 @@ class GameScreen extends React.Component {
         );
     }
 }
+
+
 
 /**
  * You can get access to the history object's properties via the withRouter.
