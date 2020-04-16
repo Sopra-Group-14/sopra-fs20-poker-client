@@ -75,12 +75,7 @@ class Lobby extends React.Component {
             id: User.id,
             ready: User.ready,
             username: User.username,
-            users: [],
-            gameName: GameModel.gameName,
-            bigBlind: GameModel.bigBlind,
-            smallBlind: GameModel.smallBlind,
-            gameCreator: GameModel.gameCreator,
-            gameId: GameModel.gameId
+            players: [{username:'lara', id: '1', status:'ready'}, {username:'lara2', id: '2'}],
         };
 
 
@@ -89,12 +84,13 @@ class Lobby extends React.Component {
     componentDidMount() {
 
         try {
-            localStorage.setItem("gameId", "2");
+          //  localStorage.setItem("gameId", "1");
             const response =  api.get('/games/'+ localStorage.getItem("gameId"));
 
             // Get the returned user and update a new object.
             const game = new GameModel(response.data);
-            GameModel.thisGame = game;
+            this.setState('players' , game.players);
+
            /* GameModel.thisGame = {gameName:'ourGame' , bigBlind: 'lara1', smallBlind: 'lara2', gameCreator: '1',
                 users: [{username:'lara', id: '1', status:'ready'}, {username:'lara2', id: '2'}, {username:'Lara3', id: '3', status:'ready'}, {username:'Lara4', id: '4'}]
             };*/
@@ -107,8 +103,9 @@ class Lobby extends React.Component {
     }
     async playerReady() {
         try{
-        const response = api.get('/games/'+localStorage.getItem("gameId"));
-        const players = response.users;
+        const response = api.get('/games/'+localStorage.getItem("gameId"), );
+        const players = response.players;
+
         for (User.user in players) {
             if (User.user.status === 'ready') {
                 return true;
@@ -125,6 +122,7 @@ class Lobby extends React.Component {
 
     async startGame(){
         try {
+
             const response = api.put('/games/'+localStorage.getItem("gameId")+'/gameStart');
             this.props.history.push("/gameScreen")
         }
@@ -139,19 +137,15 @@ class Lobby extends React.Component {
         return (
             <FormContainer>
                 <Form>
-                    <h2>Name of the Game: {this.state.gameName} </h2>
+                    <h2>Name of the Game: {localStorage.getItem("gameName")} </h2>
                     <label>
                         List of all the Players:
-                        <Users>
-                            {this.state.users.map(user => {
-                                    return (
-                                        <PlayerContainer key={user.id}>
-                                            <Player user={user} />
-                                        </PlayerContainer>
-                                    );
-                                })}
+                             {this.state.players.map(player => {
+                                     return (
+                                         <label>{player.username}</label>
+                                     )
+                                 })}
 
-                        </Users>
                     </label>
                     <label>Big Blind is: {this.state.bigBlind} </label>
                     <label> Small Blind is: {this.state.smallBlind} </label>

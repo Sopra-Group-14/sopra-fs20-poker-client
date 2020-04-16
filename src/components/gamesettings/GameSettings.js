@@ -5,6 +5,7 @@ import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
+import GameModel from "../shared/models/GameModel";
 
 const ButtonGreen = styled.div`
     &:hover {
@@ -113,15 +114,16 @@ class GameSettings extends React.Component {
     async createGame() {
         try {
             const requestBody = JSON.stringify({
-                GameName: this.state.gamename,
-                limitType: this.state.limit,
-                HostID: localStorage.getItem("id")
+                gameName: this.state.gamename,
+                gameHostID: localStorage.getItem("id"),
+                potType: this.state.limit,
             });
-            await api.post('/games', requestBody);
+            const response = await api.post('/games', requestBody);
             //Backend with Postman: const response = const response = await api.post('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games', requestBody);
-            //const user = new User(response.data);
-            //alert(user.id)
-
+          /*  const user = new User(response.data);
+            alert(user.id)*/
+            const game = new GameModel(response.data);
+            localStorage.setItem("gameId", game.gameId)
 
         } catch (error) {
             alert(`Something went wrong when trying to create a game: \n${handleError(error)}`);

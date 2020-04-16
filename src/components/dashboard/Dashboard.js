@@ -102,12 +102,22 @@ class Dashboard extends React.Component {
 
     async logout() {
         try {
+
+                api.defaults.headers.common['Authorization']=localStorage.getItem('token');
+                api.post('/logout');
+                localStorage.removeItem('token');
+                localStorage.removeItem('username');
+                this.props.history.push('/login');
+
+            /*
             const requestBody = JSON.stringify({
                 token: localStorage.getItem("token")
             });
             await api.put('/logout', requestBody);
             localStorage.setItem("token", null);
             localStorage.setItem("id", null);
+
+             */
 
         } catch (error) {
             alert(`Something went wrong when trying to logout: \n${handleError(error)}`);

@@ -143,7 +143,7 @@ class GameScreen extends React.Component {
             username: 'lara',
             tablecards: null,
 
-            currentUser: 'lara',
+            currentUser: 'lara4',
             players:[ {id:4, username: 'lara4', credit:50 }, {id:1, username: 'lara', credit:15 },  {id:2, username: 'lara2', credit:30 },  {id:3, username: 'lara3', credit:50 }],
             posh1: null,
             posh2:null,
@@ -173,6 +173,7 @@ class GameScreen extends React.Component {
 
     async currentPlayer(){
         localStorage.setItem("gameId", "2");
+        //   '/games/+'gameId+'/currentPlayer'
         const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
         const gamelog = new GameLog(response.data);
         this.state.currentUser = gamelog.playerName;
@@ -180,6 +181,9 @@ class GameScreen extends React.Component {
 
     async displayTableCards() {
         try {
+            //nach jeder runde werden aufgedeckte karten geschickt.
+            // karten die noch nicht geschickt sind als unaufgedeckte (back) darstellen.
+
             localStorage.setItem("gameId", "2");
             const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
             const gamelog = new GameLog(response.data);
@@ -204,7 +208,6 @@ class GameScreen extends React.Component {
          await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
 
     }
-
 
 
 

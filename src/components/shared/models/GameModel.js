@@ -10,6 +10,7 @@ class GameModel {
         this.bigBlind = null;
         this.smallBlind = null;
         this.gameCreator = null;
+        this.hostToken = null;
 
         Object.assign(this, data);
     }
