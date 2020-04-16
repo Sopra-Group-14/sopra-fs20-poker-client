@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import GameModel from "../shared/models/GameModel";
 import Player from "../../views/Player";
+import GameLog from "../shared/models/GameLog";
 
 
 const FormContainer = styled.div`
@@ -84,21 +85,21 @@ class Lobby extends React.Component {
 
     }
 
-    componentDidMount() {
-
+    async getPlayers(){
         try {
-           const response =  api.get('/games/'+ localStorage.getItem("gameId"));
-
-            // Get the returned user and update a new object.
-            const game = new GameModel(response.data);
-            this.state.players = game.players;
-            this.state.gameName= response.data.gameName;
-
+            localStorage.setItem("gameId", "4");
+            const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
+            let gamelog = new GameLog(response.data);
+            this.setState({ ["players"]: gamelog.playerList});
+            this.setState({ ["gameName"]: gamelog.gameName});
 
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
         }
+    }
 
+    componentDidMount() {
+        this.getPlayers();
     }
     async playerReady() {
         try{

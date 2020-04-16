@@ -16,6 +16,7 @@ class GameLog {
         this.gameOver = null;
         this.amountToCall = null;
         this.revealedCards = null;
+        this.playerList = null;
 
         Object.assign(this, data);
     }
