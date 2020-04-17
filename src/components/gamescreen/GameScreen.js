@@ -181,7 +181,8 @@ class GameScreen extends React.Component {
             inputfieldvisible: false,
             raisebuttonvisible: true,
             raise_cancel_buttonvisible: false,
-            checkvisible: true
+            check_bet_visible: true,
+            betraisebuttontext: "Bet"
 
         };
     }
@@ -194,13 +195,13 @@ class GameScreen extends React.Component {
 
     async displayHandCards() {
            try {
-           /*
-           Backend with Postman:
+
+           //Backend with Postman:
            localStorage.setItem("gameId", "2");
            localStorage.setItem("playerId", "1");
            const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
-            */
-           const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
+
+           //const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
            const player = response.data;
            this.state.handcards = player.hand;
 
@@ -224,13 +225,13 @@ class GameScreen extends React.Component {
 
     async displayTableCards() {
         try {
-            /*
-            Backend with Postman:
-            4815cd7c29cb7c36a056db26c938e16ab48a74a9
+
+            //Backend with Postman:
+            //4815cd7c29cb7c36a056db26c938e16ab48a74a9
             localStorage.setItem("gameId", "2");
             const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-            */
-            const response = await api.get('/games/' + localStorage.getItem("gameId"));
+
+            //const response = await api.get('/games/' + localStorage.getItem("gameId"));
             let gamelog = new GameLog(response.data);
             this.state.tablecards = gamelog.revealedCards;
             this.setState({ ["tablecard1"]: this.getImageOfCard(this.state.tablecards[0])});
@@ -257,15 +258,17 @@ class GameScreen extends React.Component {
         this.state.currentUser = gamelog.playerName;
     }
 
-    async displayCallOrCheck(){
+    async displayCallAndBet(){
         localStorage.setItem("gameId", "2");
         const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
         const gamelog = new GameLog(response.data);
         if(gamelog.amountToCall === 0){
-            this.handleInputChange("checkvisible", true)
+            this.handleInputChange("betraisebuttontext", "Bet");
+            this.handleInputChange("check_bet_visible", true)
         }
         else{
-            this.handleInputChange("checkvisible", false)
+            this.handleInputChange("betraisebuttontext", "Raise");
+            this.handleInputChange("check_bet_visible", false)
         }
     }
 
@@ -282,8 +285,6 @@ class GameScreen extends React.Component {
     }
 
     async check(){
-        localStorage.setItem("playerId", "1");
-
         const requestBody = JSON.stringify({
             action: "CHECK",
             amount: 0,
@@ -294,8 +295,6 @@ class GameScreen extends React.Component {
     }
 
     async fold(){
-        localStorage.setItem("playerId", "1");
-
         const requestBody = JSON.stringify({
             action: "FOLD",
             amount: 0,
@@ -317,6 +316,22 @@ class GameScreen extends React.Component {
         await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
     }
 
+    async bet(){
+        localStorage.setItem("playerId", "1");
+
+        const requestBody = JSON.stringify({
+            action: "BET",
+            amount: this.state.raiseamount,
+            token: localStorage.getItem("token") ,
+
+        });
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+    }
+
+    async leave(){
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/leave')
+    }
+
     handleInputChange(key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
         // this.setState({'username': value});
@@ -326,7 +341,7 @@ class GameScreen extends React.Component {
     componentDidMount() {
         this.displayHandCards();
         this.displayTableCards();
-        this.displayCallOrCheck();
+        this.displayCallAndBet();
     }
 
 
@@ -392,7 +407,7 @@ class GameScreen extends React.Component {
 
                 <ControlContainer>
                     <ButtonContainer>
-                        {!this.state.checkvisible ? <Button
+                        {!this.state.check_bet_visible ? <Button
                             height="30%"
                             disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
@@ -402,7 +417,7 @@ class GameScreen extends React.Component {
                             Call
                         </Button> : null}
 
-                        {this.state.checkvisible ? <Button
+                        {this.state.check_bet_visible ? <Button
                             height="30%"
                             disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
@@ -422,7 +437,7 @@ class GameScreen extends React.Component {
                                 this.handleInputChange("raisebuttonvisible", false);
                             }}
                         >
-                            Raise
+                            {this.state.betraisebuttontext}
                         </Button> : null}
 
                         {this.state.raise_cancel_buttonvisible ? <ButtonContainerRow>
@@ -431,11 +446,18 @@ class GameScreen extends React.Component {
                             width="50%"
                             disabled={this.state.raiseamount === null || this.state.raiseamount === ""}
                             onClick={() => {
-                                this.raise();
-                                //alert(this.state.raiseamount)
+                                if(!this.state.check_bet_visible) {
+                                    this.raise();
+                                    //alert("raise" + this.state.raiseamount)
+                                }
+                                else{
+                                    this.bet();
+                                    //alert("bet" + this.state.raiseamount)
+                                }
+
                             }}
                         >
-                            Raise
+                            {this.state.betraisebuttontext}
                         </Button> : null}
 
                         {this.state.raise_cancel_buttonvisible ? <Button
@@ -506,6 +528,7 @@ class GameScreen extends React.Component {
                     margin-bottom="40px"
                     height="30%"
                     onClick={() => {
+                        this.leave();
                         this.props.history.push(`/dashboard`);
                     }}
                 >

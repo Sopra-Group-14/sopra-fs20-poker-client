@@ -102,7 +102,6 @@ class Dashboard extends React.Component {
 
     async logout() {
         try {
-
                 api.defaults.headers.common['Authorization']=localStorage.getItem('token');
                 api.post('/logout');
                 localStorage.removeItem('token');
@@ -133,6 +132,7 @@ class Dashboard extends React.Component {
                         <Button
                             height="30%"
                             onClick={() => {
+                                this.playGame();
                                 this.props.history.push(`/play`);
                             }}
                         >
@@ -152,7 +152,6 @@ class Dashboard extends React.Component {
 
                         <Button
                             onClick={() => {
-                                this.playGame();
                                 this.props.history.push(`/account`);
                             }}
                         >
