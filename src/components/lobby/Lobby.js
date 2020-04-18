@@ -74,7 +74,7 @@ class Lobby extends React.Component {
         super();
         this.state = {
             id: User.id,
-            ready: User.ready,
+            ready: null,
             username: User.username,
             players: [],
             gameName: null,
@@ -85,14 +85,16 @@ class Lobby extends React.Component {
 
     }
 
-    async getPlayers(){
+    async getPlayers() {
         try {
             localStorage.setItem("gameId", "4");
-            const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
+            //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
+            const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
             let gamelog = new GameLog(response.data);
-            this.setState({ ["players"]: gamelog.playerList});
-            this.setState({ ["gameName"]: gamelog.gameName});
-
+            this.setState({["players"]: gamelog.playerList});
+            this.setState({["gameName"]: gamelog.gameName});
+            this.setState({["bigBlind"]: gamelog.bigBlind});
+            this.setState({["smallBlind"]: gamelog.smallBlind});
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
         }
@@ -100,25 +102,29 @@ class Lobby extends React.Component {
 
     componentDidMount() {
         this.getPlayers();
+        this.playerReady();
     }
+
     async playerReady() {
-        try{
-        const response = api.get('/games/'+localStorage.getItem("gameId"), );
-        const players = response.players;
 
-        for (User.user in players) {
-            if (User.user.status === 'ready') {
-                return true;
-            } else {
-                return false;
-            }
+        const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+        let gamelog = new GameLog(response.data);
 
+        let readyCount = 0;
+        const playersReady = gamelog.playerList.map(player =>
+        {   if (player.status === "ready"){
+            readyCount ++;
+            return player;
+        }})
+
+        if(readyCount >= 2){
+            this.setState({['ready']: 'true'});
         }
-    } catch(error){
-            alert(`Something went wrong during the login: \n${handleError(error)}`);
 
-        }
+
     }
+
+
 
     async startGame(){
         try {
@@ -133,7 +139,7 @@ class Lobby extends React.Component {
 
     }
 
-    render() {
+    render(){
         return (
             <FormContainer>
                 <Form>
@@ -143,7 +149,7 @@ class Lobby extends React.Component {
                              {this.state.players.map(player => {
                                      return (
                                          <label>
-                                         <h4>{player.username}</h4>
+                                         <h4>{player.username}           {player.status}</h4>
                                          </label>
                                      )
                                  })}
@@ -157,7 +163,7 @@ class Lobby extends React.Component {
                     <ButtonContainer>
 
                         <Button
-                            disabled={!(this.playerReady() === true)}
+                            disabled={!(this.state.ready === 'true')}
                             onClick={() => {
                                 this.startGame();
 
