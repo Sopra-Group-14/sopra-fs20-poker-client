@@ -73,7 +73,7 @@ class EndScreen extends React.Component {
 
     async getWinner(){
       //  this.setState({ ["winner"]: localStorage.getItem("winner")});
-      this.state.username = "lara" ;
+      this.state.username = "lara2" ;
       this.state.winner = "lara";
         if(this.state.username === this.state.winner){
             this.setState({ ["text"]: this.state.winnertext});

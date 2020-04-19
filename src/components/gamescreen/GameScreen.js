@@ -9,6 +9,7 @@ import GameLog from "../shared/models/GameLog";
 import {graphicsList} from '../../images'
 import Card from "../shared/models/Card";
 import Slider from "../Slider/Slider";
+import User from "../shared/models/User";
 
 
 const PlayersContainer = styled.div`
@@ -162,12 +163,12 @@ class GameScreen extends React.Component {
     constructor() {
         super();
         this.state = {
-            username: 'lara',
+            username:null,
             tablecards: null,
             handcards: null,
 
-            currentUser: 'lara4',
-            players:[ {id:4, username: 'lara4', credit:50 }, {id:1, username: 'lara', credit:15 },  {id:2, username: 'lara2', credit:30 },  {id:3, username: 'lara3', credit:50 }],
+            currentUser: null,
+            players:[],
             posh1: null,
             posh2:null,
 
@@ -186,12 +187,27 @@ class GameScreen extends React.Component {
 
         };
     }
-
+    async getUser(){
+      //  const response = await api.get('/user/' + localStorage.getItem("id"));
+        localStorage.setItem("id", "4");
+        const response= await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/users'+localStorage.getItem("id"));
+        const user = new User(response.data);
+        this.setState({["username"]: user.username});
+    }
     getImageOfCard(card){
         let cardname = card.mySuit + card.myRank;
         return graphicsList.find(data => data.name === cardname).src;
     }
+    async nextRound(){
+        const response = await api.get('/games/' + localStorage.getItem("gameId"));
+        let gamelog = new GameLog(response.data);
 
+        if (gamelog.winner != null){
+            localStorage.setItem("winner", gamelog.winner);
+            this.props.history.push(`/dashboard`);
+
+        }
+    }
 
     async displayHandCards() {
            try {
@@ -199,7 +215,9 @@ class GameScreen extends React.Component {
            //Backend with Postman:
            localStorage.setItem("gameId", "2");
            localStorage.setItem("playerId", "1");
-           const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
+            const response =  await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
+
+            //  const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
 
            //const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
            const player = response.data;
@@ -215,10 +233,13 @@ class GameScreen extends React.Component {
 
     }
 
+
     async currentPlayer(){
         localStorage.setItem("gameId", "2");
         //   '/games/+'gameId+'/currentPlayer'
-        const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+        const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+
+       //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
         const gamelog = new GameLog(response.data);
         this.state.currentUser = gamelog.playerName;
     }
@@ -247,19 +268,9 @@ class GameScreen extends React.Component {
 
     }
 
-    async currentPlayer(){
-        /*
-        Backend with Postman:
-        localStorage.setItem("gameId", "2");
-        const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-         */
-        const response = await api.get('/games/' + localStorage.getItem("gameId"));
-        const gamelog = new GameLog(response.data);
-        this.state.currentUser = gamelog.playerName;
-    }
 
     async displayCallAndBet(){
-        localStorage.setItem("gameId", "2");
+        localStorage.setItem("gameId", "4");
         const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
         const gamelog = new GameLog(response.data);
         if(gamelog.amountToCall === 0){
@@ -283,7 +294,13 @@ class GameScreen extends React.Component {
         });
         await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
     }
-
+    async getPlayers(){
+        localStorage.setItem("gameId", "4");
+        //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
+        const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+        let gamelog = new GameLog(response.data);
+        this.setState({["players"]: gamelog.playerList});
+    }
     async check(){
         const requestBody = JSON.stringify({
             action: "CHECK",
@@ -339,6 +356,9 @@ class GameScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.currentPlayer();
+        this.getPlayers();
+        this.getUser();
         this.displayHandCards();
         this.displayTableCards();
         this.displayCallAndBet();
