@@ -87,9 +87,10 @@ class Lobby extends React.Component {
 
     async getPlayers() {
         try {
-            localStorage.setItem("gameId", "4");
+           // localStorage.setItem("gameId", "4");
             //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
-            const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+           //Lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+            const response = await api.get('/games/'+localStorage.getItem("gameId"));
             let gamelog = new GameLog(response.data);
             this.setState({["players"]: gamelog.playerList});
             this.setState({["gameName"]: gamelog.gameName});
@@ -107,16 +108,20 @@ class Lobby extends React.Component {
 
     async playerReady() {
 
-        const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+        //lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+        const response = await api.get('/games/'+localStorage.getItem("gameId"));
+
         let gamelog = new GameLog(response.data);
 
         let readyCount = 0;
-        const playersReady = gamelog.playerList.map(player =>
-        {   if (player.status === "ready"){
-            readyCount ++;
-            return player;
-        }})
-
+        if (this.state.playerList != null) {
+            const playersReady = gamelog.playerList.map(player => {
+                if (player.status === "ready") {
+                    readyCount++;
+                    return player;
+                }
+            })
+        }
         if(readyCount >= 2){
             this.setState({['ready']: 'true'});
         }
@@ -139,22 +144,37 @@ class Lobby extends React.Component {
 
     }
 
+
+
     render(){
+        const playersEmpty = this.state.playerList;
+
         return (
             <FormContainer>
                 <Form>
                     <h2>Name of the Game: {this.state.gameName} </h2>
+
                     <label>
                         List of all the Players:
-                             {this.state.players.map(player => {
-                                     return (
-                                         <label>
-                                         <h4>{player.username}           {player.status}</h4>
-                                         </label>
-                                     )
-                                 })}
+
+                        <div>
+                            {this.playersEmpty ? (
+                                this.state.players.map(player => {
+                                    return (
+                                        <label>
+                                            <h4>{player.username}           {player.status}</h4>
+                                        </label>
+                                    )
+                                })
+                            ) : (
+                                <label>  </label>
+                            )}
+                        </div>
+
+
 
                     </label>
+
                     <label>Big Blind is: {this.state.bigBlind} </label>
                     <label> Small Blind is: {this.state.smallBlind} </label>
 

@@ -5,6 +5,7 @@ import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
+import GameLog from "../shared/models/GameLog";
 
 
 
@@ -70,25 +71,34 @@ class EndScreen extends React.Component {
 
         };
     }
+    async getuser(){
 
+
+       const response = await api.get( '/users/' +localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
+       let user = new User(response.data)
+       this.setState({ ["username"]: user.username});
+
+    }
     async getWinner(){
-      //  this.setState({ ["winner"]: localStorage.getItem("winner")});
-      this.state.username = "lara2" ;
-      this.state.winner = "lara";
-        if(this.state.username === this.state.winner){
-            this.setState({ ["text"]: this.state.winnertext});
-        }
-        else{
-            this.setState({ ["text"]: this.state.losertext + this.state.winner});
-        }
+        // Winner should be in local storage after game ended !
+        localStorage.setItem("winner", "lara3");
+
+      this.setState({ ["winner"]: localStorage.getItem("winner")});
 
     }
     componentDidMount() {
+        this.getuser();
         this.getWinner();
     }
 
 
     render() {
+        if(this.state.username === this.state.winner){
+            this.state.text = this.state.winnertext;
+        }
+        else{
+            this.state.text = this.state.losertext + this.state.winner;
+        }
         return (
             <FormContainer>
                 <Form>
