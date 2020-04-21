@@ -90,7 +90,7 @@ class Lobby extends React.Component {
            // localStorage.setItem("gameId", "4");
             //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
            //Lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-            const response = await api.get('/games/'+localStorage.getItem("gameId"));
+            const response = await api.get('/games/'+localStorage.getItem("gameId"), {headers:{ Authorization: localStorage.getItem("token")}});
             let gamelog = new GameLog(response.data);
             this.setState({["players"]: gamelog.playerList});
             this.setState({["gameName"]: gamelog.gameName});
@@ -109,7 +109,7 @@ class Lobby extends React.Component {
     async playerReady() {
 
         //lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-        const response = await api.get('/games/'+localStorage.getItem("gameId"));
+        const response = await api.get('/games/'+localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
 
         let gamelog = new GameLog(response.data);
 
@@ -134,7 +134,7 @@ class Lobby extends React.Component {
     async startGame(){
         try {
 
-            const response = api.put('/games/'+localStorage.getItem("gameId")+'/gameStart');
+            const response = api.put('/games/'+localStorage.getItem("gameId")+'/gameStart', {headers:{ Authorization: localStorage.getItem("token")}});
             this.props.history.push("/gameScreen")
         }
         catch(error){

@@ -188,7 +188,7 @@ class GameScreen extends React.Component {
         };
     }
     async getUser(){
-        const response = await api.get('/user/' + localStorage.getItem("id"));
+        const response = await api.get('/user/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
         //localStorage.setItem("id", "4");
         // const response= await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/users'+localStorage.getItem("id"));
         const user = new User(response.data);
@@ -199,7 +199,7 @@ class GameScreen extends React.Component {
         return graphicsList.find(data => data.name === cardname).src;
     }
     async nextRound(){
-        const response = await api.get('/games/' + localStorage.getItem("gameId"));
+        const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
         let gamelog = new GameLog(response.data);
 
         if (gamelog.winner != null){
@@ -219,7 +219,7 @@ class GameScreen extends React.Component {
 
             //Koni  const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
 
-           const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
+           const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"),{headers:{ Authorization: localStorage.getItem("token")}});
            const player = response.data;
            this.state.handcards = player.hand;
 
@@ -237,7 +237,7 @@ class GameScreen extends React.Component {
     async currentPlayer(){
         //localStorage.setItem("gameId", "2");
 
-        const response = await api.get('/games/' + localStorage.getItem("gameId"));
+        const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
        //lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
 
        //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
@@ -252,7 +252,7 @@ class GameScreen extends React.Component {
             //4815cd7c29cb7c36a056db26c938e16ab48a74a9
             //localStorage.setItem("gameId", "2");
             //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-            const response = await api.get('/games/' + localStorage.getItem("gameId"));
+            const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
 
             let gamelog = new GameLog(response.data);
             this.state.tablecards = gamelog.revealedCards;
@@ -273,7 +273,7 @@ class GameScreen extends React.Component {
     async displayCallAndBet(){
         //localStorage.setItem("gameId", "4");
         //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-        const response = await api.get('/games/' + localStorage.getItem("gameId"));
+        const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
 
         const gamelog = new GameLog(response.data);
         if(gamelog.amountToCall === 0){
@@ -287,7 +287,6 @@ class GameScreen extends React.Component {
     }
 
     async call(){
-        localStorage.setItem("playerId", "1");
 
         const requestBody = JSON.stringify({
             action: "CALL",
@@ -295,7 +294,7 @@ class GameScreen extends React.Component {
             token: localStorage.getItem("token") ,
 
         });
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions',{headers:{ Authorization: localStorage.getItem("token")}}, requestBody )
     }
     async getPlayers(){
         localStorage.setItem("gameId", "4");
