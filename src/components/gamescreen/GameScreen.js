@@ -271,12 +271,12 @@ class GameScreen extends React.Component {
 
 
     async displayCallAndBet(){
-        //localStorage.setItem("gameId", "4");
-        //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-        const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
+        localStorage.setItem("gameId", "2");
+        const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+        //const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
 
         const gamelog = new GameLog(response.data);
-        if(gamelog.amountToCall === 0){
+        if(gamelog.possibleActions.includes("BET") || gamelog.possibleActions.includes("CHECK")){
             this.handleInputChange("betraisebuttontext", "Bet");
             this.handleInputChange("check_bet_visible", true)
         }
