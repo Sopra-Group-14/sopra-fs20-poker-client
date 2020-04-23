@@ -13,6 +13,7 @@ import Lobby from "../../lobby/Lobby";
 import GameScreen from "../../gamescreen/GameScreen";
 import Account from "../../account/Account";
 import EndScreen from "../../endscreen/EndScreen";
+import JoinGame from "../../joingame/JoinGame";
 
 /**
  * Main router of your application.
@@ -101,6 +102,13 @@ class AppRouter extends React.Component {
                 exact
                 render={() => (
                     <EndScreen />
+                )}
+            />
+            <Route
+                path="/joingame"
+                exact
+                render={() => (
+                    <JoinGame />
                 )}
             />
             <Route path="/" exact render={() => <Redirect to={"/welcomepage"} />} />
