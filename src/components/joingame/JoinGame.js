@@ -78,23 +78,27 @@ class JoinGame extends React.Component {
         this.state = {
             username: null,
             player: "player",
-            games:[]
+            games: [],
+            gameId: null,
 
         };
     }
     async join(){
         alert("joingame");
+        const requestBody = JSON.stringify({
+            userId: localStorage.getItem("id"),
+            status: "player"
+        });
+    //    await api.put('/games/'+ this.state.gameId , requestBody,{headers:{ Authorization: localStorage.getItem("token")}})
+        this.props.history.push(`/joinlobby`);
 
     }
 
     async gamelist() {
         try {
+           const response =  await api.get('/games');
+           this.setState({['games']: response.data});
 
-          // const response =  await api.get('/games');
-
-           //postman lara
-           const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/all');
-           this.state.games= response.data;
 
         } catch (error) {
             alert(`Something went wrong when trying to play a game: \n${handleError(error)}`);
@@ -104,22 +108,30 @@ class JoinGame extends React.Component {
 
     componentDidMount() {
         this.gamelist();
+
     }
 
 
     render() {
+
         return (
             <FormContainer>
                 <Form>
+                    <label>Waiting Games: </label>
                     <ButtonContainer>
-                            {!this.state.games ? (
+                            {!this.state.games? (
                                 <Spinner />
                             ) : (
                                 <div>
                                        {this.state.games.map(game => {
                                             return (
-                                               <GameContainer key={game.gameId}  >
-                                                   <GameObject> game={game}</GameObject>
+                                               <GameContainer key={game.gameId} onClick={() => {
+                                                   this.state.gameId = game.gameId;
+                                                  // this.join();
+
+
+                                               }}   >
+                                                   { game.gameName } {game.gameLimit} {game.playerNr}
                                                </GameContainer>
                                             );
                                         })}
