@@ -154,11 +154,6 @@ const ControlContainer= styled.div`
 
 `;
 
-
-
-
-
-
 class GameScreen extends React.Component {
     constructor() {
         super();
@@ -179,11 +174,14 @@ class GameScreen extends React.Component {
             tablecard5:null,
 
             raiseamount: null,
+
+            input_cancel_visible: false,
+            betraisebuttontext: "Bet",
             inputfieldvisible: false,
-            raisebuttonvisible: true,
-            raise_cancel_buttonvisible: false,
-            check_bet_visible: true,
-            betraisebuttontext: "Bet"
+            call_visible: false,
+            raise_visible: false,
+            check_visible: true,
+            bet_visible: true
 
         };
     }
@@ -213,8 +211,8 @@ class GameScreen extends React.Component {
            try {
 
            //Backend with Postman:
-           localStorage.setItem("gameId", "2");
-           localStorage.setItem("playerId", "1");
+           //localStorage.setItem("gameId", "2");
+           //localStorage.setItem("playerId", "1");
           //Lara  const response =  await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
 
             //Koni  const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
@@ -270,20 +268,51 @@ class GameScreen extends React.Component {
     }
 
 
-    async displayCallAndBet(){
+    async whatButtonsToDisplay(){
         localStorage.setItem("gameId", "2");
         const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
         //const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
 
         const gamelog = new GameLog(response.data);
-        if(gamelog.possibleActions.includes("BET") || gamelog.possibleActions.includes("CHECK")){
+        
+        if(gamelog.possibleActions.includes("BET")){
             this.handleInputChange("betraisebuttontext", "Bet");
-            this.handleInputChange("check_bet_visible", true)
+            this.handleInputChange("bet_visible", true)
+        }        
+        else{
+            this.handleInputChange("bet_visible", false)
+        }
+
+        if(gamelog.possibleActions.includes("RAISE")){
+            this.handleInputChange("betraisebuttontext", "Raise");
+            this.handleInputChange("raise_visible", true)
         }
         else{
-            this.handleInputChange("betraisebuttontext", "Raise");
-            this.handleInputChange("check_bet_visible", false)
+            this.handleInputChange("raise_visible", false)
         }
+
+        if(gamelog.possibleActions.includes("CHECK")){
+            this.handleInputChange("check_visible", true)
+        }
+        else{
+            this.handleInputChange("check_visible", false)
+        }
+
+        if(gamelog.possibleActions.includes("CALL")){
+            this.handleInputChange("call_visible", true)
+        }
+        else{
+            this.handleInputChange("call_visible", false)
+        }
+
+        if(gamelog.possibleActions.includes("BET")){
+            this.handleInputChange("betraisebuttontext", "Bet");
+            this.handleInputChange("bet_visible", true)
+        }
+        else{
+            this.handleInputChange("bet_visible", false)
+        }
+        
     }
 
     async call(){
@@ -363,7 +392,7 @@ class GameScreen extends React.Component {
         this.getUser();
         this.displayHandCards();
         this.displayTableCards();
-        this.displayCallAndBet();
+        this.whatButtonsToDisplay();
     }
 
 
@@ -429,9 +458,9 @@ class GameScreen extends React.Component {
 
                 <ControlContainer>
                     <ButtonContainer>
-                        {!this.state.check_bet_visible ? <Button
+                        {this.state.call_visible ? <Button
                             height="30%"
-                            disabled={!(this.state.username === this.state.currentUser)}
+                            //disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
                                 this.call();
                             }}
@@ -439,9 +468,9 @@ class GameScreen extends React.Component {
                             Call
                         </Button> : null}
 
-                        {this.state.check_bet_visible ? <Button
+                        {this.state.check_visible ? <Button
                             height="30%"
-                            disabled={!(this.state.username === this.state.currentUser)}
+                            //disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
                                 this.check();
                             }}
@@ -449,30 +478,41 @@ class GameScreen extends React.Component {
                             Check
                         </Button> : null}
 
-
-                        {this.state.raisebuttonvisible ? <Button
+                        {this.state.bet_visible ? <Button
                             height="30%"
                             //disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
                                 this.handleInputChange("inputfieldvisible", true);
-                                this.handleInputChange("raise_cancel_buttonvisible", true);
-                                this.handleInputChange("raisebuttonvisible", false);
+                                this.handleInputChange("input_cancel_visible", true);
+                                this.handleInputChange("bet_visible", false);
                             }}
                         >
-                            {this.state.betraisebuttontext}
+                            Bet
                         </Button> : null}
 
-                        {this.state.raise_cancel_buttonvisible ? <ButtonContainerRow>
-                        {this.state.raise_cancel_buttonvisible ? <Button
+                        {this.state.raise_visible ? <Button
+                            height="30%"
+                            //disabled={!(this.state.username === this.state.currentUser)}
+                            onClick={() => {
+                                this.handleInputChange("inputfieldvisible", true);
+                                this.handleInputChange("input_cancel_visible", true);
+                                this.handleInputChange("raise_visible", false);
+                            }}
+                        >
+                            Raise
+                        </Button> : null}
+
+                        {this.state.input_cancel_visible ? <ButtonContainerRow>
+                        {this.state.input_cancel_visible ? <Button
                             height="30%"
                             width="50%"
                             disabled={this.state.raiseamount === null || this.state.raiseamount === ""}
                             onClick={() => {
-                                if(!this.state.check_bet_visible) {
+                                if(this.state.betraisebuttontext === "Raise") {
                                     this.raise();
                                     //alert("raise" + this.state.raiseamount)
                                 }
-                                else{
+                                if(this.state.betraisebuttontext === "Bet") {
                                     this.bet();
                                     //alert("bet" + this.state.raiseamount)
                                 }
@@ -482,14 +522,20 @@ class GameScreen extends React.Component {
                             {this.state.betraisebuttontext}
                         </Button> : null}
 
-                        {this.state.raise_cancel_buttonvisible ? <Button
+                        {this.state.input_cancel_visible ? <Button
                             height="30%"
                             width="50%"
                             style = {{marginLeft: 5}}
                             //disabled={!(this.state.username === this.state.currentUser)}
                             onClick={() => {
-                                this.handleInputChange("raise_cancel_buttonvisible", false);
-                                this.handleInputChange("raisebuttonvisible", true);
+                                if(this.state.betraisebuttontext === "Raise") {
+                                    this.handleInputChange("raise_visible", true);
+                                }
+                                if(this.state.betraisebuttontext === "Bet") {
+                                    this.handleInputChange("bet_visible", true);
+                                }
+
+                                this.handleInputChange("input_cancel_visible", false);
                                 this.handleInputChange("inputfieldvisible", false);
 
 
