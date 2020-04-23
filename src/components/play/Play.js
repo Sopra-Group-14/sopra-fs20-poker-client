@@ -82,7 +82,7 @@ class Play extends React.Component {
                         <Button
 
                             onClick={() => {
-                                this.props.history.push(`/joinagame`);
+                                this.props.history.push(`/joingame`);
                             }}
                         >
                             Join a game

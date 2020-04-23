@@ -11,6 +11,7 @@ class User {
     this.ready = null;
     this.credit = null;
     this.action = null;
+    this.hand = null;
     Object.assign(this, data);
   }
 }
