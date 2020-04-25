@@ -168,7 +168,9 @@ class GameSettings extends React.Component {
 
 
                         <ButtonGreen
-                            onClick={() => {
+                            //margin-bottom = "-100px"
+                            //height="300px"
+                                onClick={() => {
                                 this.setState({limit: "split"});
                             }}
                         >

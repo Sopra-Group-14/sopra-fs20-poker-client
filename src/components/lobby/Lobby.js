@@ -96,6 +96,7 @@ class Lobby extends React.Component {
             this.setState({["gameName"]: gamelog.gameName});
             this.setState({["bigBlind"]: gamelog.bigBlind});
             this.setState({["smallBlind"]: gamelog.smallBlind});
+            alert(this.state.gameName)
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
         }
