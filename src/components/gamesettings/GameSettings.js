@@ -107,7 +107,11 @@ class GameSettings extends React.Component {
         super();
         this.state = {
             gamename: null,
-            limit: null
+            limit: null,
+            fontWeightNoLimit: "normal",
+            fontWeightPotLimit: "normal",
+            fontWeightSplitLimit: "normal",
+            fontWeightFixedLimit: "normal"
         };
     }
 
@@ -150,18 +154,27 @@ class GameSettings extends React.Component {
                     <Label>Choose a Limit:</Label>
                     <ButtonContainer>
                         <ButtonGreen
+                            style={{"font-weight": this.state.fontWeightNoLimit}}
                             height="30%"
                             onClick={() => {
                                 this.setState({limit: "no"});
+                                this.setState({fontWeightNoLimit: "bold"});
+                                this.setState({fontWeightPotLimit: "normal"});
+                                this.setState({fontWeightSplitLimit: "normal"});
+                                this.setState({fontWeightFixedLimit: "normal"});
                             }}
                         >
                             No Limit
                         </ButtonGreen>
 
                         <ButtonGreen
-
+                            style={{"font-weight": this.state.fontWeightPotLimit}}
                             onClick={() => {
                                 this.setState({limit: "pot"});
+                                this.setState({fontWeightNoLimit: "normal"});
+                                this.setState({fontWeightPotLimit: "bold"});
+                                this.setState({fontWeightSplitLimit: "normal"});
+                                this.setState({fontWeightFixedLimit: "normal"});
                             }}
                         >
                             Pot Limit
@@ -169,17 +182,25 @@ class GameSettings extends React.Component {
 
 
                         <ButtonGreen
-                            //margin-bottom = "-100px"
-                            //height="300px"
+                            style={{"font-weight": this.state.fontWeightSplitLimit}}
                                 onClick={() => {
                                 this.setState({limit: "split"});
+                                    this.setState({fontWeightNoLimit: "normal"});
+                                    this.setState({fontWeightPotLimit: "normal"});
+                                    this.setState({fontWeightSplitLimit: "bold"});
+                                    this.setState({fontWeightFixedLimit: "normal"});
                             }}
                         >
                             Split Limit
                         </ButtonGreen>
                         <ButtonGreen
+                            style={{"font-weight": this.state.fontWeightFixedLimit}}
                             onClick={() => {
                                 this.setState({limit: "fixed"});
+                                this.setState({fontWeightNoLimit: "normal"});
+                                this.setState({fontWeightPotLimit: "normal"});
+                                this.setState({fontWeightSplitLimit: "normal"});
+                                this.setState({fontWeightFixedLimit: "bold"});
                             }}
                         >
                             Fixed Limit

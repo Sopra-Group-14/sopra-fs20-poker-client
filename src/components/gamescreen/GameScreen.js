@@ -184,8 +184,7 @@ class GameScreen extends React.Component {
         const user = new User(response.data);
         this.setState({["username"]: user.username});
         this.handleInputChange("playerPot", user.credit);
-        alert(user.credit);
-        //this.state.playerPot = user.credit
+        //alert(user.credit);
     }
     getImageOfCard(card){
         let cardname = card.mySuit + card.myRank;
@@ -233,7 +232,7 @@ class GameScreen extends React.Component {
         const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
         //lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
 
-        //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+        //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
         const gamelog = new GameLog(response.data);
         this.state.currentUser = gamelog.playerName;
     }
@@ -325,7 +324,7 @@ class GameScreen extends React.Component {
         //Koni const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
         const response = await api.get('/games/' + localStorage.getItem("gameId"));
         let gamelog = new GameLog(response.data);
-        this.setState({["players"]: gamelog.playerList});
+        this.setState({["players"]: gamelog.players});
     }
     async check(){
         const requestBody = JSON.stringify({
@@ -393,6 +392,8 @@ class GameScreen extends React.Component {
         this.displayHandCards();
         this.displayTableCards();
         this.whatButtonsToDisplay();
+
+
     }
 
 
