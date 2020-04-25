@@ -46,12 +46,15 @@ export default class Slider extends React.Component {
         value: 50
     };
 
-    handleOnChange = (e) => this.setState({ value: e.target.value });
+    handleOnChange = (e) => {
+        this.setState({ value: e.target.value });
+        this.props.handleRaiseAmount(e.target.value);
+    };
 
     render() {
         return (
-            <Styles opacity={this.state.value > 10 ? (this.state.value / 255) : .1} color={this.props.color}>
-                <input type="range" min={0} max={255} value={this.state.value} className="slider" onChange={this.handleOnChange} />
+            <Styles opacity={this.state.value > 10 ? (this.state.value / this.props.max) : .1} color={this.props.color}>
+                <input type="range" min={0} max={this.props.max} value={this.state.value} className="slider" onChange={this.handleOnChange} />
                 <div className="value">{this.state.value}</div>
             </Styles>
         )

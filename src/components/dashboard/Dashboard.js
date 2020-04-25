@@ -89,7 +89,7 @@ class Dashboard extends React.Component {
     async playGame() {
         try {
             const requestBody = JSON.stringify({
-                player: this.state.player,
+                mode: this.state.player,
                 token: localStorage.getItem("token")
             });
             await api.put('/users/' + localStorage.getItem("id") + '/mode', requestBody);
