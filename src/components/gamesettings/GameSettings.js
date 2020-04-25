@@ -123,6 +123,7 @@ class GameSettings extends React.Component {
           /*  const user = new User(response.data);
             alert(user.id)*/
             const game = new GameModel(response.data);
+
             localStorage.setItem("gameId", game.gameId)
 
         } catch (error) {
