@@ -90,9 +90,9 @@ class Dashboard extends React.Component {
         try {
             const requestBody = JSON.stringify({
                 mode: this.state.player,
-                token: localStorage.getItem("token")
+                //token: localStorage.getItem("token")
             });
-            await api.put('/users/' + localStorage.getItem("id") + '/mode', requestBody);
+            await api.put('/users/' + localStorage.getItem("id") + '/mode', requestBody,{headers:{ Authorization: localStorage.getItem("token")}});
 
         } catch (error) {
             alert(`Something went wrong when trying to play a game: \n${handleError(error)}`);
