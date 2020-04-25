@@ -72,9 +72,8 @@ class Dashboard extends React.Component {
         try {
             const requestBody = JSON.stringify({
                 spectator: this.state.spectator,
-                token: localStorage.getItem("token")
             });
-            await api.put('/users/' + localStorage.getItem("id") + '/mode', requestBody);
+            await api.put('/users/' + localStorage.getItem("id") + '/mode', requestBody,{headers:{ Authorization: localStorage.getItem("token")}});
             //Backend with Postman: const response = await api.put('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/' + localStorage.getItem("id") + '/mode', requestBody);
             //const user = new User(response.data);
             //alert(user.id)
@@ -90,7 +89,6 @@ class Dashboard extends React.Component {
         try {
             const requestBody = JSON.stringify({
                 mode: this.state.player,
-                //token: localStorage.getItem("token")
             });
             await api.put('/users/' + localStorage.getItem("id") + '/mode', requestBody,{headers:{ Authorization: localStorage.getItem("token")}});
 
