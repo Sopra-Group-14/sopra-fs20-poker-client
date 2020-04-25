@@ -102,36 +102,27 @@ const ButtonContainer = styled.div`
  * https://reactjs.org/docs/react-component.html
  * @Class
  */
-class GameSettings extends React.Component {
+class TopUpAccount extends React.Component {
     constructor() {
         super();
         this.state = {
-            gamename: null,
-            limit: null,
-            fontWeightNoLimit: "normal",
-            fontWeightPotLimit: "normal",
-            fontWeightSplitLimit: "normal",
-            fontWeightFixedLimit: "normal"
+            amount: null,
+            fontWeight100Credits: "normal",
+            fontWeight500Credits: "normal",
+            fontWeight1000Credits: "normal"
         };
     }
 
-    async createGame() {
+    async topUpAccount(){
         try {
             const requestBody = JSON.stringify({
-                gameName: this.state.gamename,
-                gameHostID: localStorage.getItem("id"),
-                potType: this.state.limit,
+                amount: this.state.amount,
             });
-            const response = await api.post('/games', requestBody);
-            //Backend with Postman: const response = const response = await api.post('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games', requestBody);
-          /*  const user = new User(response.data);
-            alert(user.id)*/
-            const game = new GameModel(response.data);
-
-            localStorage.setItem("gameId", game.gameId)
-
+            await api.put('/users/' + localStorage.getItem("id") + '/balance', requestBody,{headers:{ Authorization: localStorage.getItem("token")}});
+            /*  const user = new User(response.data);
+              alert(user.id)*/
         } catch (error) {
-            alert(`Something went wrong when trying to create a game: \n${handleError(error)}`);
+            alert(`Something went wrong when trying to top up the account: \n${handleError(error)}`);
         }
 
     }
@@ -144,80 +135,58 @@ class GameSettings extends React.Component {
         return (
             <FormContainer>
                 <Form>
-                    <Label>Choose a Game Name:</Label>
-                    <InputField
-                        placeholder="Enter here.."
-                        onChange={e => {
-                            this.handleInputChange("gamename", e.target.value);
-                        }}
-                    />
-                    <Label>Choose a Limit:</Label>
+                    <Label>Click on the Amount you want to load to your Account:</Label>
                     <ButtonContainer>
                         <ButtonGreen
-                            style={{"font-weight": this.state.fontWeightNoLimit}}
+                            style={{"font-weight": this.state.fontWeight100Credits}}
                             height="30%"
                             onClick={() => {
-                                this.setState({limit: "no"});
-                                this.setState({fontWeightNoLimit: "bold"});
-                                this.setState({fontWeightPotLimit: "normal"});
-                                this.setState({fontWeightSplitLimit: "normal"});
-                                this.setState({fontWeightFixedLimit: "normal"});
+                                this.setState({amount: 100});
+                                this.setState({fontWeight100Credits: "bold"});
+                                this.setState({fontWeight500Credits: "normal"});
+                                this.setState({fontWeight1000Credits: "normal"});
                             }}
                         >
-                            No Limit
+                            100 Credits
                         </ButtonGreen>
 
                         <ButtonGreen
-                            style={{"font-weight": this.state.fontWeightPotLimit}}
+                            style={{"font-weight": this.state.fontWeight500Credits}}
                             onClick={() => {
-                                this.setState({limit: "pot"});
-                                this.setState({fontWeightNoLimit: "normal"});
-                                this.setState({fontWeightPotLimit: "bold"});
-                                this.setState({fontWeightSplitLimit: "normal"});
-                                this.setState({fontWeightFixedLimit: "normal"});
+                                this.setState({amount: 500});
+                                this.setState({fontWeight100Credits: "normal"});
+                                this.setState({fontWeight500Credits: "bold"});
+                                this.setState({fontWeight1000Credits: "normal"});
                             }}
                         >
-                            Pot Limit
+                            500 Credits
                         </ButtonGreen>
 
 
                         <ButtonGreen
-                            style={{"font-weight": this.state.fontWeightSplitLimit}}
-                                onClick={() => {
-                                this.setState({limit: "split"});
-                                    this.setState({fontWeightNoLimit: "normal"});
-                                    this.setState({fontWeightPotLimit: "normal"});
-                                    this.setState({fontWeightSplitLimit: "bold"});
-                                    this.setState({fontWeightFixedLimit: "normal"});
-                            }}
-                        >
-                            Split Limit
-                        </ButtonGreen>
-                        <ButtonGreen
-                            style={{"font-weight": this.state.fontWeightFixedLimit}}
+                            style={{"font-weight": this.state.fontWeight1000Credits}}
                             onClick={() => {
-                                this.setState({limit: "fixed"});
-                                this.setState({fontWeightNoLimit: "normal"});
-                                this.setState({fontWeightPotLimit: "normal"});
-                                this.setState({fontWeightSplitLimit: "normal"});
-                                this.setState({fontWeightFixedLimit: "bold"});
+                                this.setState({amount: 1000});
+                                this.setState({fontWeight100Credits: "normal"});
+                                this.setState({fontWeight500Credits: "normal"});
+                                this.setState({fontWeight1000Credits: "bold"});
                             }}
                         >
-                            Fixed Limit
+                            1000 Credits
                         </ButtonGreen>
                     </ButtonContainer>
                     <Button
-                        disabled={this.state.limit === null || this.state.gamename === null || this.state.gamename === ""}
+                        disabled={this.state.amount === null}
                         onClick={() => {
-                            this.createGame();
-                            this.props.history.push(`/lobby`);
+                            this.topUpAccount();
+                            this.props.history.push(`/account`);
                         }}
                     >
-                        Create Game
+                        Top Up
                     </Button>
                     <Button
                         onClick={() => {
-                            this.props.history.push(`/play`);
+                            this.props.history.push(`/account`);
                         }}
                     >
                         Go Back
@@ -232,4 +201,4 @@ class GameSettings extends React.Component {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default withRouter(GameSettings);
+export default withRouter(TopUpAccount);
