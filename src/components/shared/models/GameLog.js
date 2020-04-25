@@ -16,9 +16,14 @@ class GameLog {
         this.gameOver = null;
         this.amountToCall = null;
         this.revealedCards = null;
-        this.playerList = null;
+        this.players = null;
         this.winner = null;
         this.possibleActions = null;
+        this.gameName = null;
+        this.potAmount = null;
+        this.activePlayers = null;
+        this.thisPlayersTurn = null;
+        this.nextPlayersTurn = null;
 
         Object.assign(this, data);
     }
