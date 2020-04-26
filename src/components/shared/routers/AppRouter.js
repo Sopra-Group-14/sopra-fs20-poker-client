@@ -16,6 +16,7 @@ import EndScreen from "../../endscreen/EndScreen";
 import JoinGame from "../../joingame/JoinGame";
 import JoinLobby from "../../joinlobby/JoinLobby";
 import TopUpAccount from "../../topupaccount/TopUpAccount";
+import Timer from "../../Timer/timer";
 
 /**
  * Main router of your application.
