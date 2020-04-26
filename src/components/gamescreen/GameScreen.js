@@ -385,6 +385,14 @@ class GameScreen extends React.Component {
         this.setState({raiseamount: data})
     };
 
+    tick() {
+        alert("ok cool");
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
     componentDidMount() {
         this.currentPlayer();
         this.getPlayers();
@@ -392,6 +400,7 @@ class GameScreen extends React.Component {
         this.displayHandCards();
         this.displayTableCards();
         this.whatButtonsToDisplay();
+        this.interval = setInterval(() => this.tick(), 2000);
 
 
     }
