@@ -129,7 +129,7 @@ class GameSettings extends React.Component {
             const game = new GameModel(response.data);
 
             localStorage.setItem("gameId", game.gameId);
-            alert(localStorage.getItem("gameId"));
+            alert("Created: " + localStorage.getItem("gameId"));
 
         } catch (error) {
             alert(`Something went wrong when trying to create a game: \n${handleError(error)}`);
