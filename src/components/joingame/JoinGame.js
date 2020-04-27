@@ -84,12 +84,11 @@ class JoinGame extends React.Component {
         };
     }
     async join(){
-        alert("joingame");
         const requestBody = JSON.stringify({
             userId: localStorage.getItem("id"),
             status: "player"
         });
-    //    await api.put('/games/'+ this.state.gameId , requestBody,{headers:{ Authorization: localStorage.getItem("token")}})
+        await api.put('/games/'+ this.state.gameId , requestBody,{headers:{ Authorization: localStorage.getItem("token")}})
         this.props.history.push(`/joinlobby`);
 
     }
@@ -127,7 +126,7 @@ class JoinGame extends React.Component {
                                             return (
                                                <GameContainer key={game.gameId} onClick={() => {
                                                    this.state.gameId = game.gameId;
-                                                  // this.join();
+                                                   this.join();
 
 
                                                }}   >

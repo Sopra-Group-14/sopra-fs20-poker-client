@@ -102,8 +102,7 @@ class JoinLobby extends React.Component {
     }
 
     componentDidMount() {
-        this.getPlayers();
-        this.playerReady();
+
     }
 
     async playerReady() {
@@ -133,8 +132,8 @@ class JoinLobby extends React.Component {
 
     async ready(){
         try {
-
-            const response = api.put('/games/'+localStorage.getItem("gameId")+'/player'+localStorage.getItem("id"), {headers:{ Authorization: localStorage.getItem("token")}});
+        const requestbody = "status: ready"
+            const response = api.put('/games/'+localStorage.getItem("gameId")+'/player/'+localStorage.getItem("id"), {headers:{ Authorization: localStorage.getItem("token")}},requestbody);
         }
         catch(error){
             alert(`Something went wrong : \n${handleError(error)}`);
@@ -147,7 +146,8 @@ class JoinLobby extends React.Component {
 
     render(){
         const playersEmpty = this.state.playerList;
-
+        this.getPlayers();
+        this.playerReady();
         return (
             <FormContainer>
                 <Form>
