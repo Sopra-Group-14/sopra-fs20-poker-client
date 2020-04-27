@@ -92,11 +92,22 @@ class Lobby extends React.Component {
            const response = await api.get('/games/'+ localStorage.getItem("gameId"), {headers:{ Authorization: localStorage.getItem("token")}});
             let gamelog = new GameLog(response.data);
             //alert(gamelog.gameName);
+           //localStorage.setItem("gameId", "2");
+           //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
+           //Lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+          //  const response = await api.get("/games/"+ localStorage.getItem("gameId")/*, {headers:{ Authorization: localStorage.getItem("token")}}*/);
+            //let gamelog = new GameLog(response.data);
+
+            alert("Retrieved: " + localStorage.getItem("gameId"));
+
             this.setState({["players"]: gamelog.playerList});
             this.setState({["gameName"]: gamelog.gameName});
             this.setState({["bigBlind"]: gamelog.bigBlind});
             this.setState({["smallBlind"]: gamelog.smallBlind});
             //alert(this.state.gameName)
+
+            alert("GameName (State): " + this.state.gameName);
+
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
         }
