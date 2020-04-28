@@ -124,12 +124,13 @@ class Lobby extends React.Component {
         let readyCount = 0;
         if (this.state.players != null) {
             const playersReady = gameModel.players.map(player => {
-                if (player.status === "ready") {
+                if (player.readyState === "READY") {
                     readyCount++;
                     return player;
                 }
             })
         }
+        alert(readyCount)
         if(readyCount >= 2){
             this.setState({['ready']: 'true'});
         }
@@ -210,7 +211,7 @@ class Lobby extends React.Component {
                     <ButtonContainer>
 
                         <Button
-                            //disabled={!(this.state.ready === 'true')}
+                            disabled={!(this.state.ready === 'true')}
                             onClick={() => {
                                 this.startGame();
 
