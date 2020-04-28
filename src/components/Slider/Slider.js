@@ -16,8 +16,8 @@ const Styles = styled.div`
   display: flex;
   align-items: center;
   color: #888;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 10px;
+  margin-bottom: -5px;
   .value {
     flex: 1;
     font-size: 2rem;
