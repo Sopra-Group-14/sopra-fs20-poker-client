@@ -124,13 +124,12 @@ class Lobby extends React.Component {
         let readyCount = 0;
         if (this.state.players != null) {
             const playersReady = gameModel.players.map(player => {
-                if (player.readyState === "READY") {
+                if (player.readyStatus === 'READY') {
                     readyCount++;
                     return player;
                 }
             })
         }
-        alert(readyCount)
         if(readyCount >= 2){
             this.setState({['ready']: 'true'});
         }
