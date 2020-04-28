@@ -301,6 +301,12 @@ I already do this in the getGamelog() method
 
             let gamelog = new GameLog(response.data);
             this.state.tablecards = gamelog.revealedCards;
+
+            //testing purposes
+            if(gamelog.revealedCards === []){
+                alert("Empty List")
+            }
+
             this.setState({ ["tablecard1"]: this.getImageOfCard(this.state.tablecards[0])});
             this.setState({ ["tablecard2"]: this.getImageOfCard(this.state.tablecards[1])});
             this.setState({ ["tablecard3"]: this.getImageOfCard(this.state.tablecards[2])});
