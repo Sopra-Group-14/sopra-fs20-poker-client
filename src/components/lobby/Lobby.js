@@ -107,7 +107,6 @@ class Lobby extends React.Component {
             this.setState({["gameName"]: gameModel.gameName});
             this.setState({["bigBlind"]: gameModel.bigBlind});
             this.setState({["smallBlind"]: gameModel.smallBlind});
-            //alert(this.state.gameName)
 
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
@@ -123,8 +122,8 @@ class Lobby extends React.Component {
         let gameModel = new GameModel(response.data);
 
         let readyCount = 0;
-        if (this.state.playerList != null) {
-            const playersReady = gameModel.playerList.map(player => {
+        if (this.state.players != null) {
+            const playersReady = gameModel.players.map(player => {
                 if (player.status === "ready") {
                     readyCount++;
                     return player;
@@ -187,11 +186,11 @@ class Lobby extends React.Component {
                         List of all the Players:
 
                         <div>
-                            {this.playersEmpty ? (
+                            {this.state.players ? (
                                 this.state.players.map(player => {
                                     return (
                                         <label>
-                                            <h4>{player.username}           {player.status}</h4>
+                                            <h4>{player.playerName}           {player.readyStatus}</h4>
                                         </label>
                                     )
                                 })
@@ -212,7 +211,7 @@ class Lobby extends React.Component {
                     <ButtonContainer>
 
                         <Button
-                            disabled={!(this.state.ready === 'true')}
+                            //disabled={!(this.state.ready === 'true')}
                             onClick={() => {
                                 this.startGame();
 

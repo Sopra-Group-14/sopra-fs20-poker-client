@@ -157,7 +157,7 @@ class GameSettings extends React.Component {
                             style={{"font-weight": this.state.fontWeightNoLimit}}
                             height="30%"
                             onClick={() => {
-                                this.setState({limit: "no"});
+                                this.setState({limit: "no limit"});
                                 this.setState({fontWeightNoLimit: "bold"});
                                 this.setState({fontWeightPotLimit: "normal"});
                                 this.setState({fontWeightSplitLimit: "normal"});
@@ -170,7 +170,7 @@ class GameSettings extends React.Component {
                         <ButtonGreen
                             style={{"font-weight": this.state.fontWeightPotLimit}}
                             onClick={() => {
-                                this.setState({limit: "pot"});
+                                this.setState({limit: "pot limit"});
                                 this.setState({fontWeightNoLimit: "normal"});
                                 this.setState({fontWeightPotLimit: "bold"});
                                 this.setState({fontWeightSplitLimit: "normal"});
@@ -184,7 +184,7 @@ class GameSettings extends React.Component {
                         <ButtonGreen
                             style={{"font-weight": this.state.fontWeightSplitLimit}}
                                 onClick={() => {
-                                this.setState({limit: "split"});
+                                this.setState({limit: "split limit"});
                                     this.setState({fontWeightNoLimit: "normal"});
                                     this.setState({fontWeightPotLimit: "normal"});
                                     this.setState({fontWeightSplitLimit: "bold"});
@@ -196,7 +196,7 @@ class GameSettings extends React.Component {
                         <ButtonGreen
                             style={{"font-weight": this.state.fontWeightFixedLimit}}
                             onClick={() => {
-                                this.setState({limit: "fixed"});
+                                this.setState({limit: "fixed limit"});
                                 this.setState({fontWeightNoLimit: "normal"});
                                 this.setState({fontWeightPotLimit: "normal"});
                                 this.setState({fontWeightSplitLimit: "normal"});
