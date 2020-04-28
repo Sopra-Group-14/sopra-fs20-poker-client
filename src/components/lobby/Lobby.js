@@ -89,21 +89,20 @@ class Lobby extends React.Component {
         try {
           // const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
            //Lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-           const response = await api.get('/games/'+ localStorage.getItem("gameId"), {headers:{ Authorization: localStorage.getItem("token")}});
-            let gamelog = new GameLog(response.data);
-            //alert(gamelog.gameName);
+          // const response = await api.get('/games/'+ localStorage.getItem("gameId"), {headers:{ Authorization: localStorage.getItem("token")}});
+          //  let gamelog = new GameLog(response.data);
            //localStorage.setItem("gameId", "2");
            //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
            //Lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-          //  const response = await api.get("/games/"+ localStorage.getItem("gameId")/*, {headers:{ Authorization: localStorage.getItem("token")}}*/);
-            //let gamelog = new GameLog(response.data);
+          const response = await api.get("/games/"+ localStorage.getItem("gameId"), {headers:{ Authorization: localStorage.getItem("token")}});
+          let gameModel = new GameModel(response.data);
 
             alert("Retrieved: " + localStorage.getItem("gameId"));
 
-            this.setState({["players"]: gamelog.playerList});
-            this.setState({["gameName"]: gamelog.gameName});
-            this.setState({["bigBlind"]: gamelog.bigBlind});
-            this.setState({["smallBlind"]: gamelog.smallBlind});
+            this.setState({["players"]: gameModel.playerList});
+            this.setState({["gameName"]: gameModel.gameName});
+            this.setState({["bigBlind"]: gameModel.bigBlind});
+            this.setState({["smallBlind"]: gameModel.smallBlind});
             //alert(this.state.gameName)
 
             alert("GameName (State): " + this.state.gameName);
@@ -113,21 +112,17 @@ class Lobby extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.getPlayers();
-        this.playerReady();
-    }
 
     async playerReady() {
 
         //lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
         const response = await api.get('/games/'+localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
 
-        let gamelog = new GameLog(response.data);
+        let gameModel = new GameModel(response.data);
 
         let readyCount = 0;
         if (this.state.playerList != null) {
-            const playersReady = gamelog.playerList.map(player => {
+            const playersReady = gameModel.playerList.map(player => {
                 if (player.status === "ready") {
                     readyCount++;
                     return player;
@@ -141,8 +136,6 @@ class Lobby extends React.Component {
 
     }
 
-
-
     async startGame(){
         try {
 
@@ -154,6 +147,11 @@ class Lobby extends React.Component {
 
         }
 
+    }
+
+    componentDidMount() {
+        this.getPlayers();
+        this.playerReady();
     }
 
 
