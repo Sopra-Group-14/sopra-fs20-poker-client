@@ -175,7 +175,6 @@ class Lobby extends React.Component {
 
     render(){
 
-        const playersEmpty = this.state.players;
 
         return (
             <FormContainer>
