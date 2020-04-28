@@ -80,6 +80,7 @@ class Lobby extends React.Component {
             gameName: null,
             bigBlind: null,
             smallBlind: null,
+            gameStarted: false
         };
 
 
@@ -107,6 +108,11 @@ class Lobby extends React.Component {
             this.setState({["gameName"]: gameModel.gameName});
             this.setState({["bigBlind"]: gameModel.bigBlind});
             this.setState({["smallBlind"]: gameModel.smallBlind});
+            this.setState({["gameStarted"]: gameModel.gameStarted});
+
+            if(this.state.gameStarted === true){
+                this.props.history.push("/gameScreen")
+            }
 
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
@@ -141,7 +147,7 @@ class Lobby extends React.Component {
         try {
 
             const response = api.put('/games/'+localStorage.getItem("gameId")+'/gameStart', {headers:{ Authorization: localStorage.getItem("token")}});
-            this.props.history.push("/gameScreen")
+            //this.props.history.push("/gameScreen")
         }
         catch(error){
             alert(`Something went wrong during the login: \n${handleError(error)}`);

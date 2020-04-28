@@ -13,6 +13,7 @@ class GameModel {
         this.gameCreator = null;
         this.hostToken = null;
         this.gameLimit = null;
+        this.gameStarted = null;
 
         Object.assign(this, data);
     }
