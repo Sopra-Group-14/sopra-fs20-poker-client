@@ -111,7 +111,7 @@ class JoinLobby extends React.Component {
     }
 
     async gameStart(){
-        alert("game not ready yet")
+        //alert("game not ready yet")
         const response = await api.get('/games/'+localStorage.getItem("gameId"));
         if(response.gameStart === true){
             this.props.history.push(`/gamescreen`);
