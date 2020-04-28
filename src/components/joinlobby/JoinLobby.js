@@ -98,6 +98,9 @@ class JoinLobby extends React.Component {
             this.setState({["gameName"]: gameModel.gameName});
             this.setState({["bigBlind"]: gameModel.bigBlind});
             this.setState({["smallBlind"]: gameModel.smallBlind});
+            if(gameModel.gameStarted === true){
+                this.props.history.push("/gameScreen")
+            }
 
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
