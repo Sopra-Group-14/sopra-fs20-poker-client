@@ -238,7 +238,7 @@ class GameScreen extends React.Component {
         //const response= await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/'+localStorage.getItem("id"));
         const user = new User(response.data);
         this.setState({["username"]: user.username});
-        this.handleInputChange("playerCredit", user.credit);
+        //this.handleInputChange("playerCredit", user.credit);
        //alert(this.state.playerCredit);
 
         //alert(user.credit);
@@ -282,6 +282,7 @@ I already do this in the getGamelog() method
 
             this.setState({ ["posh1"]: this.getImageOfCard(this.state.handcards[0])});
             this.setState({ ["posh2"]: this.getImageOfCard(this.state.handcards[1])});
+            this.handleInputChange("playerCredit", player.credit);
 
 
         } catch (error) {
