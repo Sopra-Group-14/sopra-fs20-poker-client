@@ -53,6 +53,7 @@ const GameContainer = styled.li`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
 `;
 
 const ButtonContainer = styled.div`
@@ -142,7 +143,7 @@ class JoinGame extends React.Component {
                         ): (
 
                             <div>
-                                <label>gamelist</label>
+                                <label></label>
                                 {this.state.games.map(game => {
                                     return (
                                         <GameContainer key={game.gameId} onClick={() => {
