@@ -149,7 +149,9 @@ class GameScreen extends React.Component {
     constructor() {
         super();
         this.state = {
+            //User
             username:null,
+            playerCredit:null,
 
             //Cards
             tablecards: null,
@@ -210,6 +212,24 @@ class GameScreen extends React.Component {
         let gamelog = new GameLog(response.data);
 
         this.handleInputChange('players', gamelog.players);
+        this.handleInputChange('currentPlayerName', gamelog.playerName);
+        this.handleInputChange('playerPot', gamelog.playerPot);
+        this.handleInputChange('gameRound', gamelog.gameRound);
+        this.handleInputChange('transactionNr', gamelog.transactionNr);
+        this.handleInputChange('action', gamelog.action);
+        this.handleInputChange('raiseAmount', gamelog.raiseAmount);
+        this.handleInputChange('nextPlayerName', gamelog.nextPlayerName);
+        this.handleInputChange('nextPlayerId', gamelog.nextPlayerId);
+        this.handleInputChange('roundOver', gamelog.roundOver);
+        this.handleInputChange('gameOver', gamelog.gameOver);
+        this.handleInputChange('amountToCall', gamelog.amountToCall);
+        this.handleInputChange('winner', gamelog.winner);
+        this.handleInputChange('possibleActions', gamelog.possibleActions);
+        this.handleInputChange('gameName', gamelog.gameName);
+        this.handleInputChange('potAmount', gamelog.potAmount);
+        this.handleInputChange('activePlayers', gamelog.activePlayers);
+        this.handleInputChange('thisPlayersTurn', gamelog.thisPlayersTurn);
+        this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
     }
 
     async getUser(){
@@ -218,11 +238,12 @@ class GameScreen extends React.Component {
         const response= await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/'+localStorage.getItem("id"));
         const user = new User(response.data);
         this.setState({["username"]: user.username});
-        this.handleInputChange("playerPot", user.credit);
+        this.handleInputChange("playerCredit", user.credit);
 
         //alert(user.credit);
     }
-
+/*
+I already do this in the getGamelog() method
     async currentPlayer(){
         //localStorage.setItem("gameId", "2");
         const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
@@ -231,6 +252,7 @@ class GameScreen extends React.Component {
         const gamelog = new GameLog(response.data);
         this.state.currentPlayerName = gamelog.playerName;
     }
+ */
 
     async nextRound(){
         const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
@@ -274,7 +296,7 @@ class GameScreen extends React.Component {
             //4815cd7c29cb7c36a056db26c938e16ab48a74a9
             //localStorage.setItem("gameId", "2");
             //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-            const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
+            const response = await api.get('/games/' + localStorage.getItem("gameId"),/*{headers:{ Authorization: localStorage.getItem("token")}}*/);
 
             let gamelog = new GameLog(response.data);
             this.state.tablecards = gamelog.revealedCards;
@@ -415,8 +437,21 @@ class GameScreen extends React.Component {
         this.setState({raiseAmountInput: data})
     };
 
+    playRound(){
+        while(!this.state.gameOver){
+            this.getGamelog();
+            this.getUser();
+            this.displayHandCards();
+            this.displayTableCards();
+            this.whatButtonsToDisplay();
+        }
+        this.nextRound();
+    }
+
     tick() {
-        alert("ok cool");
+        alert("Everything gets refreshed");
+        this.playRound()
+
     }
 
     componentWillUnmount() {
@@ -424,15 +459,7 @@ class GameScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.currentPlayer();
-        this.getGamelog();
-        this.getUser();
-        this.displayHandCards();
-        this.displayTableCards();
-        this.whatButtonsToDisplay();
-        this.interval = setInterval(() => this.tick(), 2000);
-
-
+        this.interval = setInterval(() => this.tick(), 3000);
     }
 
 
@@ -593,7 +620,7 @@ class GameScreen extends React.Component {
                         </ButtonContainerRow> : null}
 
                         {this.state.inputfieldvisible ?
-                            <Slider max={this.state.playerPot}
+                            <Slider max={this.state.playerCredit}
                                     handleraiseAmountInput={this.callbackFunction}
                                     key={'raiseAmountInput'}
                                     color={"#C14E4E"}
