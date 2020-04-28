@@ -3,8 +3,8 @@
  */
 class Card {
     constructor(data = {}) {
-        this.mySuit = null;
-        this.myRank = null;
+        this.suit = null;
+        this.rank = null;
 
         Object.assign(this, data);
     }
