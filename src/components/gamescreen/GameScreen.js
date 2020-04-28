@@ -233,9 +233,9 @@ class GameScreen extends React.Component {
     }
 
     async getUser(){
-        //const response = await api.get('/user/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
-        localStorage.setItem("id", "4");
-        const response= await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/'+localStorage.getItem("id"));
+        const response = await api.get('/user/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
+        //localStorage.setItem("id", "4");
+        //const response= await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/'+localStorage.getItem("id"));
         const user = new User(response.data);
         this.setState({["username"]: user.username});
         this.handleInputChange("playerCredit", user.credit);
@@ -270,13 +270,13 @@ I already do this in the getGamelog() method
         try {
 
             //Backend with Postman:
-            localStorage.setItem("gameId", "2");
-            localStorage.setItem("playerId", "1");
+            //localStorage.setItem("gameId", "2");
+            //localStorage.setItem("playerId", "1");
             //Lara  const response =  await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
 
-            const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
+            //const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
 
-            //const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"),{headers:{ Authorization: localStorage.getItem("token")}});
+            const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"),{headers:{ Authorization: localStorage.getItem("token")}});
             const player = response.data;
             this.state.handcards = player.hand;
 
@@ -295,9 +295,9 @@ I already do this in the getGamelog() method
 
             //Backend with Postman:
             //4815cd7c29cb7c36a056db26c938e16ab48a74a9
-            localStorage.setItem("gameId", "2");
-            const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-            //const response = await api.get('/games/' + localStorage.getItem("gameId"),/*{headers:{ Authorization: localStorage.getItem("token")}}*/);
+            //localStorage.setItem("gameId", "2");
+            //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+            const response = await api.get('/games/' + localStorage.getItem("gameId"),/*{headers:{ Authorization: localStorage.getItem("token")}}*/);
 
             let gamelog = new GameLog(response.data);
             this.state.tablecards = gamelog.revealedCards;
@@ -322,10 +322,9 @@ I already do this in the getGamelog() method
 
 
     async whatButtonsToDisplay(){
-        localStorage.setItem("gameId", "2");
-        const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-        //const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
-
+        //localStorage.setItem("gameId", "2");
+        //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+        const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
         const gamelog = new GameLog(response.data);
 
         if(gamelog.possibleActions.includes("BET") && !this.state.input_cancel_visible){
