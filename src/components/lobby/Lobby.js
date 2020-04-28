@@ -164,6 +164,8 @@ class Lobby extends React.Component {
         clearInterval(this.interval);
     }
 
+
+
     componentDidMount() {
         this.getPlayers();
         this.playerReady();
