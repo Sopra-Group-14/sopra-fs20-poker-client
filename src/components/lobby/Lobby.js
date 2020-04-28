@@ -103,15 +103,11 @@ class Lobby extends React.Component {
           const response = await api.get("/games/"+ localStorage.getItem("gameId"), {headers:{ Authorization: localStorage.getItem("token")}});
           let gameModel = new GameModel(response.data);
 
-            alert("Retrieved: " + localStorage.getItem("gameId"));
-
-            this.setState({["players"]: gameModel.playerList});
+            this.setState({["players"]: gameModel.players});
             this.setState({["gameName"]: gameModel.gameName});
             this.setState({["bigBlind"]: gameModel.bigBlind});
             this.setState({["smallBlind"]: gameModel.smallBlind});
             //alert(this.state.gameName)
-
-            alert("GameName (State): " + this.state.gameName);
 
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
@@ -155,7 +151,7 @@ class Lobby extends React.Component {
 
     }
     tick() {
-        alert("Lobby gets refreshed");
+        //alert("Lobby gets refreshed");
         this.getPlayers();
         this.playerReady();
     }
@@ -165,13 +161,20 @@ class Lobby extends React.Component {
     }
 
     componentDidMount() {
+        /*setTimeout(function(){
+
+        },1000);*/
+        this.interval = setInterval(() => this.tick(), 1000);
+    }
+
+    componentWillMount() {
         this.getPlayers();
         this.playerReady();
-        this.interval = setInterval(() => this.tick(), 5000);
     }
 
     render(){
-        const playersEmpty = this.state.playerList;
+
+        const playersEmpty = this.state.players;
 
         return (
             <FormContainer>
