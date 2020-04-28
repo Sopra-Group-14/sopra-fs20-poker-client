@@ -165,6 +165,8 @@ class Lobby extends React.Component {
     }
 
     componentDidMount() {
+        this.getPlayers();
+        this.playerReady();
         this.interval = setInterval(() => this.tick(), 5000);
     }
 

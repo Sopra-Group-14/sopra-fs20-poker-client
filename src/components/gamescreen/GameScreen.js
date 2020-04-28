@@ -443,7 +443,7 @@ I already do this in the getGamelog() method
             this.getUser();
             this.displayHandCards();
             this.displayTableCards();
-            //this.whatButtonsToDisplay();
+            this.whatButtonsToDisplay();
         }
         this.nextRound();
     }
@@ -459,6 +459,11 @@ I already do this in the getGamelog() method
     }
 
     componentDidMount() {
+        this.getGamelog();
+        this.getUser();
+        this.displayHandCards();
+        this.displayTableCards();
+        this.whatButtonsToDisplay();
         this.interval = setInterval(() => this.tick(), 5000);
 
     }
