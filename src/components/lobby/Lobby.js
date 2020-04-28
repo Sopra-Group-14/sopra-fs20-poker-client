@@ -154,13 +154,19 @@ class Lobby extends React.Component {
         }
 
     }
-
-    componentDidMount() {
+    tick() {
+        alert("Lobby gets refreshed");
         this.getPlayers();
         this.playerReady();
     }
 
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
 
+    componentDidMount() {
+        this.interval = setInterval(() => this.tick(), 5000);
+    }
 
     render(){
         const playersEmpty = this.state.playerList;
