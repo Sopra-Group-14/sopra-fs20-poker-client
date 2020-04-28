@@ -239,6 +239,7 @@ class GameScreen extends React.Component {
         const user = new User(response.data);
         this.setState({["username"]: user.username});
         this.handleInputChange("playerCredit", user.credit);
+       //alert(this.state.playerCredit);
 
         //alert(user.credit);
     }
@@ -294,9 +295,9 @@ I already do this in the getGamelog() method
 
             //Backend with Postman:
             //4815cd7c29cb7c36a056db26c938e16ab48a74a9
-            //localStorage.setItem("gameId", "2");
-            //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-            const response = await api.get('/games/' + localStorage.getItem("gameId"),/*{headers:{ Authorization: localStorage.getItem("token")}}*/);
+            localStorage.setItem("gameId", "2");
+            const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+            //const response = await api.get('/games/' + localStorage.getItem("gameId"),/*{headers:{ Authorization: localStorage.getItem("token")}}*/);
 
             let gamelog = new GameLog(response.data);
             this.state.tablecards = gamelog.revealedCards;
@@ -327,7 +328,7 @@ I already do this in the getGamelog() method
 
         const gamelog = new GameLog(response.data);
 
-        if(gamelog.possibleActions.includes("BET")){
+        if(gamelog.possibleActions.includes("BET") && !this.state.input_cancel_visible){
             this.handleInputChange("betraisebuttontext", "Bet");
             this.handleInputChange("bet_visible", true)
         }
@@ -335,7 +336,7 @@ I already do this in the getGamelog() method
             this.handleInputChange("bet_visible", false)
         }
 
-        if(gamelog.possibleActions.includes("RAISE")){
+        if(gamelog.possibleActions.includes("RAISE") && !this.state.input_cancel_visible){
             this.handleInputChange("betraisebuttontext", "Raise");
             this.handleInputChange("raise_visible", true)
         }
@@ -343,21 +344,21 @@ I already do this in the getGamelog() method
             this.handleInputChange("raise_visible", false)
         }
 
-        if(gamelog.possibleActions.includes("CHECK")){
+        if(gamelog.possibleActions.includes("CHECK") && !this.state.input_cancel_visible){
             this.handleInputChange("check_visible", true)
         }
         else{
             this.handleInputChange("check_visible", false)
         }
 
-        if(gamelog.possibleActions.includes("CALL")){
+        if(gamelog.possibleActions.includes("CALL") && !this.state.input_cancel_visible){
             this.handleInputChange("call_visible", true)
         }
         else{
             this.handleInputChange("call_visible", false)
         }
 
-        if(gamelog.possibleActions.includes("BET")){
+        if(gamelog.possibleActions.includes("BET")  && !this.state.input_cancel_visible){
             this.handleInputChange("betraisebuttontext", "Bet");
             this.handleInputChange("bet_visible", true)
         }
@@ -438,18 +439,18 @@ I already do this in the getGamelog() method
     };
 
     playRound(){
-        while(!this.state.gameOver){
+        if(this.state.gameOver === null){
             this.getGamelog();
             this.getUser();
             this.displayHandCards();
             this.displayTableCards();
-            this.whatButtonsToDisplay();
+            //this.whatButtonsToDisplay();
         }
         this.nextRound();
     }
 
     tick() {
-        alert("Everything gets refreshed");
+        //alert("Everything gets refreshed");
         this.playRound()
 
     }
@@ -459,7 +460,8 @@ I already do this in the getGamelog() method
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => this.tick(), 3000);
+        this.interval = setInterval(() => this.tick(), 5000);
+
     }
 
 
@@ -590,7 +592,14 @@ I already do this in the getGamelog() method
                                         this.bet();
                                         alert("bet" + this.state.raiseAmountInput)
                                     }
-
+                                    if(this.state.betraisebuttontext === "Raise") {
+                                        this.handleInputChange("raise_visible", true);
+                                    }
+                                    if(this.state.betraisebuttontext === "Bet") {
+                                        this.handleInputChange("bet_visible", true);
+                                    }
+                                    this.handleInputChange("input_cancel_visible", false);
+                                    this.handleInputChange("inputfieldvisible", false);
                                 }}
                             >
                                 {this.state.betraisebuttontext}

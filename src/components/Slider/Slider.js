@@ -48,7 +48,7 @@ export default class Slider extends React.Component {
 
     handleOnChange = (e) => {
         this.setState({ value: e.target.value });
-        this.props.handleRaiseAmount(e.target.value);
+        this.props.handleraiseAmountInput(e.target.value);
     };
 
     render() {
