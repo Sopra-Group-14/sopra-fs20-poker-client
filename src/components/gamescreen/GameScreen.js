@@ -329,7 +329,7 @@ I already do this in the getGamelog() method
     }
 
     getImageOfCard(card){
-            let cardname = card.mySuit + card.myRank;
+        let cardname = card.suit + card.rank;
         return graphicsList.find(data => data.name === cardname).src;
     }
 
