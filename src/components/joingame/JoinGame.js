@@ -147,6 +147,7 @@ class JoinGame extends React.Component {
                                     return (
                                         <GameContainer key={game.gameId} onClick={() => {
                                             this.state.gameId = game.gameId;
+                                            localStorage.setItem("gameId", game.gameId);
                                             this.join();
                                         }}   >
                                             {game.gameId}    {game.potType   }

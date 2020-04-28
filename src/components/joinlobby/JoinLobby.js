@@ -102,12 +102,26 @@ class JoinLobby extends React.Component {
         }
     }
 
-    componentDidMount() {
+    tick() {
+        //alert("Lobby gets refreshed");
         this.getPlayers();
-        this.gameStart()
-        setInterval(this.gameStart, 2000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
 
 
+
+    componentDidMount() {
+        /*setTimeout(function(){
+
+        },1000);*/
+        this.interval = setInterval(() => this.tick(), 1000);
+    }
+
+    componentWillMount() {
+        this.getPlayers();
     }
 
     async gameStart(){
@@ -149,11 +163,11 @@ class JoinLobby extends React.Component {
                         List of all the Players:
 
                         <div>
-                            {this.playersEmpty ? (
+                            {this.state.players ? (
                                 this.state.players.map(player => {
                                     return (
                                         <label>
-                                            <h4>{player.username}           {player.status}</h4>
+                                            <h4>{player.playerName}           {player.readyStatus}</h4>
                                         </label>
                                     )
                                 })
