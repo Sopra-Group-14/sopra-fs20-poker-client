@@ -262,7 +262,6 @@ I already do this in the getGamelog() method
         if (gamelog.winner != null){
             localStorage.setItem("winner", gamelog.winner);
             this.props.history.push(`/dashboard`);
-
         }
     }
 
@@ -675,7 +674,7 @@ I already do this in the getGamelog() method
                     </HandCardContainer>
                     <PotContainer>
                         <img width={80}  src={chips} />
-                        <label>3000</label>
+                        <label>{this.state.potAmount}</label>
                     </PotContainer>
                 </ControlContainer>
 

@@ -141,7 +141,8 @@ class JoinLobby extends React.Component {
     async ready(){
         try {
 
-           const response = api.put('/games/'+localStorage.getItem("gameId")+'/player/'+localStorage.getItem("id"));
+           await api.put('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id"));
+
         }
         catch(error){
             alert(`Something went wrong : \n${handleError(error)}`);
