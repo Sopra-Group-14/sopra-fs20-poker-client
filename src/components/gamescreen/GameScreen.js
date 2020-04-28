@@ -303,15 +303,23 @@ I already do this in the getGamelog() method
             this.state.tablecards = gamelog.revealedCards;
 
             //testing purposes
-            if(gamelog.revealedCards === []){
-                alert("Empty List")
-            }
 
-            this.setState({ ["tablecard1"]: this.getImageOfCard(this.state.tablecards[0])});
-            this.setState({ ["tablecard2"]: this.getImageOfCard(this.state.tablecards[1])});
-            this.setState({ ["tablecard3"]: this.getImageOfCard(this.state.tablecards[2])});
-            this.setState({ ["tablecard4"]: this.getImageOfCard(this.state.tablecards[3])});
-            this.setState({ ["tablecard5"]: this.getImageOfCard(this.state.tablecards[4])});
+
+            if(this.state.tablecards[0] !== undefined) {
+                this.setState({["tablecard1"]: this.getImageOfCard(this.state.tablecards[0])});
+            }
+            if(this.state.tablecards[1] !== undefined) {
+                this.setState({["tablecard2"]: this.getImageOfCard(this.state.tablecards[1])})
+            }
+            if(this.state.tablecards[2] !== undefined) {
+                this.setState({["tablecard3"]: this.getImageOfCard(this.state.tablecards[2])});
+            }
+            if(this.state.tablecards[3] !== undefined) {
+                this.setState({["tablecard4"]: this.getImageOfCard(this.state.tablecards[3])});
+            }
+            if(this.state.tablecards[4] !== undefined) {
+                this.setState({["tablecard5"]: this.getImageOfCard(this.state.tablecards[4])});
+            }
 
 
         } catch (error) {
