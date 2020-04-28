@@ -80,6 +80,7 @@ class JoinLobby extends React.Component {
             gameName: null,
             bigBlind: null,
             smallBlind: null,
+            buttonClicked:false,
         };
 
 
@@ -87,15 +88,15 @@ class JoinLobby extends React.Component {
 
     async getPlayers() {
         try {
-            // localStorage.setItem("gameId", "4");
+             //localStorage.setItem("gameId", "4");
             //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
-            //Lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-            const response = await api.get('/games/'+localStorage.getItem("gameId"), {headers:{ Authorization: localStorage.getItem("token")}});
-            let gamelog = new GameLog(response.data);
-            this.setState({["players"]: gamelog.playerList});
-            this.setState({["gameName"]: gamelog.gameName});
-            this.setState({["bigBlind"]: gamelog.bigBlind});
-            this.setState({["smallBlind"]: gamelog.smallBlind});
+            //const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+            const response = await api.get('/games/'+localStorage.getItem("gameId") ,{headers:{ Authorization: localStorage.getItem("token")}});
+            let gameModel = new GameModel(response.data);
+            this.setState({["players"]: gameModel.playerList});
+            this.setState({["gameName"]: gameModel.gameName});
+            this.setState({["bigBlind"]: gameModel.bigBlind});
+            this.setState({["smallBlind"]: gameModel.smallBlind});
         } catch (error) {
             alert(`Something went wrong during the login: \n${handleError(error)}`);
         }
@@ -103,29 +104,18 @@ class JoinLobby extends React.Component {
 
     componentDidMount() {
         this.getPlayers();
-        this.playerReady();
+        this.gameStart()
+        setInterval(this.gameStart, 2000);
+
+
     }
 
-    async playerReady() {
-
-        //lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-        const response = await api.get('/games/'+localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
-
-        let gamelog = new GameLog(response.data);
-
-        let readyCount = 0;
-        if (this.state.playerList != null) {
-            const playersReady = gamelog.playerList.map(player => {
-                if (player.status === "ready") {
-                    readyCount++;
-                    return player;
-                }
-            })
+    async gameStart(){
+        alert("game not ready yet")
+        const response = await api.get('/games/'+localStorage.getItem("gameId"));
+        if(response.gameStart === true){
+            this.props.history.push(`/gamescreen`);
         }
-        if(readyCount >= 2){
-            this.setState({['ready']: 'true'});
-        }
-
 
     }
 
@@ -133,8 +123,11 @@ class JoinLobby extends React.Component {
 
     async ready(){
         try {
-
-            const response = api.put('/games/'+localStorage.getItem("gameId")+'/player'+localStorage.getItem("id"), {headers:{ Authorization: localStorage.getItem("token")}});
+        const requestbody =  JSON.stringify({
+            userId: localStorage.getItem('id'),
+            status: 'ready'
+        });
+           const response = api.put('/games/'+localStorage.getItem("gameId")+'/player/'+localStorage.getItem("id"), requestbody,{headers:{ Authorization: localStorage.getItem("token")}});
         }
         catch(error){
             alert(`Something went wrong : \n${handleError(error)}`);
@@ -147,7 +140,6 @@ class JoinLobby extends React.Component {
 
     render(){
         const playersEmpty = this.state.playerList;
-
         return (
             <FormContainer>
                 <Form>
@@ -181,9 +173,10 @@ class JoinLobby extends React.Component {
 
                     <ButtonContainer>
 
-                        <Button
-                            onClick={() => {
-                                this.ready();
+                        <Button  disabled={this.state.buttonClicked}
+                                 onClick={() => {
+                                     this.setState({'buttonClicked':'true'});
+                                     this.ready();
                             }}
                         >
                             Im Ready

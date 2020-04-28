@@ -78,19 +78,21 @@ class JoinGame extends React.Component {
         this.state = {
             username: null,
             player: "player",
-            games: [],
+            games: null,
             gameId: null,
-
+            load: null,
         };
     }
+
     async join(){
-        alert("joingame");
+        alert("join");
         const requestBody = JSON.stringify({
             userId: localStorage.getItem("id"),
-            status: "player"
+            status:'player'
         });
-    //    await api.put('/games/'+ this.state.gameId , requestBody,{headers:{ Authorization: localStorage.getItem("token")}})
         this.props.history.push(`/joinlobby`);
+
+        const response = await api.put('/games/'+ this.state.gameId , requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
 
     }
 
@@ -99,7 +101,7 @@ class JoinGame extends React.Component {
            const response =  await api.get('/games');
            this.setState({['games']: response.data});
 
-
+            alert(this.state.games);
         } catch (error) {
             alert(`Something went wrong when trying to play a game: \n${handleError(error)}`);
         }
@@ -113,29 +115,29 @@ class JoinGame extends React.Component {
 
 
     render() {
-
+        const gamesEmpty = this.state.games;
         return (
             <FormContainer>
                 <Form>
                     <label>Waiting Games: </label>
                     <ButtonContainer>
-                            {!this.state.games? (
-                                <Spinner />
-                            ) : (
-                                <div>
-                                       {this.state.games.map(game => {
-                                            return (
-                                               <GameContainer key={game.gameId} onClick={() => {
-                                                   this.state.gameId = game.gameId;
-                                                  // this.join();
+                        {gamesEmpty ? (
+                            <div>
 
+                                {this.state.games.map(game => {
+                                    return (
+                                        <GameContainer key={game.gameId} onClick={() => {
+                                            this.state.gameId = game.gameId;
+                                            this.join();
 
-                                               }}   >
-                                                   { game.gameName } {game.gameLimit} {game.playerNr}
-                                               </GameContainer>
-                                            );
-                                        })}
-                                </div>
+                                        }}   >
+                                            { game.gameName }
+                                        </GameContainer>
+                                    );
+                                })}
+                            </div>
+                            ): (
+                            <label>There are no waiting games</label>
 
                             )
                             }
