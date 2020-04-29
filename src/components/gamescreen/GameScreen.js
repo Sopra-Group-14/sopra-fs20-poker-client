@@ -405,7 +405,7 @@ I already do this in the getGamelog() method
             token: localStorage.getItem("token") ,
 
         });
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions',{headers:{ Authorization: localStorage.getItem("token")}}, requestBody )
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions',{headers:{ Authorization: localStorage.getItem("token")}}, requestBody )
     }
 
     async check(){
@@ -415,7 +415,7 @@ I already do this in the getGamelog() method
             token: localStorage.getItem("token") ,
 
         });
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody )
     }
 
     async fold(){
@@ -425,7 +425,7 @@ I already do this in the getGamelog() method
             token: localStorage.getItem("token") ,
 
         });
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody )
     }
 
     async raise(){
@@ -437,7 +437,7 @@ I already do this in the getGamelog() method
             token: localStorage.getItem("token") ,
 
         });
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody )
     }
 
     async bet(){
@@ -449,11 +449,11 @@ I already do this in the getGamelog() method
             token: localStorage.getItem("token") ,
 
         });
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions', requestBody )
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody )
     }
 
     async leave(){
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/leave')
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/leave')
     }
 
     handleInputChange(key, value) {
