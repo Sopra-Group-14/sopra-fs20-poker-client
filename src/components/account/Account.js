@@ -69,11 +69,11 @@ class Account extends React.Component {
     async getUser() {
         try {
             //localStorage.setItem("playerId", "4");
-            //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/' + localStorage.getItem("playerId"));
-            const response = await api.get('/users/' + localStorage.getItem("playerId"));
+           // const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/' + localStorage.getItem("playerId"));
+            const response = await api.get('/users/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
             const user = new User(response.data);
             this.handleInputChange('username', user.username);
-            this.handleInputChange('balance', user.credit);
+            this.handleInputChange('balance', user.balance);
 
         } catch (error) {
             alert(`Something went wrong when trying to get the User: \n${handleError(error)}`);

@@ -233,11 +233,15 @@ class GameScreen extends React.Component {
     }
 
     async getUser(){
-        const response = await api.get('/user/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
+
+        const response = await api.get('/users/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
+
         //localStorage.setItem("id", "4");
         //const response= await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/'+localStorage.getItem("id"));
         const user = new User(response.data);
-        this.setState({["username"]: user.username});
+
+        this.handleInputChange('username', user.username);
+
         //this.handleInputChange("playerCredit", user.credit);
        //alert(this.state.playerCredit);
 
@@ -262,6 +266,7 @@ I already do this in the getGamelog() method
         if (gamelog.winner != null){
             localStorage.setItem("winner", gamelog.winner);
             this.props.history.push(`/dashboard`);
+
         }
     }
 
@@ -500,13 +505,13 @@ I already do this in the getGamelog() method
             <BaseContainer>
                 <PlayersContainer>
                     {this.state.players.map(user => {
-                        if(user.username === this.state.username){
+                        if(user.playerName === this.state.username){
                             return;
                         }
-                        else if (user.username === this.state.currentPlayerName){
+                        else if (user.playerName === this.state.currentPlayerName){
                             return(
                                 <ActivePlayerContainer key={user.id}>
-                                    <label>{user.username}</label>
+                                    <label>{user.playerName}</label>
                                     <img width={80}  src={chips} />
                                     <label> {user.credit} </label>
                                 </ActivePlayerContainer>
@@ -516,7 +521,7 @@ I already do this in the getGamelog() method
                         else {
                             return (
                                 <PlayerContainer key={user.id}>
-                                    <label>{user.username}</label>
+                                    <label>{user.playerName}</label>
                                     <img width={80}  src={chips} />
                                     <label> {user.credit} </label>
                                     <label>{user.action}</label>
@@ -531,7 +536,7 @@ I already do this in the getGamelog() method
 
                 <TableCardContainer>
                     <PotContainer>  <img width={80}  src={chips} />
-                        <label>POT: 3000</label></PotContainer>
+                        <label>{this.state.playerPot} </label></PotContainer>
                     <CardContainer>
                         <img width={95}  src={this.state.tablecard1} />
                     </CardContainer>
@@ -551,6 +556,7 @@ I already do this in the getGamelog() method
                 </TableCardContainer>
 
                 <ControlContainer>
+                    <label>{this.state.username}</label>
                     <ButtonContainer>
                         {this.state.call_visible ? <Button
                             height="30%"
@@ -674,7 +680,7 @@ I already do this in the getGamelog() method
                     </HandCardContainer>
                     <PotContainer>
                         <img width={80}  src={chips} />
-                        <label>{this.state.potAmount}</label>
+                        <label>{this.state.playerCredit}</label>
                     </PotContainer>
                 </ControlContainer>
 
