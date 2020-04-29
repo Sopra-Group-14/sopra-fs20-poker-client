@@ -560,7 +560,7 @@ I already do this in the getGamelog() method
                     <ButtonContainer>
                         {this.state.call_visible ? <Button
                             height="30%"
-                            //disabled={!(this.state.username === this.state.currentPlayerName)}
+                            disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
                             onClick={() => {
                                 this.call();
                             }}
@@ -570,7 +570,7 @@ I already do this in the getGamelog() method
 
                         {this.state.check_visible ? <Button
                             height="30%"
-                            //disabled={!(this.state.username === this.state.currentPlayerName)}
+                            disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
                             onClick={() => {
                                 this.check();
                             }}
@@ -580,7 +580,7 @@ I already do this in the getGamelog() method
 
                         {this.state.bet_visible ? <Button
                             height="30%"
-                            //disabled={!(this.state.username === this.state.currentPlayerName)}
+                            disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
                             onClick={() => {
                                 this.handleInputChange("inputfieldvisible", true);
                                 this.handleInputChange("input_cancel_visible", true);
@@ -592,7 +592,7 @@ I already do this in the getGamelog() method
 
                         {this.state.raise_visible ? <Button
                             height="30%"
-                            //disabled={!(this.state.username === this.state.currentPlayerName)}
+                            disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
                             onClick={() => {
                                 this.handleInputChange("inputfieldvisible", true);
                                 this.handleInputChange("input_cancel_visible", true);
@@ -633,7 +633,7 @@ I already do this in the getGamelog() method
                                 height="30%"
                                 width="50%"
                                 style = {{marginLeft: 5}}
-                                //disabled={!(this.state.username === this.state.currentPlayerName)}
+                                disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
                                 onClick={() => {
                                     if(this.state.betraisebuttontext === "Raise") {
                                         this.handleInputChange("raise_visible", true);
@@ -661,7 +661,7 @@ I already do this in the getGamelog() method
 
                         <Button
                             height="30%"
-                            disabled={!(this.state.username === this.state.currentPlayerName)}
+                            disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
                             onClick={() => {
                                 this.fold();
                             }}

@@ -167,7 +167,7 @@ class Lobby extends React.Component {
     componentDidMount() {
         /*setTimeout(function(){
         },1000);*/
-        this.interval = setInterval(() => this.tick(), 5000);
+        this.interval = setInterval(() => this.tick(), 1000);
     }
 
     componentWillMount() {
