@@ -143,11 +143,11 @@ class Lobby extends React.Component {
     async startGame(){
         try {
 
-            const response = api.put('/games/'+localStorage.getItem("gameId")+'/gameStart', {headers:{ Authorization: localStorage.getItem("token")}});
+            const response = await api.put('/games/'+localStorage.getItem("gameId")+'/gameStart', {headers:{ Authorization: localStorage.getItem("token")}});
             this.props.history.push("/gameScreen")
         }
         catch(error){
-            alert(`Something went wrong during the login: \n${handleError(error)}`);
+            alert(`Something went wrong when starting the game: \n${handleError(error)}`);
 
         }
 

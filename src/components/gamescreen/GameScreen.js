@@ -283,6 +283,12 @@ I already do this in the getGamelog() method
             const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"),{headers:{ Authorization: localStorage.getItem("token")}});
             const player = response.data;
             this.state.handcards = player.hand;
+            /*
+            alert("playerhand"+player.hand);
+            alert("player"+player);
+            alert("response"+response.data);
+             */
+            //alert(localStorage.getItem("id"));
 
             this.setState({ ["posh1"]: this.getImageOfCard(this.state.handcards[0])});
             this.setState({ ["posh2"]: this.getImageOfCard(this.state.handcards[1])});
@@ -309,7 +315,11 @@ I already do this in the getGamelog() method
 
             //testing purposes
 
+            for (let i = 0; i < this.state.tablecards.length; i++){
+                this.setState({["tablecard"+(i+1)]: this.getImageOfCard(this.state.tablecards[i])});
+            }
 
+/*
             if(this.state.tablecards[0] !== undefined) {
                 this.setState({["tablecard1"]: this.getImageOfCard(this.state.tablecards[0])});
             }
@@ -326,7 +336,7 @@ I already do this in the getGamelog() method
                 this.setState({["tablecard5"]: this.getImageOfCard(this.state.tablecards[4])});
             }
 
-
+*/
         } catch (error) {
             alert(`Something went wrong when trying to get the tablecards: \n${handleError(error)}`);
         }
