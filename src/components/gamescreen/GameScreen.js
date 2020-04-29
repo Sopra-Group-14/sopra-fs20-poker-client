@@ -280,7 +280,7 @@ I already do this in the getGamelog() method
 
             //const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
 
-            const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"),{headers:{ Authorization: localStorage.getItem("token")}});
+            const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
             const player = response.data;
             this.state.handcards = player.hand;
             /*
@@ -289,9 +289,10 @@ I already do this in the getGamelog() method
             alert("response"+response.data);
              */
             //alert(localStorage.getItem("id"));
-
-            this.setState({ ["posh1"]: this.getImageOfCard(this.state.handcards[0])});
-            this.setState({ ["posh2"]: this.getImageOfCard(this.state.handcards[1])});
+            if(this.state.handcards.length !== 0) {
+                this.setState({["posh1"]: this.getImageOfCard(this.state.handcards[0])});
+                this.setState({["posh2"]: this.getImageOfCard(this.state.handcards[1])});
+            }
             this.handleInputChange("playerCredit", player.credit);
 
 
@@ -404,7 +405,7 @@ I already do this in the getGamelog() method
             token: localStorage.getItem("token") ,
 
         });
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId")+'/actions',{headers:{ Authorization: localStorage.getItem("token")}}, requestBody )
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions',{headers:{ Authorization: localStorage.getItem("token")}}, requestBody )
     }
 
     async check(){
