@@ -279,8 +279,9 @@ I already do this in the getGamelog() method
             //Lara  const response =  await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
 
             //const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
-
-            const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"),{headers:{ Authorization: localStorage.getItem("token")}});
+            
+            const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
+            console.log("response body " + response);
             const player = response.data;
             this.state.handcards = player.hand;
             /*
