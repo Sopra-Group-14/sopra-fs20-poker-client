@@ -121,6 +121,8 @@ class TopUpAccount extends React.Component {
             await api.put('/users/' + localStorage.getItem("id") + '/balance', requestBody,{headers:{ Authorization: localStorage.getItem("token")}});
             /*  const user = new User(response.data);
               alert(user.id)*/
+            this.props.history.push(`/account`);
+
         } catch (error) {
             alert(`Something went wrong when trying to top up the account: \n${handleError(error)}`);
         }
@@ -179,7 +181,6 @@ class TopUpAccount extends React.Component {
                         disabled={this.state.amount === null}
                         onClick={() => {
                             this.topUpAccount();
-                            this.props.history.push(`/account`);
                         }}
                     >
                         Top Up
