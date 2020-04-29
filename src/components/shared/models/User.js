@@ -9,7 +9,7 @@ class User {
     this.token = null;
     this.status = null;
     this.ready = null;
-    this.credit = null;
+    this.balance = null;
     this.action = null;
     this.hand = null;
     Object.assign(this, data);
