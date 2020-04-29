@@ -141,7 +141,7 @@ class Dashboard extends React.Component {
 
                             onClick={() => {
                                 this.watchGame();
-                                this.props.history.push(`/gamelist`);
+                                this.props.history.push(`/joingamespectator`);
                             }}
                         >
                             Watch a Game

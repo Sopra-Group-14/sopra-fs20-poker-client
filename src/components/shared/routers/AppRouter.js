@@ -16,6 +16,8 @@ import EndScreen from "../../endscreen/EndScreen";
 import JoinGame from "../../joingame/JoinGame";
 import JoinLobby from "../../joinlobby/JoinLobby";
 import TopUpAccount from "../../topupaccount/TopUpAccount";
+import JoinGameSpectator from "../../joingamespectator/JoinGameSpectator";
+import GameScreenSpectator from "../../gamescreenspectator/GameScreenSpectator";
 
 /**
  * Main router of your application.
@@ -125,6 +127,20 @@ class AppRouter extends React.Component {
                 exact
                 render={() => (
                     <TopUpAccount />
+                )}
+            />
+            <Route
+                path="/joingamespectator"
+                exact
+                render={() => (
+                    <JoinGameSpectator />
+                )}
+            />
+            <Route
+                path="/gamescreenspectator"
+                exact
+                render={() => (
+                    <GameScreenSpectator />
                 )}
             />
             <Route path="/" exact render={() => <Redirect to={"/welcomepage"} />} />

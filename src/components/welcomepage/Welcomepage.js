@@ -90,7 +90,7 @@ class Welcomepage extends React.Component {
 
                             <Button
                                 onClick={() => {
-                                    this.props.history.push(`/spectator`);
+                                    this.props.history.push(`/joingamespectator`);
                                 }}
                             >
                                 Spectator
