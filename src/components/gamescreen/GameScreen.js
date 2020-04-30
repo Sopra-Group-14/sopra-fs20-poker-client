@@ -199,8 +199,11 @@ class GameScreen extends React.Component {
             raise_visible: false,
             check_visible: true,
             bet_visible: true,
+            controlContainerBorder: "",
 
             raiseAmountInput: null,
+
+
 
         };
     }
@@ -230,6 +233,16 @@ class GameScreen extends React.Component {
         this.handleInputChange('activePlayers', gamelog.activePlayers);
         this.handleInputChange('thisPlayersTurn', gamelog.thisPlayersTurn);
         this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
+
+        //Make white border on ControlContainer if its your turn
+        if(localStorage.getItem("id") === String(this.state.nextPlayerId)){
+            this.handleInputChange('controlContainerBorder', "1px solid #FFFFFF");
+        }
+        else{
+            this.handleInputChange('controlContainerBorder', "");
+        }
+
+        //this.setState({["potAmount"]: gamelog.potAmount});
 
         //alert("id"+localStorage.getItem("id"));
         //alert("nextid"+this.state.nextPlayerId);
@@ -466,7 +479,7 @@ I already do this in the getGamelog() method
     };
 
     playRound(){
-        if(this.state.gameOver === null){
+        if(this.state.gameOver === false){
             this.getGamelog();
             this.getUser();
             this.displayHandCards();
@@ -478,7 +491,7 @@ I already do this in the getGamelog() method
 
     tick() {
         //alert("Everything gets refreshed");
-        this.playRound()
+        this.playRound();
 
     }
 
@@ -545,7 +558,7 @@ I already do this in the getGamelog() method
 
                 <TableCardContainer>
                     <PotContainer>  <img width={80}  src={chips} />
-                        <label>{this.state.playerPot} </label></PotContainer>
+                        <label>{this.state.potAmount} </label></PotContainer>
                     <CardContainer>
                         <img width={95}  src={this.state.tablecard1} />
                     </CardContainer>
@@ -564,12 +577,13 @@ I already do this in the getGamelog() method
 
                 </TableCardContainer>
 
-                <ControlContainer>
+                <ControlContainer
+                    style={{"border": this.state.controlContainerBorder}}>
                     <label>{this.state.username}</label>
                     <ButtonContainer>
                         {this.state.call_visible ? <Button
                             height="30%"
-                            //disabled={!(user.id === this.state.nextPlayerId)}
+                            disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
                                 this.call();
                             }}
@@ -579,7 +593,7 @@ I already do this in the getGamelog() method
 
                         {this.state.check_visible ? <Button
                             height="30%"
-                            //disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
+                            disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
                                 this.check();
                             }}
@@ -589,7 +603,7 @@ I already do this in the getGamelog() method
 
                         {this.state.bet_visible ? <Button
                             height="30%"
-                            //disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
+                            disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
                                 this.handleInputChange("inputfieldvisible", true);
                                 this.handleInputChange("input_cancel_visible", true);
@@ -601,7 +615,7 @@ I already do this in the getGamelog() method
 
                         {this.state.raise_visible ? <Button
                             height="30%"
-                            //disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
+                            disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
                                 this.handleInputChange("inputfieldvisible", true);
                                 this.handleInputChange("input_cancel_visible", true);
@@ -619,11 +633,11 @@ I already do this in the getGamelog() method
                                 onClick={() => {
                                     if(this.state.betraisebuttontext === "Raise") {
                                         this.raise();
-                                        alert("raise" + this.state.raiseAmountInput)
+                                        //alert("raise" + this.state.raiseAmountInput)
                                     }
                                     if(this.state.betraisebuttontext === "Bet") {
                                         this.bet();
-                                        alert("bet" + this.state.raiseAmountInput)
+                                        //alert("bet" + this.state.raiseAmountInput)
                                     }
                                     if(this.state.betraisebuttontext === "Raise") {
                                         this.handleInputChange("raise_visible", true);
@@ -642,7 +656,7 @@ I already do this in the getGamelog() method
                                 height="30%"
                                 width="50%"
                                 style = {{marginLeft: 5}}
-                                //disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
+                                disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                                 onClick={() => {
                                     if(this.state.betraisebuttontext === "Raise") {
                                         this.handleInputChange("raise_visible", true);
@@ -670,7 +684,7 @@ I already do this in the getGamelog() method
 
                         <Button
                             height="30%"
-                            //disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
+                            disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
                                 this.fold();
                             }}

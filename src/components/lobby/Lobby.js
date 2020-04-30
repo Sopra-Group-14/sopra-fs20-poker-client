@@ -200,15 +200,7 @@ class Lobby extends React.Component {
                             )}
                         </div>
 
-
-
                     </label>
-
-                    <label>Big Blind is: {this.state.bigBlind} </label>
-                    <label> Small Blind is: {this.state.smallBlind} </label>
-
-
-
                     <ButtonContainer>
 
                         <Button

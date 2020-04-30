@@ -178,18 +178,8 @@ class JoinLobby extends React.Component {
                                 <label>  </label>
                             )}
                         </div>
-
-
-
                     </label>
-
-                    <label>Big Blind is: {this.state.bigBlind} </label>
-                    <label> Small Blind is: {this.state.smallBlind} </label>
-
-
-
                     <ButtonContainer>
-
                         <Button  disabled={this.state.buttonClicked}
                                  onClick={() => {
                                      this.setState({'buttonClicked':'true'});
