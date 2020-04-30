@@ -230,6 +230,9 @@ class GameScreen extends React.Component {
         this.handleInputChange('activePlayers', gamelog.activePlayers);
         this.handleInputChange('thisPlayersTurn', gamelog.thisPlayersTurn);
         this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
+
+        //alert("id"+localStorage.getItem("id"));
+        //alert("nextid"+this.state.nextPlayerId);
     }
 
     async getUser(){
@@ -438,7 +441,7 @@ I already do this in the getGamelog() method
 
     async bet(){
         //   localStorage.setItem("playerId", "1");
-
+        //alert(localStorage.getItem("token"));
         const requestBody = JSON.stringify({
             action: "BET",
             amount: this.state.raiseAmountInput,
@@ -514,7 +517,7 @@ I already do this in the getGamelog() method
                         if(user.playerName === this.state.username){
                             return;
                         }
-                        else if (user.playerName === this.state.currentPlayerName){
+                        else if (user.id === this.state.nextPlayerId){
                             return(
                                 <ActivePlayerContainer key={user.id}>
                                     <label>{user.playerName}</label>
@@ -566,7 +569,7 @@ I already do this in the getGamelog() method
                     <ButtonContainer>
                         {this.state.call_visible ? <Button
                             height="30%"
-                            //disabled={!(localStorage.getItem("id") === this.state.nextPlayerId)}
+                            //disabled={!(user.id === this.state.nextPlayerId)}
                             onClick={() => {
                                 this.call();
                             }}
