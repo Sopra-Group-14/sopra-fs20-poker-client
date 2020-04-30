@@ -87,7 +87,6 @@ class JoinGame extends React.Component {
     }
 
     async join(){
-        alert("join");
         const requestBody = JSON.stringify({
             userId: localStorage.getItem("id"),
             status:'player'
