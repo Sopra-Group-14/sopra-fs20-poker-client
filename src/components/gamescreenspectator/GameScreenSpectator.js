@@ -223,6 +223,7 @@ class GameScreenSpectator extends React.Component {
         this.handleInputChange('activePlayers', gamelog.activePlayers);
         this.handleInputChange('thisPlayersTurn', gamelog.thisPlayersTurn);
         this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
+
     }
 
 
@@ -248,11 +249,20 @@ class GameScreenSpectator extends React.Component {
 
             //const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
 
+            const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+this.state.activePlayerId,{headers:{ Authorization: localStorage.getItem("token")}});
+            console.log("response body " + response);
+            const player = response.data;
+            this.state.handcards = player.hand;
+            /*
+            alert("playerhand"+player.hand);
+            alert("player"+player);
+            alert("response"+response.data);
+             */
+            //alert(localStorage.getItem("id"));
 
-
-            this.setState({ ["posh1"]: this.getImageOfCard(this.state.activehandcards[0])});
-            this.setState({ ["posh2"]: this.getImageOfCard(this.state.activehandcards[1])});
-           // this.handleInputChange("playerCredit", player.credit);
+            this.setState({ ["posh1"]: this.getImageOfCard(this.state.handcards[0])});
+            this.setState({ ["posh2"]: this.getImageOfCard(this.state.handcards[1])});
+            this.handleInputChange("playerCredit", player.credit);
 
 
         } catch (error) {
@@ -260,6 +270,7 @@ class GameScreenSpectator extends React.Component {
         }
 
     }
+
 
     async displayTableCards() {
         try {
@@ -321,7 +332,10 @@ class GameScreenSpectator extends React.Component {
     };
 
     playRound(){
-        if(this.state.gameOver === null){
+        if(this.state.activePlayerId === null){
+            this.handleInputChange("activePlayerId", this.state.nextPlayerId);
+        }
+        if(this.state.gameOver === false){
             this.getGamelog();
             this.displayHandCards();
             this.displayTableCards();
@@ -333,6 +347,7 @@ class GameScreenSpectator extends React.Component {
     tick() {
         //alert("Everything gets refreshed");
         this.playRound()
+        this.displayHandCards();
 
     }
 
@@ -342,24 +357,28 @@ class GameScreenSpectator extends React.Component {
 
     componentDidMount() {
         this.getGamelog();
-        this.displayHandCards();
         this.displayTableCards();
-        this.interval = setInterval(() => this.tick(), 5000);
+
+        this.interval = setInterval(() => this.tick(), 2000);
 
     }
 
 
     /*
-    {this.state.inputfieldvisible ? <Slider
-        color={"#C14E4E"}
-        /> : null}
+               <ChatContainer>
 
-        {this.state.inputfieldvisible ? <InputFieldRaise
-                            placeholder="Enter here.."
-                            onChange={e => {
-                                this.handleInputChange('raiseAmountInput', e.target.value);
-                            }}
-                        /> : null}
+                    <h1>Player Chat</h1>
+
+                    <InputField
+                        placeholder="new message"
+                        onChange={e => {
+                            this.handleInputChange('message', e.target.value);
+                        }}
+                    />
+
+
+
+                </ChatContainer>
      */
     render() {
 
@@ -372,17 +391,17 @@ class GameScreenSpectator extends React.Component {
                             this.state.activeplayerCredit = user.credit;
                             this.state.activeUsername = user.playerName;
                             return(
-                                <ActivePlayerContainer key={user.id}   >
+                                <PlayerContainer key={user.id}   >
                                     <label>{user.playerName}</label>
                                     <img width={80}  src={chips} />
                                     <label> {user.credit} </label>
                                     <label>{user.action}</label>
-                                </ActivePlayerContainer>
+                                </PlayerContainer>
                             )
                         } else {
                             return (
                                 <PlayerContainer key={user.id}  onClick={() => {
-                                    this.handleInputChange("activePlayerId",user.playerId);
+                                    this.handleInputChange("activePlayerId",user.id);
                                 }}   >
                                     <label>{user.playerName}</label>
                                     <img width={80}  src={chips} />
@@ -398,7 +417,7 @@ class GameScreenSpectator extends React.Component {
 
                 <TableCardContainer>
                     <PotContainer>  <img width={80}  src={chips} />
-                        <label>{this.state.playerPot} </label></PotContainer>
+                        <label>{this.state.potAmount} </label></PotContainer>
                     <CardContainer>
                         <img width={95}  src={this.state.tablecard1} />
                     </CardContainer>
@@ -442,20 +461,7 @@ class GameScreenSpectator extends React.Component {
 
 
                 </ControlContainer>
-                <ChatContainer>
 
-                    <h1>Player Chat</h1>
-
-                    <InputField
-                        placeholder="new message"
-                        onChange={e => {
-                            this.handleInputChange('message', e.target.value);
-                        }}
-                    />
-
-
-
-                </ChatContainer>
                 <Button
                     margin-bottom="40px"
                     height="30%"
