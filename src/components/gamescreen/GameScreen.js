@@ -201,7 +201,7 @@ class GameScreen extends React.Component {
             bet_visible: true,
             controlContainerBorder: "",
 
-            raiseAmountInput: null,
+            raiseAmountInput: 50,
 
 
 
@@ -374,8 +374,10 @@ I already do this in the getGamelog() method
         //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
         const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
         const gamelog = new GameLog(response.data);
-
-        if(gamelog.possibleActions.includes("BET") && !this.state.input_cancel_visible){
+        if(this.state.input_cancel_visible){
+            return;
+        }
+        if(gamelog.possibleActions.includes("BET")){
             this.handleInputChange("betraisebuttontext", "Bet");
             this.handleInputChange("bet_visible", true)
         }
@@ -383,7 +385,7 @@ I already do this in the getGamelog() method
             this.handleInputChange("bet_visible", false)
         }
 
-        if(gamelog.possibleActions.includes("RAISE") && !this.state.input_cancel_visible){
+        if(gamelog.possibleActions.includes("RAISE")){
             this.handleInputChange("betraisebuttontext", "Raise");
             this.handleInputChange("raise_visible", true)
         }
@@ -391,21 +393,21 @@ I already do this in the getGamelog() method
             this.handleInputChange("raise_visible", false)
         }
 
-        if(gamelog.possibleActions.includes("CHECK") && !this.state.input_cancel_visible){
+        if(gamelog.possibleActions.includes("CHECK")){
             this.handleInputChange("check_visible", true)
         }
         else{
             this.handleInputChange("check_visible", false)
         }
 
-        if(gamelog.possibleActions.includes("CALL") && !this.state.input_cancel_visible){
+        if(gamelog.possibleActions.includes("CALL")){
             this.handleInputChange("call_visible", true)
         }
         else{
             this.handleInputChange("call_visible", false)
         }
 
-        if(gamelog.possibleActions.includes("BET")  && !this.state.input_cancel_visible){
+        if(gamelog.possibleActions.includes("BET")){
             this.handleInputChange("betraisebuttontext", "Bet");
             this.handleInputChange("bet_visible", true)
         }
@@ -507,7 +509,7 @@ I already do this in the getGamelog() method
         this.displayHandCards();
         this.displayTableCards();
         this.whatButtonsToDisplay();
-        this.interval = setInterval(() => this.tick(), 5000);
+        this.interval = setInterval(() => this.tick(), 1000);
 
     }
 
@@ -610,6 +612,7 @@ I already do this in the getGamelog() method
                                 this.handleInputChange("inputfieldvisible", true);
                                 this.handleInputChange("input_cancel_visible", true);
                                 this.handleInputChange("bet_visible", false);
+                                this.handleInputChange("raiseAmountInput", 50);
                             }}
                         >
                             Bet
@@ -622,6 +625,7 @@ I already do this in the getGamelog() method
                                 this.handleInputChange("inputfieldvisible", true);
                                 this.handleInputChange("input_cancel_visible", true);
                                 this.handleInputChange("raise_visible", false);
+                                this.handleInputChange("raiseAmountInput", 50);
                             }}
                         >
                             Raise
@@ -666,11 +670,8 @@ I already do this in the getGamelog() method
                                     if(this.state.betraisebuttontext === "Bet") {
                                         this.handleInputChange("bet_visible", true);
                                     }
-
                                     this.handleInputChange("input_cancel_visible", false);
                                     this.handleInputChange("inputfieldvisible", false);
-
-
                                 }}
                             >
                                 Cancel
