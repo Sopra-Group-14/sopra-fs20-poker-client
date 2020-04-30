@@ -154,7 +154,7 @@ class GameScreen extends React.Component {
             playerCredit:null,
 
             //Cards
-            tablecards: null,
+            tablecards: [],
             handcards: null,
 
             //Handcards
@@ -331,7 +331,9 @@ I already do this in the getGamelog() method
             this.state.tablecards = gamelog.revealedCards;
 
             //testing purposes
-
+            if(this.state.tablecards === null){
+                return
+            }
             for (let i = 0; i < this.state.tablecards.length; i++){
                 this.setState({["tablecard"+(i+1)]: this.getImageOfCard(this.state.tablecards[i])});
             }
