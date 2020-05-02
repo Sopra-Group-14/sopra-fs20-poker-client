@@ -78,8 +78,6 @@ class Lobby extends React.Component {
             username: User.username,
             players: [],
             gameName: null,
-            bigBlind: null,
-            smallBlind: null,
             gameStarted: false
         };
 
@@ -139,6 +137,7 @@ class Lobby extends React.Component {
 
 
     }
+
 
     async startGame(){
         try {

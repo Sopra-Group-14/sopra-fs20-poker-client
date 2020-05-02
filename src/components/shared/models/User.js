@@ -12,6 +12,7 @@ class User {
     this.balance = null;
     this.action = null;
     this.hand = null;
+    this.playerName =null;
     Object.assign(this, data);
   }
 }

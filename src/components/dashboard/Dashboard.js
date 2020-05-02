@@ -104,6 +104,7 @@ class Dashboard extends React.Component {
                 api.post('/logout');
                 localStorage.removeItem('token');
                 localStorage.removeItem('username');
+                localStorage.removeItem('id');
                 this.props.history.push('/login');
 
             /*
@@ -137,15 +138,7 @@ class Dashboard extends React.Component {
                             Play a Game
                         </Button>
 
-                        <Button
 
-                            onClick={() => {
-                                this.watchGame();
-                                this.props.history.push(`/joingamespectator`);
-                            }}
-                        >
-                            Watch a Game
-                        </Button>
 
 
                         <Button
@@ -155,7 +148,15 @@ class Dashboard extends React.Component {
                         >
                             My Account
                         </Button>
+                        <Button
 
+                        onClick={() => {
+                            this.watchGame();
+                            this.props.history.push(`/joingamespectator`);
+                        }}
+                    >
+                        Watch a Game
+                    </Button>
                         <Button
                             onClick={() => {
                                 this.logout();

@@ -157,8 +157,8 @@ class GameScreenSpectator extends React.Component {
             activehandcards: null,
 
             //Cards
-            tablecards: null,
-            handcards: null,
+            tablecards: [],
+            handcards: [],
 
             //Handcards
             posh1: null,
@@ -275,38 +275,16 @@ class GameScreenSpectator extends React.Component {
     async displayTableCards() {
         try {
 
-            //Backend with Postman:
-            //4815cd7c29cb7c36a056db26c938e16ab48a74a9
-            //localStorage.setItem("gameId", "2");
-            //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
             const response = await api.get('/games/' + localStorage.getItem("gameId"),/*{headers:{ Authorization: localStorage.getItem("token")}}*/);
 
             let gamelog = new GameLog(response.data);
             this.state.tablecards = gamelog.revealedCards;
 
-            //testing purposes
-
-
-            if(this.state.tablecards[0] !== undefined) {
-                this.setState({["tablecard1"]: this.getImageOfCard(this.state.tablecards[0])});
-            }
-            if(this.state.tablecards[1] !== undefined) {
-                this.setState({["tablecard2"]: this.getImageOfCard(this.state.tablecards[1])})
-            }
-            if(this.state.tablecards[2] !== undefined) {
-                this.setState({["tablecard3"]: this.getImageOfCard(this.state.tablecards[2])});
-            }
-            if(this.state.tablecards[3] !== undefined) {
-                this.setState({["tablecard4"]: this.getImageOfCard(this.state.tablecards[3])});
-            }
-            if(this.state.tablecards[4] !== undefined) {
-                this.setState({["tablecard5"]: this.getImageOfCard(this.state.tablecards[4])});
-            }
-
 
         } catch (error) {
             alert(`Something went wrong when trying to get the tablecards: \n${handleError(error)}`);
         }
+
 
     }
 
@@ -317,7 +295,13 @@ class GameScreenSpectator extends React.Component {
 
 
     async leave(){
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/spectator/'+localStorage.getItem("spectatorId")+'/leave')
+        if (localStorage.getItem('id') === null){
+            this.props.history.push(`/welcomepage`);
+        }
+        else{
+            this.props.history.push('/dashboard')
+        }
+        //await api.put( '/games/'+localStorage.getItem("gameId")+'/spectator/'+localStorage.getItem("spectatorId")+'/leave')
     }
 
     handleInputChange(key, value) {
@@ -467,7 +451,7 @@ class GameScreenSpectator extends React.Component {
                     height="30%"
                     onClick={() => {
                         this.leave();
-                        this.props.history.push(`/dashboard`);
+
                     }}
                 >
                     Leave Game

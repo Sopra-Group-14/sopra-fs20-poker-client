@@ -17,13 +17,15 @@ class GameLog {
         this.amountToCall = null;
         this.revealedCards = null;
         this.players = [];
-        this.winner = null;
+        this.winners = null;
         this.possibleActions = null;
         this.gameName = null;
         this.potAmount = null;
         this.activePlayers = null;
         this.thisPlayersTurn = null;
         this.nextPlayersTurn = null;
+        this.bigBlind = null;
+        this.smallBlind = null;
 
         Object.assign(this, data);
     }

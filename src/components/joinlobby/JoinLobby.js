@@ -107,6 +107,17 @@ class JoinLobby extends React.Component {
         }
     }
 
+    blind(){
+        this.player = new User(this.state.bigBlind);
+        this.player2 = new User(this.state.smallBlind);
+        //    alert(this.player.playerName)
+        if(this.username === this.player.playerName){
+            alert("you are the Bigblind, please raise 5!");
+        }
+        else if(this.username === this.player2.playerName){
+            alert("you are the Smallblind, pleaser bet 5!")
+        }
+    }
 
     tick() {
         //alert("Lobby gets refreshed");
@@ -133,6 +144,7 @@ class JoinLobby extends React.Component {
     async gameStart(){
         //alert("game not ready yet")
         const response = await api.get('/games/'+localStorage.getItem("gameId"));
+        this.blind();
         if(response.gameStart === true){
             this.props.history.push(`/gamescreen`);
         }

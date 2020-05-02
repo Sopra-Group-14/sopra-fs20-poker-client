@@ -10,6 +10,7 @@ import {graphicsList} from '../../images'
 import Card from "../shared/models/Card";
 import Slider from "../Slider/Slider";
 import User from "../shared/models/User";
+import Player from "../../views/Player";
 
 
 const PlayersContainer = styled.div`
@@ -190,6 +191,8 @@ class GameScreen extends React.Component {
             activePlayers : null,
             thisPlayersTurn : null,
             nextPlayersTurn : null,
+            bigBlind : null,
+            smallBlind : null,
 
             //Conditional Button Rendering
             betraisebuttontext: "Bet",
@@ -201,7 +204,7 @@ class GameScreen extends React.Component {
             bet_visible: true,
             controlContainerBorder: "",
 
-            raiseAmountInput: 0,
+            raiseAmountInput: 50,
 
 
 
@@ -233,8 +236,8 @@ class GameScreen extends React.Component {
         this.handleInputChange('activePlayers', gamelog.activePlayers);
         this.handleInputChange('thisPlayersTurn', gamelog.thisPlayersTurn);
         this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
-        //alert(this.state.amountToCall);
-
+        this.handleInputChange('bigBlind', gamelog.bigBlind);
+        this.handleInputChange('smallBlind', gamelog.smallBlind);
         //Make white border on ControlContainer if its your turn
         if(localStorage.getItem("id") === String(this.state.nextPlayerId)){
             this.handleInputChange('controlContainerBorder', "1px solid #FFFFFF");
@@ -279,10 +282,13 @@ I already do this in the getGamelog() method
     async nextRound(){
         const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
         let gamelog = new GameLog(response.data);
-
         if (gamelog.winner != null){
-            localStorage.setItem("winner", gamelog.winner);
-            this.props.history.push(`/dashboard`);
+            let name = gamelog.winner.playerName;
+            name = "lara";
+            localStorage.setItem("winner", name);
+            alert("this is name:" + name);
+
+
 
         }
     }
@@ -483,6 +489,19 @@ I already do this in the getGamelog() method
         this.setState({raiseAmountInput: data})
     };
 
+    async blind(){
+
+        let player = new User(this.state.bigBlind);
+        let player2 = new User(this.state.smallBlind);
+
+        if(localStorage.getItem("id") === String(player.id)){
+            alert("you are the Bigblind, please raise 5!");
+        }
+        else if(localStorage.getItem("id") === String(player2.id)){
+            alert("you are the Smallblind, please bet 5!")
+        }
+    }
+
     playRound(){
         if(this.state.gameOver === false){
             this.getGamelog();
@@ -490,8 +509,16 @@ I already do this in the getGamelog() method
             this.displayHandCards();
             this.displayTableCards();
             this.whatButtonsToDisplay();
+             //   this.blind();
+
+
         }
         this.nextRound();
+        if(this.state.gameOver === true){
+            localStorage.setItem("winner", this.state.winner);
+            this.props.history.push(`/endscreen`);
+
+        }
     }
 
     tick() {
@@ -613,7 +640,7 @@ I already do this in the getGamelog() method
                                 this.handleInputChange("inputfieldvisible", true);
                                 this.handleInputChange("input_cancel_visible", true);
                                 this.handleInputChange("bet_visible", false);
-                                this.handleInputChange("raiseAmountInput", 0);
+                                this.handleInputChange("raiseAmountInput", 50);
                             }}
                         >
                             Bet
@@ -626,7 +653,7 @@ I already do this in the getGamelog() method
                                 this.handleInputChange("inputfieldvisible", true);
                                 this.handleInputChange("input_cancel_visible", true);
                                 this.handleInputChange("raise_visible", false);
-                                this.handleInputChange("raiseAmountInput", 0);
+                                this.handleInputChange("raiseAmountInput", 50);
                             }}
                         >
                             Raise
@@ -680,7 +707,7 @@ I already do this in the getGamelog() method
                         </ButtonContainerRow> : null}
 
                         {this.state.inputfieldvisible ?
-                            <Slider max={this.state.playerCredit - this.state.amountToCall}
+                            <Slider max={this.state.playerCredit}
                                     handleraiseAmountInput={this.callbackFunction}
                                     key={'raiseAmountInput'}
                                     color={"#C14E4E"}
@@ -711,25 +738,12 @@ I already do this in the getGamelog() method
                     </PotContainer>
                 </ControlContainer>
 
-                <ChatContainer>
-
-                    <h1>Player Chat</h1>
-
-                    <InputField
-                        placeholder="new message"
-                        onChange={e => {
-                            this.handleInputChange('message', e.target.value);
-                        }}
-                    />
-
-
-
-                </ChatContainer>
                 <Button
                     margin-bottom="40px"
                     height="30%"
                     onClick={() => {
                         this.leave();
+                        localStorage.removeItem('gameId');
                         this.props.history.push(`/dashboard`);
                     }}
                 >
@@ -745,3 +759,18 @@ I already do this in the getGamelog() method
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
 export default withRouter(GameScreen);
+
+/*    <ChatContainer>
+
+        <h1>Player Chat</h1>
+
+        <InputField
+            placeholder="new message"
+            onChange={e => {
+                this.handleInputChange('message', e.target.value);
+            }}
+        />
+
+
+
+    </ChatContainer>*/
