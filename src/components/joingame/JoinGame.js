@@ -150,7 +150,7 @@ class JoinGame extends React.Component {
                                             localStorage.setItem("gameId", game.gameId);
                                             this.join();
                                         }}   >
-                                            {game.gameId}    {game.potType   }
+                                           {game.gameName}  : {game.potType}
                                         </GameContainer>
                                     );
                                 })}
