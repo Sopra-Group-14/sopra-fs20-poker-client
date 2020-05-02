@@ -516,7 +516,7 @@ I already do this in the getGamelog() method
         this.nextRound();
         if(this.state.gameOver === true){
             localStorage.setItem("winner", this.state.winner);
-            //this.props.history.push(`/endscreen`);
+            this.props.history.push(`/endscreen`);
 
         }
     }
