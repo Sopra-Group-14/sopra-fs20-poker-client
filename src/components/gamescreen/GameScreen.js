@@ -132,14 +132,26 @@ const ButtonContainerRow = styled.div`
   display: flex;
   justify-content: 'center';  
 `;
+const BoxText = styled.div`
+ width: 600px; 
+ textAlign: 'center';
+`
 
+
+const ContainerRow = styled.div`
+  margin: auto;
+  width: 600px; 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; 
+`;
 const ControlContainer= styled.div`
   margin: auto;
   margin-top: 60px;
   width: 600px; 
   height: 250px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   background: #417D44;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
@@ -193,6 +205,7 @@ class GameScreen extends React.Component {
             nextPlayersTurn : null,
             bigBlind : null,
             smallBlind : null,
+            userState : null,
 
             //Conditional Button Rendering
             betraisebuttontext: "Bet",
@@ -495,10 +508,13 @@ I already do this in the getGamelog() method
         let player2 = new User(this.state.smallBlind);
 
         if(localStorage.getItem("id") === String(player.id)){
-            alert("you are the Bigblind, please raise 5!");
+            this.state.userState = "You are Big Blind"
         }
         else if(localStorage.getItem("id") === String(player2.id)){
-            alert("you are the Smallblind, please bet 5!")
+            this.state.userState = "You are small Blind"
+        }
+        else{
+            this.state.userState = "";
         }
     }
 
@@ -509,7 +525,7 @@ I already do this in the getGamelog() method
             this.displayHandCards();
             this.displayTableCards();
             this.whatButtonsToDisplay();
-             //   this.blind();
+            this.blind();
 
 
         }
@@ -611,7 +627,9 @@ I already do this in the getGamelog() method
 
                 <ControlContainer
                     style={{"border": this.state.controlContainerBorder}}>
-                    <label>{this.state.username}</label>
+                    <BoxText><h4>{this.state.username+ "     " +this.state.userState} </h4></BoxText>
+
+                    <ContainerRow>
                     <ButtonContainer>
                         {this.state.call_visible ? <Button
                             height="30%"
@@ -736,6 +754,7 @@ I already do this in the getGamelog() method
                         <img width={80}  src={chips} />
                         <label>{this.state.playerCredit}</label>
                     </PotContainer>
+                    </ContainerRow>
                 </ControlContainer>
 
                 <Button

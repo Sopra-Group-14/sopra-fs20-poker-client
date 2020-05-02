@@ -40,7 +40,9 @@ const Form = styled.div`
 
 `;
 
-
+const BoxText = styled.div`
+ textAlign: 'center';
+`
 const ButtonContainer = styled.div`
   flex-direction: column;
   display: flex;
@@ -99,26 +101,28 @@ class EndScreen extends React.Component {
 
 
     render() {
-        {this.state.winner.map(user => {
+
+            this.state.winner.map(user => {
 
             if(String(user.id) === localStorage.getItem("id")){
                 return(
-
-                    this.state.text = this.state.winnertext
+                  this.state.text = this.state.winnertext
                );
             }else {
+                let lt = "you lost, the winner is: " + user.playerName;
+
                 return (
-                    this.state.text = this.state.losertext + user.playerName
-                );
+                    this.state.text = lt
+            );
             }
         })
-        }
+        
 
 
         return (
             <FormContainer>
                 <Form>
-                    <label>{this.state.text} </label>
+                    <h3>{this.state.text}</h3>
 
                     <ButtonContainer>
                         <Button
