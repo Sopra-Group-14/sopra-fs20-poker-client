@@ -707,7 +707,7 @@ I already do this in the getGamelog() method
                         </ButtonContainerRow> : null}
 
                         {this.state.inputfieldvisible ?
-                            <Slider max={this.state.playerCredit}
+                            <Slider max={this.state.playerCredit-this.state.amountToCall}
                                     handleraiseAmountInput={this.callbackFunction}
                                     key={'raiseAmountInput'}
                                     color={"#C14E4E"}
