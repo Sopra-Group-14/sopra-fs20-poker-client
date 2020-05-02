@@ -144,15 +144,20 @@ class JoinGame extends React.Component {
                             <div>
                                 <label></label>
                                 {this.state.games.map(game => {
-                                    return (
-                                        <GameContainer key={game.gameId} onClick={() => {
-                                            this.state.gameId = game.gameId;
-                                            localStorage.setItem("gameId", game.gameId);
-                                            this.join();
-                                        }}   >
-                                           {game.gameName}  : {game.potType}
-                                        </GameContainer>
-                                    );
+                                    this.log = new GameModel(game.gameLog);
+                                    if(this.log.gameStarted === false){
+                                        return (
+                                            <GameContainer key={game.gameId} onClick={() => {
+                                                this.state.gameId = game.gameId;
+                                                localStorage.setItem("gameId", game.gameId);
+                                                this.join();
+                                            }}>
+                                                {game.gameName} : {game.potType}
+                                            </GameContainer>
+                                        );
+                                    }else{
+                                        return;
+                                    }
                                 })}
                             </div>
 

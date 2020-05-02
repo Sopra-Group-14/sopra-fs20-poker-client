@@ -131,15 +131,18 @@ class JoinGameSpectator extends React.Component {
 
                             <div>
                                 {this.state.games.map(game => {
-                                    return (
-                                        <GameContainer key={game.gameId} onClick={() => {
-                                            this.state.gameId = game.gameId;
-                                            localStorage.setItem("gameId", game.gameId);
-                                            this.watch();
-                                        }}   >
-                                            {game.gameName}    {game.potType   }
-                                        </GameContainer>
-                                    );
+                                    this.log = new GameModel(game.gameLog);
+                                    if(this.log.gameStarted === true) {
+                                        return (
+                                            <GameContainer key={game.gameId} onClick={() => {
+                                                this.state.gameId = game.gameId;
+                                                localStorage.setItem("gameId", game.gameId);
+                                                this.watch();
+                                            }}>
+                                                {game.gameName} {game.potType}
+                                            </GameContainer>
+                                        );
+                                    }
                                 })}
                             </div>
 
