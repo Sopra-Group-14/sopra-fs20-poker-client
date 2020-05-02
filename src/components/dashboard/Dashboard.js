@@ -104,6 +104,7 @@ class Dashboard extends React.Component {
                 api.post('/logout');
                 localStorage.removeItem('token');
                 localStorage.removeItem('username');
+                localStorage.removeItem('id');
                 this.props.history.push('/login');
 
             /*
@@ -147,7 +148,15 @@ class Dashboard extends React.Component {
                         >
                             My Account
                         </Button>
+                        <Button
 
+                        onClick={() => {
+                            this.watchGame();
+                            this.props.history.push(`/joingamespectator`);
+                        }}
+                    >
+                        Watch a Game
+                    </Button>
                         <Button
                             onClick={() => {
                                 this.logout();
@@ -168,12 +177,3 @@ class Dashboard extends React.Component {
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
 export default withRouter(Dashboard);
-/*  <Button
-
-                         onClick={() => {
-                             this.watchGame();
-                             this.props.history.push(`/joingamespectator`);
-                         }}
-                     >
-                         Watch a Game
-                     </Button>*/

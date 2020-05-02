@@ -88,6 +88,7 @@ class JoinGameSpectator extends React.Component {
        // localStorage.setItem("spectatorId", response.spectatorId);
     }
 
+
     async gamelist() {
         try {
            const response =  await api.get('/games');
@@ -146,8 +147,13 @@ class JoinGameSpectator extends React.Component {
                             }
                         <Button
                             onClick={() => {
+                                if (localStorage.getItem('id') === null){
                                     this.props.history.push(`/welcomepage`);
                                 }
+                                else{
+                                    this.props.history.push('/dashboard')
+                                }
+                            }
                             }
                         >
                             go Back

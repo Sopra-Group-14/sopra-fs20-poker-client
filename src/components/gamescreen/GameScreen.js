@@ -720,6 +720,7 @@ I already do this in the getGamelog() method
                     height="30%"
                     onClick={() => {
                         this.leave();
+                        localStorage.removeItem('gameId');
                         this.props.history.push(`/dashboard`);
                     }}
                 >

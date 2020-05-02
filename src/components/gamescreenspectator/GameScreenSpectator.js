@@ -317,7 +317,13 @@ class GameScreenSpectator extends React.Component {
 
 
     async leave(){
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/spectator/'+localStorage.getItem("spectatorId")+'/leave')
+        if (localStorage.getItem('id') === null){
+            this.props.history.push(`/welcomepage`);
+        }
+        else{
+            this.props.history.push('/dashboard')
+        }
+        //await api.put( '/games/'+localStorage.getItem("gameId")+'/spectator/'+localStorage.getItem("spectatorId")+'/leave')
     }
 
     handleInputChange(key, value) {
@@ -467,7 +473,7 @@ class GameScreenSpectator extends React.Component {
                     height="30%"
                     onClick={() => {
                         this.leave();
-                        this.props.history.push(`/welcomepage`);
+
                     }}
                 >
                     Leave Game
