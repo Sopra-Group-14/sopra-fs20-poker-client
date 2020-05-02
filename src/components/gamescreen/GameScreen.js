@@ -201,7 +201,7 @@ class GameScreen extends React.Component {
             bet_visible: true,
             controlContainerBorder: "",
 
-            raiseAmountInput: 50,
+            raiseAmountInput: 0,
 
 
 
@@ -233,6 +233,7 @@ class GameScreen extends React.Component {
         this.handleInputChange('activePlayers', gamelog.activePlayers);
         this.handleInputChange('thisPlayersTurn', gamelog.thisPlayersTurn);
         this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
+        //alert(this.state.amountToCall);
 
         //Make white border on ControlContainer if its your turn
         if(localStorage.getItem("id") === String(this.state.nextPlayerId)){
@@ -612,7 +613,7 @@ I already do this in the getGamelog() method
                                 this.handleInputChange("inputfieldvisible", true);
                                 this.handleInputChange("input_cancel_visible", true);
                                 this.handleInputChange("bet_visible", false);
-                                this.handleInputChange("raiseAmountInput", 50);
+                                this.handleInputChange("raiseAmountInput", 0);
                             }}
                         >
                             Bet
@@ -625,7 +626,7 @@ I already do this in the getGamelog() method
                                 this.handleInputChange("inputfieldvisible", true);
                                 this.handleInputChange("input_cancel_visible", true);
                                 this.handleInputChange("raise_visible", false);
-                                this.handleInputChange("raiseAmountInput", 50);
+                                this.handleInputChange("raiseAmountInput", 0);
                             }}
                         >
                             Raise
@@ -679,7 +680,7 @@ I already do this in the getGamelog() method
                         </ButtonContainerRow> : null}
 
                         {this.state.inputfieldvisible ?
-                            <Slider max={this.state.playerCredit}
+                            <Slider max={this.state.playerCredit - this.state.amountToCall}
                                     handleraiseAmountInput={this.callbackFunction}
                                     key={'raiseAmountInput'}
                                     color={"#C14E4E"}
