@@ -10,6 +10,7 @@ import {graphicsList} from '../../images'
 import Card from "../shared/models/Card";
 import Slider from "../Slider/Slider";
 import User from "../shared/models/User";
+import Player from "../../views/Player";
 
 
 const PlayersContainer = styled.div`
@@ -190,6 +191,8 @@ class GameScreen extends React.Component {
             activePlayers : null,
             thisPlayersTurn : null,
             nextPlayersTurn : null,
+            bigBlind : null,
+            smallBlind : null,
 
             //Conditional Button Rendering
             betraisebuttontext: "Bet",
@@ -233,7 +236,8 @@ class GameScreen extends React.Component {
         this.handleInputChange('activePlayers', gamelog.activePlayers);
         this.handleInputChange('thisPlayersTurn', gamelog.thisPlayersTurn);
         this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
-
+        this.handleInputChange('bigBlind', gamelog.bigBlind);
+        this.handleInputChange('smallBlind', gamelog.smallBlind);
         //Make white border on ControlContainer if its your turn
         if(localStorage.getItem("id") === String(this.state.nextPlayerId)){
             this.handleInputChange('controlContainerBorder', "1px solid #FFFFFF");
@@ -278,10 +282,13 @@ I already do this in the getGamelog() method
     async nextRound(){
         const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
         let gamelog = new GameLog(response.data);
-
         if (gamelog.winner != null){
-            localStorage.setItem("winner", gamelog.winner);
-            this.props.history.push(`/dashboard`);
+            let name = gamelog.winner.playerName;
+            name = "lara";
+            localStorage.setItem("winner", name);
+            alert("this is name:" + name);
+
+
 
         }
     }
@@ -482,6 +489,19 @@ I already do this in the getGamelog() method
         this.setState({raiseAmountInput: data})
     };
 
+    async blind(){
+
+        let player = new User(this.state.bigBlind);
+        let player2 = new User(this.state.smallBlind);
+
+        if(localStorage.getItem("id") === String(player.id)){
+            alert("you are the Bigblind, please raise 5!");
+        }
+        else if(localStorage.getItem("id") === String(player2.id)){
+            alert("you are the Smallblind, please bet 5!")
+        }
+    }
+
     playRound(){
         if(this.state.gameOver === false){
             this.getGamelog();
@@ -489,6 +509,9 @@ I already do this in the getGamelog() method
             this.displayHandCards();
             this.displayTableCards();
             this.whatButtonsToDisplay();
+             //   this.blind();
+
+
         }
         this.nextRound();
         if(this.state.gameOver === true){

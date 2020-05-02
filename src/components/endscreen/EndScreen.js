@@ -6,6 +6,7 @@ import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import GameLog from "../shared/models/GameLog";
+import chips from "../../graphics/chips.png";
 
 
 
@@ -65,7 +66,7 @@ class EndScreen extends React.Component {
 
             winnertext: " Congratulations, you won!!!",
             losertext: "you lost, the winner is: ",
-            winner: null,
+            winner: [],
             credit: null,
             text: null,
 
@@ -80,25 +81,40 @@ class EndScreen extends React.Component {
 
     }
     async getWinner(){
-        // Winner should be in local storage after game ended !
-        localStorage.setItem("winner", "lara3");
+        // Winner should be in local storage after game ended
+      const response = await api.get('/games/' + localStorage.getItem("gameId"));
+      let gamelog = new GameLog(response.data);
+      this.state.winner = gamelog.winners;
 
-      this.setState({ ["winner"]: localStorage.getItem("winner")});
+
+     // alert(this.state.winner.playerName);
+     // this.setState({ ["winner"]: winner.playerName});
+
 
     }
-    componentDidMount() {
+    componentWillMount() {
         this.getuser();
         this.getWinner();
     }
 
 
     render() {
-        if(this.state.username === this.state.winner){
-            this.state.text = this.state.winnertext;
+        {this.state.winner.map(user => {
+
+            if(String(user.id) === localStorage.getItem("id")){
+                return(
+
+                    this.state.text = this.state.winnertext
+               );
+            }else {
+                return (
+                    this.state.text = this.state.losertext + user.playerName
+                );
+            }
+        })
         }
-        else{
-            this.state.text = this.state.losertext + this.state.winner;
-        }
+
+
         return (
             <FormContainer>
                 <Form>
@@ -108,6 +124,7 @@ class EndScreen extends React.Component {
                         <Button
                             height="30%"
                             onClick={() => {
+                                localStorage.removeItem('gameId');
                                 this.props.history.push(`/Dashboard`);
                             }}
                         >
