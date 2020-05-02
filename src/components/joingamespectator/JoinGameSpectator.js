@@ -136,7 +136,7 @@ class JoinGameSpectator extends React.Component {
                                             localStorage.setItem("gameId", game.gameId);
                                             this.watch();
                                         }}   >
-                                            {game.gameId}    {game.potType   }
+                                            {game.gameName}    {game.potType   }
                                         </GameContainer>
                                     );
                                 })}
