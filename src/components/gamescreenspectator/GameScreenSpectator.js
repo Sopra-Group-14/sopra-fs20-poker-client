@@ -467,7 +467,7 @@ class GameScreenSpectator extends React.Component {
                     height="30%"
                     onClick={() => {
                         this.leave();
-                        this.props.history.push(`/dashboard`);
+                        this.props.history.push(`/welcomepage`);
                     }}
                 >
                     Leave Game

@@ -137,15 +137,7 @@ class Dashboard extends React.Component {
                             Play a Game
                         </Button>
 
-                        <Button
 
-                            onClick={() => {
-                                this.watchGame();
-                                this.props.history.push(`/joingamespectator`);
-                            }}
-                        >
-                            Watch a Game
-                        </Button>
 
 
                         <Button
@@ -176,3 +168,12 @@ class Dashboard extends React.Component {
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
 export default withRouter(Dashboard);
+/*  <Button
+
+                         onClick={() => {
+                             this.watchGame();
+                             this.props.history.push(`/joingamespectator`);
+                         }}
+                     >
+                         Watch a Game
+                     </Button>*/

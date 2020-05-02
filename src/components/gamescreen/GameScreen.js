@@ -491,6 +491,11 @@ I already do this in the getGamelog() method
             this.whatButtonsToDisplay();
         }
         this.nextRound();
+        if(this.state.gameOver === true){
+            localStorage.setItem("winner", this.state.winner);
+            this.props.history.push(`/endscreen`);
+
+        }
     }
 
     tick() {
@@ -710,20 +715,6 @@ I already do this in the getGamelog() method
                     </PotContainer>
                 </ControlContainer>
 
-                <ChatContainer>
-
-                    <h1>Player Chat</h1>
-
-                    <InputField
-                        placeholder="new message"
-                        onChange={e => {
-                            this.handleInputChange('message', e.target.value);
-                        }}
-                    />
-
-
-
-                </ChatContainer>
                 <Button
                     margin-bottom="40px"
                     height="30%"
@@ -744,3 +735,18 @@ I already do this in the getGamelog() method
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
 export default withRouter(GameScreen);
+
+/*    <ChatContainer>
+
+        <h1>Player Chat</h1>
+
+        <InputField
+            placeholder="new message"
+            onChange={e => {
+                this.handleInputChange('message', e.target.value);
+            }}
+        />
+
+
+
+    </ChatContainer>*/
