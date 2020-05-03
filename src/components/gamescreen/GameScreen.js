@@ -216,8 +216,13 @@ class GameScreen extends React.Component {
             check_visible: true,
             bet_visible: true,
             controlContainerBorder: "",
+            betorsmallblind: "Bet",
+            raiseorbigblind: "Raise",
 
             raiseAmountInput: 50,
+
+            betSmallBlind: null,
+            betBigBlind: null
 
 
 
@@ -475,8 +480,6 @@ I already do this in the getGamelog() method
     }
 
     async raise(){
-        //  localStorage.setItem("playerId", "1");
-
         const requestBody = JSON.stringify({
             action: "RAISE",
             amount: this.state.raiseAmountInput,
@@ -486,12 +489,25 @@ I already do this in the getGamelog() method
     }
 
     async bet(){
-        //   localStorage.setItem("playerId", "1");
-        //alert(localStorage.getItem("token"));
         const requestBody = JSON.stringify({
             action: "BET",
             amount: this.state.raiseAmountInput,
-            //token: localStorage.getItem("token") ,
+        });
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody, {headers:{ Authorization: localStorage.getItem("token")}})
+    }
+
+    async betSmallBlind(){
+        const requestBody = JSON.stringify({
+            action: "BET",
+            amount: 5,
+        });
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody, {headers:{ Authorization: localStorage.getItem("token")}})
+    }
+
+    async betBigBlind(){
+        const requestBody = JSON.stringify({
+            action: "RAISE",
+            amount: 5,
         });
         await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody, {headers:{ Authorization: localStorage.getItem("token")}})
     }
@@ -511,30 +527,62 @@ I already do this in the getGamelog() method
         this.setState({raiseAmountInput: data})
     };
 
-    async blind(){
+    async blind() {
 
         let player = new User(this.state.bigBlind);
         let player2 = new User(this.state.smallBlind);
 
-        if(localStorage.getItem("id") === String(player.id)){
-            this.state.userState = "You are Big Blind"
-        }
-        else if(localStorage.getItem("id") === String(player2.id)){
-            this.state.userState = "You are small Blind"
-        }
-        else{
+
+        if (localStorage.getItem("id") === String(player.id)) {
+            this.state.userState = "you are Big Blind";
+            if (this.state.gameRound === "Preflop" && localStorage.getItem("id") === String(this.state.nextPlayerId)) {
+                this.handleInputChange("betBigBlind", true);
+                this.handleInputChange("raiseorbigblind", "Bet the BigBlind");
+            } else {
+                this.handleInputChange("betBigBlind", false);
+                this.handleInputChange("raiseorbigblind", "Raise");
+            }
+        } else {
             this.state.userState = "";
+            this.handleInputChange("betBigBlind", false);
+            this.handleInputChange("raiseorbigblind", "Raise");
+        }
+
+        if (localStorage.getItem("id") === String(player2.id)) {
+            this.state.userState = "you are Small Blind";
+            if (this.state.gameRound === "Preflop" && localStorage.getItem("id") === String(this.state.nextPlayerId)) {
+                this.handleInputChange("betSmallBlind", true);
+                this.handleInputChange("betorsmallblind", "Bet the SmallBlind");
+            } else {
+                this.handleInputChange("betSmallBlind", false);
+                this.handleInputChange("betorsmallblind", "Bet");
+            }
+        } else {
+            this.handleInputChange("betSmallBlind", false);
+            this.handleInputChange("betorsmallblind", "Bet");
         }
     }
+
+        /*else{
+            this.state.userState = "";
+            this.handleInputChange("betSmallBlind", false);
+            this.handleInputChange("betBigBlind", false);
+            this.handleInputChange("betorsmallblind", "Bet");
+            this.handleInputChange("raiseorbigblind", "Raise");
+        }
+
+         */
+
 
     playRound(){
         if(this.state.gameOver === false){
             this.getGamelog();
             this.getUser();
+            this.blind();
             this.displayHandCards();
             this.displayTableCards();
             this.whatButtonsToDisplay();
-            this.blind();
+
 
 
         }
@@ -557,12 +605,13 @@ I already do this in the getGamelog() method
     }
 
     componentDidMount() {
+        this.blind();
         this.getGamelog();
         this.getUser();
         this.displayHandCards();
         this.displayTableCards();
         this.whatButtonsToDisplay();
-        this.interval = setInterval(() => this.tick(), 1000);
+        this.interval = setInterval(() => this.tick(), 2000);
 
     }
 
@@ -645,6 +694,8 @@ I already do this in the getGamelog() method
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
                                 this.call();
+                                this.handleInputChange("inputfieldvisible", false);
+                                this.handleInputChange("input_cancel_visible", false);
                             }}
                         >
                             Call
@@ -655,6 +706,8 @@ I already do this in the getGamelog() method
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
                                 this.check();
+                                this.handleInputChange("inputfieldvisible", false);
+                                this.handleInputChange("input_cancel_visible", false);
                             }}
                         >
                             Check
@@ -664,26 +717,38 @@ I already do this in the getGamelog() method
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
-                                this.handleInputChange("inputfieldvisible", true);
-                                this.handleInputChange("input_cancel_visible", true);
-                                this.handleInputChange("bet_visible", false);
-                                this.handleInputChange("raiseAmountInput", 50);
+                                if(this.state.betSmallBlind){
+                                    this.betSmallBlind();
+                                    //this.handleInputChange("betorsmallblind", "Bet");
+                                }
+                                else {
+                                    this.handleInputChange("inputfieldvisible", true);
+                                    this.handleInputChange("input_cancel_visible", true);
+                                    this.handleInputChange("bet_visible", false);
+                                    this.handleInputChange("raiseAmountInput", 0);
+                                }
                             }}
                         >
-                            Bet
+                            {this.state.betorsmallblind}
                         </Button> : null}
 
                         {this.state.raise_visible ? <Button
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
-                                this.handleInputChange("inputfieldvisible", true);
-                                this.handleInputChange("input_cancel_visible", true);
-                                this.handleInputChange("raise_visible", false);
-                                this.handleInputChange("raiseAmountInput", 50);
+                                if(this.state.betBigBlind){
+                                    this.betBigBlind();
+                                    //this.handleInputChange("raiseorbigblind", "Raise");
+                                }
+                                else {
+                                    this.handleInputChange("inputfieldvisible", true);
+                                    this.handleInputChange("input_cancel_visible", true);
+                                    this.handleInputChange("raise_visible", false);
+                                    this.handleInputChange("raiseAmountInput", 0);
+                                }
                             }}
                         >
-                            Raise
+                            {this.state.raiseorbigblind}
                         </Button> : null}
 
                         {this.state.input_cancel_visible ? <ButtonContainerRow>
