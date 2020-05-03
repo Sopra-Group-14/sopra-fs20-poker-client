@@ -280,29 +280,23 @@ class GameScreenSpectator extends React.Component {
             let gamelog = new GameLog(response.data);
             this.state.tablecards = gamelog.revealedCards;
 
-            if(this.state.tablecards === null){
+            if(this.state.tablecards === []){
                 for (let i = 0; i < 5; i++){
                     this.setState({["tablecard"+(i+1)]: graphicsList.find(data => data.name === "BACKSIDE").src});
                 }
                 return
             }
-            if(this.state.tablecards.length === 3){
-                this.setState({["tablecard3"]: graphicsList.find(data => data.name === "BACKSIDE").src});
-                this.setState({["tablecard4"]: graphicsList.find(data => data.name === "BACKSIDE").src});
-            }
-
-            if(this.state.tablecards.length === 4){
-                this.setState({["tablecard4"]: graphicsList.find(data => data.name === "BACKSIDE").src});
-            }
-
             for (let i = 0; i < this.state.tablecards.length; i++){
                 this.setState({["tablecard"+(i+1)]: this.getImageOfCard(this.state.tablecards[i])});
+            }
+            if(this.state.tablecards.length !== 5) {
+                for (let i = this.state.tablecards.length; i < 5; i++) {
+                    this.setState({["tablecard" + (i + 1)]: graphicsList.find(data => data.name === "BACKSIDE").src});
+                }
             }
         } catch (error) {
             alert(`Something went wrong when trying to get the tablecards: \n${handleError(error)}`);
         }
-
-
     }
 
     getImageOfCard(card){
