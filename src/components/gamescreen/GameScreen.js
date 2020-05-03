@@ -504,6 +504,7 @@ I already do this in the getGamelog() method
 
     async betSmallBlind(){
         this.handleInputChange("betSmallBlindDone", true);
+        this.handleInputChange("betSmallBlind", false);
         this.handleInputChange("betorsmallblind", "Bet");
         const requestBody = JSON.stringify({
             action: "BET",
@@ -514,6 +515,7 @@ I already do this in the getGamelog() method
 
     async betBigBlind(){
         this.handleInputChange("betBigBlindDone", true);
+        this.handleInputChange("betBigBlind", false);
         this.handleInputChange("raiseorbigblind", "Raise");
         const requestBody = JSON.stringify({
             action: "RAISE",
@@ -629,7 +631,7 @@ I already do this in the getGamelog() method
         this.displayHandCards();
         this.displayTableCards();
         this.whatButtonsToDisplay();
-        this.interval = setInterval(() => this.tick(), 2000);
+        this.interval = setInterval(() => this.tick(), 1000);
 
     }
 
