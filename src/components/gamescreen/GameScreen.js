@@ -221,9 +221,11 @@ class GameScreen extends React.Component {
 
             raiseAmountInput: 50,
 
-            betSmallBlind: null,
-            betBigBlind: null
+            betSmallBlindDone: false,
+            betBigBlindDone: false,
 
+            betBigBlind: false,
+            betSmallBlind: false
 
 
         };
@@ -264,6 +266,10 @@ class GameScreen extends React.Component {
             this.handleInputChange('controlContainerBorder', "");
         }
 
+        if(this.state.roundOver === true){
+            this.handleInputChange('betSmallBlindDone', false);
+            this.handleInputChange('betBigBlindDone', false);
+        }
         //this.setState({["potAmount"]: gamelog.potAmount});
 
         //alert("id"+localStorage.getItem("id"));
@@ -497,6 +503,8 @@ I already do this in the getGamelog() method
     }
 
     async betSmallBlind(){
+        this.handleInputChange("betSmallBlindDone", true);
+        this.handleInputChange("betorsmallblind", "Bet");
         const requestBody = JSON.stringify({
             action: "BET",
             amount: 5,
@@ -505,6 +513,8 @@ I already do this in the getGamelog() method
     }
 
     async betBigBlind(){
+        this.handleInputChange("betBigBlindDone", true);
+        this.handleInputChange("raiseorbigblind", "Raise");
         const requestBody = JSON.stringify({
             action: "RAISE",
             amount: 5,
@@ -535,33 +545,41 @@ I already do this in the getGamelog() method
 
         if (localStorage.getItem("id") === String(player.id)) {
             this.state.userState = "you are Big Blind";
-            if (this.state.gameRound === "Preflop" && localStorage.getItem("id") === String(this.state.nextPlayerId)) {
+            if (this.state.gameRound === "Preflop" && !this.state.betBigBlindDone) {
                 this.handleInputChange("betBigBlind", true);
                 this.handleInputChange("raiseorbigblind", "Bet the BigBlind");
-            } else {
-                this.handleInputChange("betBigBlind", false);
-                this.handleInputChange("raiseorbigblind", "Raise");
+            }
+
+            else {
+                //this.handleInputChange("betBigBlind", false);
+                //this.handleInputChange("raiseorbigblind", "Raise");
             }
         } else {
             this.state.userState = "";
-            this.handleInputChange("betBigBlind", false);
-            this.handleInputChange("raiseorbigblind", "Raise");
+            //this.handleInputChange("betBigBlind", false);
+            //this.handleInputChange("raiseorbigblind", "Raise");
         }
+
+
+
 
         if (localStorage.getItem("id") === String(player2.id)) {
             this.state.userState = "you are Small Blind";
-            if (this.state.gameRound === "Preflop" && localStorage.getItem("id") === String(this.state.nextPlayerId)) {
+            if (this.state.gameRound === "Preflop" && !this.state.betSmallBlindDone) {
                 this.handleInputChange("betSmallBlind", true);
                 this.handleInputChange("betorsmallblind", "Bet the SmallBlind");
-            } else {
-                this.handleInputChange("betSmallBlind", false);
-                this.handleInputChange("betorsmallblind", "Bet");
+            }
+            else {
+                //this.handleInputChange("betSmallBlind", false);
+                //this.handleInputChange("betorsmallblind", "Bet");
             }
         } else {
-            this.handleInputChange("betSmallBlind", false);
-            this.handleInputChange("betorsmallblind", "Bet");
+            //this.handleInputChange("betSmallBlind", false);
+            //this.handleInputChange("betorsmallblind", "Bet");
         }
     }
+
+
 
         /*else{
             this.state.userState = "";
