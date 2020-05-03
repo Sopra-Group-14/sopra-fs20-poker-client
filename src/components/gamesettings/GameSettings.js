@@ -168,6 +168,7 @@ class GameSettings extends React.Component {
                         </ButtonGreen>
 
                         <ButtonGreen
+                            disabled={true}
                             style={{"font-weight": this.state.fontWeightPotLimit}}
                             onClick={() => {
                                 this.setState({limit: "pot limit"});
@@ -182,6 +183,7 @@ class GameSettings extends React.Component {
 
 
                         <ButtonGreen
+                            disabled={true}
                             style={{"font-weight": this.state.fontWeightSplitLimit}}
                                 onClick={() => {
                                 this.setState({limit: "split limit"});
@@ -194,6 +196,7 @@ class GameSettings extends React.Component {
                             Split Limit
                         </ButtonGreen>
                         <ButtonGreen
+                            disabled={true}
                             style={{"font-weight": this.state.fontWeightFixedLimit}}
                             onClick={() => {
                                 this.setState({limit: "fixed limit"});

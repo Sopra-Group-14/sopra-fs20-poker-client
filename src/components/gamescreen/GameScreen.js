@@ -352,8 +352,20 @@ I already do this in the getGamelog() method
 
             //testing purposes
             if(this.state.tablecards === null){
+                for (let i = 0; i < 5; i++){
+                    this.setState({["tablecard"+(i+1)]: graphicsList.find(data => data.name === "BACKSIDE").src});
+                }
                 return
             }
+            if(this.state.tablecards.length === 3){
+                this.setState({["tablecard3"]: graphicsList.find(data => data.name === "BACKSIDE").src});
+                this.setState({["tablecard4"]: graphicsList.find(data => data.name === "BACKSIDE").src});
+            }
+
+            if(this.state.tablecards.length === 4){
+                    this.setState({["tablecard4"]: graphicsList.find(data => data.name === "BACKSIDE").src});
+            }
+
             for (let i = 0; i < this.state.tablecards.length; i++){
                 this.setState({["tablecard"+(i+1)]: this.getImageOfCard(this.state.tablecards[i])});
             }
@@ -531,8 +543,8 @@ I already do this in the getGamelog() method
         }
         this.nextRound();
         if(this.state.gameOver === true){
-            localStorage.setItem("winner", this.state.winner);
-            this.props.history.push(`/endscreen`);
+            //localStorage.setItem("winner", this.state.winner);
+            //this.props.history.push(`/endscreen`);
 
         }
     }

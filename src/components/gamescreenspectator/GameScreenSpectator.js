@@ -280,7 +280,12 @@ class GameScreenSpectator extends React.Component {
             let gamelog = new GameLog(response.data);
             this.state.tablecards = gamelog.revealedCards;
 
-
+            if(this.state.tablecards === null){
+                return
+            }
+            for (let i = 0; i < this.state.tablecards.length; i++){
+                this.setState({["tablecard"+(i+1)]: this.getImageOfCard(this.state.tablecards[i])});
+            }
         } catch (error) {
             alert(`Something went wrong when trying to get the tablecards: \n${handleError(error)}`);
         }
