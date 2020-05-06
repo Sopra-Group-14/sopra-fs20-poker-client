@@ -11,57 +11,74 @@ import GameLog from "../shared/models/GameLog";
 import GameModel from "../shared/models/GameModel";
 
 
-
-
 const FormContainer = styled.div`
-  margin-top: 10%;
+  margin-top: 7.8%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  
-`;
-
-const PlayerContainer = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  min-height: 300px;
   justify-content: center;
 `;
 
 const Form = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 30%;
+  justify-content: top;
+  width: 25%;
+  height: 300px; 
   font-family: Pontano Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 24px;
-  color: #000000;
+  color: black;
   padding-left: 37px;
   padding-right: 37px;
-  padding-bottom: 37px;
-  background: #C4C4C4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 19px;
-
-
+  background: rgba(115, 28, 1,0.8);
+  border-radius: 3px;
 `;
+
+const InputField = styled.input`
+  &::placeholder {
+    font-family: 'Roboto', sans-serif;
+    color: rgba(0,0,0,0.5);;
+    font-size: 19px;
+    opacity: 0.6;
+  }
+  height: 35px;
+  padding-left: 15px;
+  margin-left: -4px;
+  border: none;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  background: rgba(237,94,2, 0.4);
+  color: black;
+`;
+
+const Label = styled.label`
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-weight: 900;
+  font-size: 17px;
+  color: black ;
+  margin-bottom: 5px;
+  margin-top: 20px;
+  text-transform: uppercase;
+`;
+
+const ButtonContainer = styled.div`
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+`;
+
 const GameContainer = styled.li`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
-`;
-
-const ButtonContainer = styled.div`
-  flex-direction: column;
-  display: flex;
-  justify-content: 'center';
-  margin-top: 20px;
-  margin-bottom: 20 px;
 `;
 
 
@@ -110,6 +127,7 @@ class JoinGameSpectator extends React.Component {
         clearInterval(this.interval);
     }
     componentWillMount() {
+        this.gamelist();
         this.interval = setInterval(() => this.tick(), 1000);
     }
 
@@ -120,11 +138,11 @@ class JoinGameSpectator extends React.Component {
 
             <FormContainer>
                 <Form>
-                    <label>Games to Watch: </label>
+                    <Label>Games to Watch: </Label>
                     <ButtonContainer>
                         {this.state.gamesEmpty? (
 
-                            <label>There are no current games</label>
+                            <Label>There are no current games</Label>
 
 
                         ): (
@@ -139,7 +157,10 @@ class JoinGameSpectator extends React.Component {
                                                 localStorage.setItem("gameId", game.gameId);
                                                 this.watch();
                                             }}>
+                                                <Button
+                                                    style = {{height: 30, marginTop: -15, background: 'rgba(179, 29, 3,1)'}}>
                                                 {game.gameName} {game.potType}
+                                                </Button>
                                             </GameContainer>
                                         );
                                     }
@@ -149,6 +170,7 @@ class JoinGameSpectator extends React.Component {
                              )
                             }
                         <Button
+                            style = {{marginTop: 30}}
                             onClick={() => {
                                 if (localStorage.getItem('id') === null){
                                     this.props.history.push(`/welcomepage`);

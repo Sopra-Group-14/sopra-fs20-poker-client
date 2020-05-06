@@ -18,12 +18,12 @@ const Container = styled.div`
 
 const Title = styled.h1`
   text-align: center;
-  font-family: Pattaya;
+  font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 72px;
   line-height: 100px;
-  color: #C4C4C4;
+  color: #FFFFF;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 /**
@@ -37,8 +37,7 @@ const Title = styled.h1`
 const Header = props => {
   return (
     <Container height={props.height}>
-      <Title>Lets play some poker ! </Title>
-      <ReactLogo width={60} height={60} />
+
     </Container>
   );
 };

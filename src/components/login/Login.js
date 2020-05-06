@@ -6,21 +6,21 @@ import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 
+
 const FormContainer = styled.div`
-  margin-top: 2em;
+  margin-top: 2.2%;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 300px;
   justify-content: center;
-  
 `;
 
 const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 60%;
+  width: 50%;
   height: 375px; 
   font-family: Pontano Sans;
   font-style: normal;
@@ -29,16 +29,16 @@ const Form = styled.div`
   color: black;
   padding-left: 37px;
   padding-right: 37px;
-  background: #C4C4C4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 19px;
-
-
+  background: rgba(115, 28, 1,0.8);
+  border-radius: 3px;
 `;
 
 const InputField = styled.input`
   &::placeholder {
-    color: dark grey;
+    font-family: 'Roboto', sans-serif;
+    color: rgba(0,0,0,0.5);;
+    font-size: 19px;
+    opacity: 0.6;
   }
   height: 35px;
   padding-left: 15px;
@@ -46,13 +46,17 @@ const InputField = styled.input`
   border: none;
   border-radius: 20px;
   margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(237,94,2, 0.4);
   color: black;
 `;
 
 const Label = styled.label`
-  color: black;
-  margin-bottom: 10px;
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-weight: 900;
+  font-size: 17px;
+  color: black ;
+  margin-bottom: 5px;
   text-transform: uppercase;
 `;
 
@@ -62,7 +66,6 @@ const ButtonContainer = styled.div`
   justify-content: center;
   margin-top: 20px;
   align-items: center;
-
 `;
 
 /**

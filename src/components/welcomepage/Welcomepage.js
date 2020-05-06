@@ -2,33 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
-import Background from '../../graphics/poker_redfire.jpg'
-//import { ImageBackground, StyleSheet, Text, View } from 'react-native';
-/*
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: "column"
-    },
-    image: {
-        flex: 1,
-        resizeMode: "cover",
-        justifyContent: "center"
-    },
-});
-
-
-
-
-const MainContainer = styled.div`
-   flex: 1;
-   justifyContent: center;
-   alignItems: center;
-   width: null;
-   height: null;
-`;
-
-*/
+import { Form } from '../../views/design/Form';
 
 const FormContainer = styled.div`
   margin-top: 10%;
@@ -38,32 +12,12 @@ const FormContainer = styled.div`
   justify-content: center;
 `;
 
-const Form = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 30%;
-  font-family: Pontano Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 24px;
-  color: #000000;
-  padding-left: 37px;
-  padding-right: 37px;
-  padding-bottom: 37px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 19px;
-
-
-`;
-
-
 const ButtonContainer = styled.div`
   flex-direction: column;
   display: flex;
   justify-content: 'center';
   margin-top: 20px;
-  margin-bottom: 20 px;
+  margin-bottom: 20px;
 `;
 
 /**
@@ -92,12 +46,9 @@ class Welcomepage extends React.Component {
                             height: '100%'
 
             }}>
-            <View style={styles.container}>
-                <ImageBackground source={Background} style={styles.image}>
  */
     render() {
         return (
-
             <FormContainer>
                 <Form>
                     <ButtonContainer>
@@ -127,9 +78,6 @@ class Welcomepage extends React.Component {
                             >
                                 Spectator
                             </Button>
-                        <div id="container">
-                            <button className="learn-more">Learn More</button>
-                        </div>
                    </ButtonContainer>
                 </Form>
             </FormContainer>
