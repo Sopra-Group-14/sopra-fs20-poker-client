@@ -8,7 +8,7 @@ import { Button } from '../../views/design/Button';
 
 
 const FormContainer = styled.div`
-  margin-top: 10%;
+  margin-top: 9.5%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +20,7 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 30%;
+  width: 40%;
   font-family: Pontano Sans;
   font-style: normal;
   font-weight: normal;
@@ -29,8 +29,6 @@ const Form = styled.div`
   padding-left: 37px;
   padding-right: 37px;
   padding-bottom: 37px;
-  background: #C4C4C4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 19px;
 
 

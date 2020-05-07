@@ -24,7 +24,7 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: top;
-  width: 25%;
+  width: 35%;
   height: 300px; 
   font-family: Pontano Sans;
   font-style: normal;
@@ -33,25 +33,8 @@ const Form = styled.div`
   color: black;
   padding-left: 37px;
   padding-right: 37px;
-  background: rgba(115, 28, 1,0.8);
-  border-radius: 3px;
-`;
-
-const InputField = styled.input`
-  &::placeholder {
-    font-family: 'Roboto', sans-serif;
-    color: rgba(0,0,0,0.5);;
-    font-size: 19px;
-    opacity: 0.6;
-  }
-  height: 35px;
-  padding-left: 15px;
-  margin-left: -4px;
-  border: none;
+  background: rgba(0,0,0,0.9);
   border-radius: 20px;
-  margin-bottom: 20px;
-  background: rgba(237,94,2, 0.4);
-  color: black;
 `;
 
 const Label = styled.label`
@@ -59,10 +42,11 @@ const Label = styled.label`
   font-style: 1rem;
   font-weight: 900;
   font-size: 17px;
-  color: black ;
-  margin-bottom: 5px;
+  color: rgb(237,94,2) ;
+  margin-bottom: -15px;
   margin-top: 20px;
   text-transform: uppercase;
+  text-align: center
 `;
 
 const ButtonContainer = styled.div`
@@ -70,7 +54,6 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  align-items: center;
 `;
 
 const GameContainer = styled.li`
@@ -116,7 +99,6 @@ class JoinGameSpectator extends React.Component {
         } catch (error) {
             alert(`Something went wrong when trying to play a game: \n${handleError(error)}`);
         }
-
     }
 
     tick() {
@@ -158,8 +140,8 @@ class JoinGameSpectator extends React.Component {
                                                 this.watch();
                                             }}>
                                                 <Button
-                                                    style = {{height: 30, marginTop: -15, background: 'rgba(179, 29, 3,1)'}}>
-                                                {game.gameName} {game.potType}
+                                                    style = {{marginTop: 10, background: 'rgba(250, 158, 14,1)', padding: 15, width: '100%', }}>
+                                                {game.gameName} ᛫ {game.potType}
                                                 </Button>
                                             </GameContainer>
                                         );

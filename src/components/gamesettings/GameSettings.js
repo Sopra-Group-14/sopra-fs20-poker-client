@@ -9,75 +9,85 @@ import GameModel from "../shared/models/GameModel";
 
 const ButtonGreen = styled.div`
     &:hover {
-        transform: translateY(-2px);
-    }
+    transform: translateY(-3px);
+    letter-spacing: 0.125rem;
+    background: rgba(237,94,2,1);
     
-    font-family: Pontano Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 24px;
-    text-align: center;
-    padding: 6px;
+  }
+  line-height: 17px;
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-size: 15px;
+  text-align: center;
+  padding: 10px;
+
     margin-top: 15px;
-    color: #000000;
-    width: ${props => props.width || null};
+    color: rgba(0,0,0,1);
+    margin-left: 15%
+    margin-right: 15%
+    width: 70%;
     height: 35px;
     border: none;
     border-radius: 5px;
     cursor: ${props => (props.disabled ? "default" : "pointer")};
     opacity: ${props => (props.disabled ? 0.4 : 1)};
     transition: all 0.3s ease;
-    background: #d2f8d2;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background: rgba(237,94,2,0.85);
+    
 `;
 
 const FormContainer = styled.div`
-  margin-top: 3%;
+  margin-top: -3%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   
 `;
-
 const Form = styled.div`
-  
+
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 30%;
-  font-family: Pontano Sans;
+  width: 40%;
   font-style: normal;
   font-weight: normal;
   font-size: 24px;
-  color: #000000;
   padding-left: 37px;
   padding-right: 37px;
   padding-bottom: 15px;
   padding-top: 15px;
-  background: #C4C4C4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 19px;
+  background: rgba(0, 0, 0,0.9);
+  border-radius: 20px;
 `;
+
 
 const InputField = styled.input`
   &::placeholder {
-    color: dark grey;
+    font-family: 'Roboto', sans-serif;
+    color: rgba(237,94,2,0.3);
+    font-size: 19px;
+    opacity: 0.6;
   }
+  font-family: 'Roboto', sans-serif;
+  font-size: 19px;
   height: 35px;
   padding-left: 15px;
   margin-left: -4px;
   border: none;
-  border-radius: 20px;
+  border-radius: 8px;
   margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(237,94,2, 0.4);
   color: black;
 `;
-
 const Label = styled.label`
-  color: black;
-  margin-bottom: 10px;
-  
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-weight: 900;
+  font-size: 17px;
+  color: rgb(237,94,2);
+  margin-bottom: 5px;
+  text-transform: uppercase;
 `;
 
 const ButtonContainer = styled.div`
@@ -89,7 +99,6 @@ const ButtonContainer = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 20px;
-  background: #FFFFFF;
   border-radius: 10px;
 `;
 
@@ -108,10 +117,10 @@ class GameSettings extends React.Component {
         this.state = {
             gamename: null,
             limit: null,
-            fontWeightNoLimit: "normal",
-            fontWeightPotLimit: "normal",
-            fontWeightSplitLimit: "normal",
-            fontWeightFixedLimit: "normal"
+            fontWeightNoLimit: "700",
+            fontWeightPotLimit: "700",
+            fontWeightSplitLimit: "700",
+            fontWeightFixedLimit: "700"
         };
     }
 
@@ -158,10 +167,10 @@ class GameSettings extends React.Component {
                             height="30%"
                             onClick={() => {
                                 this.setState({limit: "no limit"});
-                                this.setState({fontWeightNoLimit: "bold"});
-                                this.setState({fontWeightPotLimit: "normal"});
-                                this.setState({fontWeightSplitLimit: "normal"});
-                                this.setState({fontWeightFixedLimit: "normal"});
+                                this.setState({fontWeightNoLimit: "900"});
+                                this.setState({fontWeightPotLimit: "700"});
+                                this.setState({fontWeightSplitLimit: "700"});
+                                this.setState({fontWeightFixedLimit: "700"});
                             }}
                         >
                             No Limit
@@ -172,10 +181,10 @@ class GameSettings extends React.Component {
                             style={{"font-weight": this.state.fontWeightPotLimit}}
                             onClick={() => {
                                 this.setState({limit: "pot limit"});
-                                this.setState({fontWeightNoLimit: "normal"});
-                                this.setState({fontWeightPotLimit: "bold"});
-                                this.setState({fontWeightSplitLimit: "normal"});
-                                this.setState({fontWeightFixedLimit: "normal"});
+                                this.setState({fontWeightNoLimit: "700"});
+                                this.setState({fontWeightPotLimit: "900"});
+                                this.setState({fontWeightSplitLimit: "700"});
+                                this.setState({fontWeightFixedLimit: "700"});
                             }}
                         >
                             Pot Limit
@@ -187,10 +196,10 @@ class GameSettings extends React.Component {
                             style={{"font-weight": this.state.fontWeightSplitLimit}}
                                 onClick={() => {
                                 this.setState({limit: "split limit"});
-                                    this.setState({fontWeightNoLimit: "normal"});
-                                    this.setState({fontWeightPotLimit: "normal"});
-                                    this.setState({fontWeightSplitLimit: "bold"});
-                                    this.setState({fontWeightFixedLimit: "normal"});
+                                    this.setState({fontWeightNoLimit: "700"});
+                                    this.setState({fontWeightPotLimit: "700"});
+                                    this.setState({fontWeightSplitLimit: "900"});
+                                    this.setState({fontWeightFixedLimit: "700"});
                             }}
                         >
                             Split Limit
@@ -200,10 +209,10 @@ class GameSettings extends React.Component {
                             style={{"font-weight": this.state.fontWeightFixedLimit}}
                             onClick={() => {
                                 this.setState({limit: "fixed limit"});
-                                this.setState({fontWeightNoLimit: "normal"});
-                                this.setState({fontWeightPotLimit: "normal"});
-                                this.setState({fontWeightSplitLimit: "normal"});
-                                this.setState({fontWeightFixedLimit: "bold"});
+                                this.setState({fontWeightNoLimit: "700"});
+                                this.setState({fontWeightPotLimit: "700"});
+                                this.setState({fontWeightSplitLimit: "700"});
+                                this.setState({fontWeightFixedLimit: "900"});
                             }}
                         >
                             Fixed Limit

@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 
 const FormContainer = styled.div`
-  margin-top: -4.5%;
+  margin-top: -2.3%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,8 +19,8 @@ const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 50%;
-  height: 450px; 
+  width: 45%;
+  height: 425px; 
   font-family: Pontano Sans;
   font-style: normal;
   font-weight: normal;
@@ -28,22 +28,24 @@ const Form = styled.div`
   color: black;
   padding-left: 37px;
   padding-right: 37px;
-  background: rgba(115, 28, 1,0.8);
-  border-radius: 3px;
+  background: rgba(0,0,0,0.9);
+  border-radius: 20px;
 `;
 
 const InputField = styled.input`
   &::placeholder {
     font-family: 'Roboto', sans-serif;
-    color: rgba(0,0,0,0.5);;
+    color: rgba(237,94,2,0.3);
     font-size: 19px;
     opacity: 0.6;
   }
+  font-family: 'Roboto', sans-serif;
+  font-size: 19px;
   height: 35px;
   padding-left: 15px;
   margin-left: -4px;
   border: none;
-  border-radius: 20px;
+  border-radius: 8px;
   margin-bottom: 20px;
   background: rgba(237,94,2, 0.4);
   color: black;
@@ -54,16 +56,17 @@ const Label = styled.label`
   font-style: 1rem;
   font-weight: 900;
   font-size: 17px;
-  color: black ;
+  color: rgb(237,94,2) ;
   margin-bottom: 5px;
   text-transform: uppercase;
 `;
+
 
 const ButtonContainer = styled.div`
   flex-direction: column;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 0px;
   align-items: center;
 `;
 

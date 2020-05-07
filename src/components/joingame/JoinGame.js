@@ -11,43 +11,51 @@ import GameLog from "../shared/models/GameLog";
 import GameModel from "../shared/models/GameModel";
 
 
-
-
 const FormContainer = styled.div`
-  margin-top: 10%;
+  margin-top: 7.8%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  
-`;
-
-const PlayerContainer = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  min-height: 300px;
   justify-content: center;
 `;
 
 const Form = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 30%;
+  justify-content: top;
+  width: 35%;
+  height: 300px; 
   font-family: Pontano Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 24px;
-  color: #000000;
+  color: black;
   padding-left: 37px;
   padding-right: 37px;
-  padding-bottom: 37px;
-  background: #C4C4C4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 19px;
-
-
+  background: rgba(0,0,0,0.9);
+  border-radius: 20px;
 `;
+
+const Label = styled.label`
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-weight: 900;
+  font-size: 17px;
+  color: rgb(237,94,2) ;
+  margin-bottom: -15px;
+  margin-top: 20px;
+  text-transform: uppercase;
+  text-align: center
+`;
+
+const ButtonContainer = styled.div`
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
 const GameContainer = styled.li`
   display: flex;
   flex-direction: column;
@@ -55,15 +63,6 @@ const GameContainer = styled.li`
   justify-content: center;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
 `;
-
-const ButtonContainer = styled.div`
-  flex-direction: column;
-  display: flex;
-  justify-content: 'center';
-  margin-top: 20px;
-  margin-bottom: 20 px;
-`;
-
 /**
  * Classes in React allow you to have an internal state within the class and to have the React life-cycle for your component.
  * You should have a class (instead of a functional component) when:
@@ -121,6 +120,7 @@ class JoinGame extends React.Component {
         clearInterval(this.interval);
     }
     componentWillMount() {
+        this.gamelist();
         this.interval = setInterval(() => this.tick(), 1000);
 
     }
@@ -132,17 +132,13 @@ class JoinGame extends React.Component {
 
             <FormContainer>
                 <Form>
-                    <label>Waiting Games: </label>
+                    <Label>Waiting Games: </Label>
                     <ButtonContainer>
                         {this.state.gamesEmpty? (
-
-                            <label>There are no waiting games</label>
-
-
+                            <Label>There are no waiting games</Label>
                         ): (
 
                             <div>
-                                <label></label>
                                 {this.state.games.map(game => {
                                     this.log = new GameModel(game.gameLog);
                                     if(this.log.gameStarted === false){
@@ -152,7 +148,10 @@ class JoinGame extends React.Component {
                                                 localStorage.setItem("gameId", game.gameId);
                                                 this.join();
                                             }}>
-                                                {game.gameName} : {game.potType}
+                                                <Button
+                                                    style = {{marginTop: 10, background: 'rgba(250, 158, 14,1)', padding: 15, width: '100%' }}>
+                                                    {game.gameName} ᛫ {game.potType}
+                                                </Button>
                                             </GameContainer>
                                         );
                                     }else{

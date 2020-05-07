@@ -11,13 +11,16 @@ const FormContainer = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
+//align-items: center;
 const ButtonContainer = styled.div`
   flex-direction: column;
   display: flex;
-  justify-content: 'center';
+  justify-content: center;
   margin-top: 20px;
   margin-bottom: 20px;
+  
+  
+  
 `;
 
 /**
@@ -51,6 +54,7 @@ class Welcomepage extends React.Component {
         return (
             <FormContainer>
                 <Form>
+
                     <ButtonContainer>
                             <Button
                                 height="30%"

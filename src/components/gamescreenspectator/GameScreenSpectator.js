@@ -21,7 +21,7 @@ const PlayersContainer = styled.div`
   justify-content: space-between;
 `;
 const PlayerContainer = styled.div`
-     background: #417D44; 
+     background: rgba(237,94,2,0.85); 
      width: 100px;
      height: 119px;
      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -32,7 +32,7 @@ const PlayerContainer = styled.div`
       justify-content: center;
   `;
 const ActivePlayerContainer = styled.div`
-     background: #417D44;
+background: rgba(237,94,2,0.85); 
      border: 1px solid #FFFFFF;
      width: 100px;
      height: 119px;
@@ -46,7 +46,7 @@ const ActivePlayerContainer = styled.div`
 
 const PotContainer = styled.div`
   margin: auto;
-  background: #417D44; 
+background: rgba(237,94,2,0.85); 
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   display: flex; 
@@ -66,7 +66,7 @@ const ChatContainer = styled.div`
   background: #C14E4E;
 `;
 const TableCardContainer = styled.div`
-  padding-top: 60px; 
+  padding-top: 20px; 
   margin: auto;
   width: 700px; 
   display: flex;
@@ -134,15 +134,26 @@ const ButtonContainerRow = styled.div`
 
 const ControlContainer= styled.div`
   margin: auto;
-  margin-top: 60px;
+  margin-top: 30px;
   width: 600px; 
   height: 250px;
   display: flex;
   flex-direction: row;
-  background: #417D44;
+  background: rgba(0,0,0,0.85);
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   justify-content: space-between;
+`;
+
+const Label = styled.label`
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-weight: 600;
+  font-size: 17px;
+  color: rgb(237,94,2);
+  margin-top: 10px;
+  margin-bottom: 5px;
+  text-align: center
 `;
 
 class GameScreenSpectator extends React.Component {
@@ -341,7 +352,7 @@ class GameScreenSpectator extends React.Component {
 
     tick() {
         //alert("Everything gets refreshed");
-        this.playRound()
+        this.playRound();
         this.displayHandCards();
 
     }
@@ -449,7 +460,7 @@ class GameScreenSpectator extends React.Component {
                         <label>{this.state.playerCredit}</label>
                     </PotContainer>
                     <HandCardContainer>
-                        <label>This are the winning stats of this player: xy</label>
+                        <Label>This are the winning stats of this player: xy</Label>
                     </HandCardContainer>
 
 
@@ -458,6 +469,7 @@ class GameScreenSpectator extends React.Component {
                 </ControlContainer>
 
                 <Button
+                    style = {{width: '15%'}}
                     margin-bottom="40px"
                     height="30%"
                     onClick={() => {

@@ -7,44 +7,64 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 
 
-
-
 const FormContainer = styled.div`
-  margin-top: 10%;
+  margin-top: 7.6%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 300px;
   justify-content: center;
-  
 `;
 
 const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 30%;
-  font-family: Pontano Sans;
+  width: 45%;
+  height: 250px; 
   font-style: normal;
   font-weight: normal;
   font-size: 24px;
-  color: #000000;
+  color: black;
   padding-left: 37px;
   padding-right: 37px;
-  padding-bottom: 37px;
-  background: #C4C4C4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 19px;
-
-
+  border-radius: 3px;
 `;
 
+const Label = styled.label`
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-weight: 700;
+  font-size: 25px;
+  color: black ;
+  margin-bottom: 5px;
+  margin-top: 7%
+  margin-left: 5%
+  color: rgb(237,94,2);
+  text-align: center
+`;
 
 const ButtonContainer = styled.div`
   flex-direction: column;
   display: flex;
-  justify-content: 'center';
-  margin-top: 20px;
-  margin-bottom: 20 px;
+  justify-content: center;
+  margin-top: 13%;
+  align-items: center;
+`;
+
+const InfoContainer = styled.div`
+  flex-direction: column;
+  display: flex;
+  justify-content: left;
+  margin-top: 0%;
+  height: 100px;
+  align-items: left;
+  border-radius: 50px;
+  margin-left: 15%
+  margin-right: 15%
+  width: 70%;
+  background: rgba(0,0,0,0.9);
+ 
 `;
 
 /**
@@ -96,8 +116,10 @@ class Account extends React.Component {
             <FormContainer>
 
                 <Form>
-                    <h4>Logged in as: {this.state.username}
-                    <div>User Balance: {this.state.balance}</div></h4>
+                    <InfoContainer>
+                    <Label>{this.state.username}
+                    <div>has {this.state.balance} Credits</div></Label>
+                        </InfoContainer>
                     <ButtonContainer>
                         <Button
                             height="30%"

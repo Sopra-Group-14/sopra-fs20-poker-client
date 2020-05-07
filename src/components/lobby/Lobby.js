@@ -10,54 +10,47 @@ import GameLog from "../shared/models/GameLog";
 
 
 const FormContainer = styled.div`
-  margin-top: 5%;
+  margin-top: 0%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 300px;
   justify-content: center;
-  
 `;
 
 const Form = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 50%;
+  justify-content: top;
+  width: 45%;
+  height: 450px; 
   font-family: Pontano Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 24px;
-  color: #000000;
+  color: black;
   padding-left: 37px;
   padding-right: 37px;
-  padding-bottom: 37px;
-  background: #C4C4C4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 19px;
-
-
+  background: rgba(0, 0, 0,0.9);
+  border-radius: 20px;
 `;
-
-
-const Users = styled.ul`
-  list-style: none;
-  padding-left: 0;
-`;
-
-const PlayerContainer = styled.li`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-
 const ButtonContainer = styled.div`
   flex-direction: column;
   display: flex;
-  justify-content: 'center';
-  margin-top: 20px;
-  margin-bottom: 20 px;
+  justify-content: center;
+  margin-top: 0px;
+  align-items: center;
+`;
+
+const Label = styled.label`
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-weight: 900;
+  font-size: 17px;
+  color: rgb(237,94,2);
+  margin-top: 10px;
+  margin-bottom: 5px;
+  text-align: center
 `;
 
 /**
@@ -164,6 +157,8 @@ class Lobby extends React.Component {
 
 
     componentDidMount() {
+        this.getPlayers();
+        this.playerReady();
         /*setTimeout(function(){
         },1000);*/
         this.interval = setInterval(() => this.tick(), 1000);
@@ -180,18 +175,22 @@ class Lobby extends React.Component {
         return (
             <FormContainer>
                 <Form>
-                    <h2>Name of the Game: {this.state.gameName} </h2>
+                    <Label
+                        style = {{fontSize: 40, textTransform: 'uppercase'}}>
+                        {this.state.gameName} </Label>
 
-                    <label>
-                        List of all the Players:
+                    <Label style = {{fontSize: 25}}>
+                        Playerlist:
 
                         <div>
                             {this.state.players ? (
                                 this.state.players.map(player => {
                                     return (
-                                        <label>
-                                            <h4>{player.playerName}           {player.readyStatus}</h4>
-                                        </label>
+                                        <div>
+                                        <Label
+                                            style = {{fontSize: 20}}>
+                                            {player.playerName} ᛫ {player.readyStatus}
+                                        </Label></div>
                                     )
                                 })
                             ) : (
@@ -199,7 +198,7 @@ class Lobby extends React.Component {
                             )}
                         </div>
 
-                    </label>
+                    </Label>
                     <ButtonContainer>
 
                         <Button

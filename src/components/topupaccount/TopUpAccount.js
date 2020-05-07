@@ -9,17 +9,20 @@ import GameModel from "../shared/models/GameModel";
 
 const ButtonGreen = styled.div`
     &:hover {
-        transform: translateY(-2px);
-    }
+    transform: translateY(-3px);
+    letter-spacing: 0.125rem;
+    background: rgba(237,94,2,1);
     
-    font-family: Pontano Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 24px;
-    text-align: center;
-    padding: 6px;
+  }
+  line-height: 17px;
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-size: 15px;
+  text-align: center;
+  padding: 10px;
+
     margin-top: 15px;
-    color: #000000;
+    color: rgba(0,0,0,1);
     width: ${props => props.width || null};
     height: 35px;
     border: none;
@@ -27,8 +30,8 @@ const ButtonGreen = styled.div`
     cursor: ${props => (props.disabled ? "default" : "pointer")};
     opacity: ${props => (props.disabled ? 0.4 : 1)};
     transition: all 0.3s ease;
-    background: #d2f8d2;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background: rgba(237,94,2,0.85);
+    
 `;
 
 const FormContainer = styled.div`
@@ -41,42 +44,28 @@ const FormContainer = styled.div`
 `;
 
 const Form = styled.div`
-  
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 30%;
-  font-family: Pontano Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 24px;
-  color: #000000;
   padding-left: 37px;
   padding-right: 37px;
   padding-bottom: 15px;
   padding-top: 15px;
-  background: #C4C4C4;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 19px;
-`;
-
-const InputField = styled.input`
-  &::placeholder {
-    color: dark grey;
-  }
-  height: 35px;
-  padding-left: 15px;
-  margin-left: -4px;
-  border: none;
+  background: rgba(0, 0, 0,0.9);
   border-radius: 20px;
-  margin-bottom: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  color: black;
 `;
 
 const Label = styled.label`
-  color: black;
+  color: rgba(237,94,2,1);
+  font-weight: 900;
   margin-bottom: 10px;
+  font-size: 20px;
+
   
 `;
 
@@ -89,7 +78,6 @@ const ButtonContainer = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 20px;
-  background: #FFFFFF;
   border-radius: 10px;
 `;
 
@@ -107,9 +95,9 @@ class TopUpAccount extends React.Component {
         super();
         this.state = {
             amount: null,
-            fontWeight100Credits: "normal",
-            fontWeight500Credits: "normal",
-            fontWeight1000Credits: "normal"
+            fontWeight100Credits: "700",
+            fontWeight500Credits: "700",
+            fontWeight1000Credits: "700"
         };
     }
 
@@ -137,16 +125,16 @@ class TopUpAccount extends React.Component {
         return (
             <FormContainer>
                 <Form>
-                    <Label>Click on the Amount you want to load to your Account:</Label>
+                    <Label>Choose how many credits you want to add to your Balance:</Label>
                     <ButtonContainer>
                         <ButtonGreen
                             style={{"font-weight": this.state.fontWeight100Credits}}
                             height="30%"
                             onClick={() => {
                                 this.setState({amount: 100});
-                                this.setState({fontWeight100Credits: "bold"});
-                                this.setState({fontWeight500Credits: "normal"});
-                                this.setState({fontWeight1000Credits: "normal"});
+                                this.setState({fontWeight100Credits: "900"});
+                                this.setState({fontWeight500Credits: "700"});
+                                this.setState({fontWeight1000Credits: "700"});
                             }}
                         >
                             100 Credits
@@ -156,9 +144,9 @@ class TopUpAccount extends React.Component {
                             style={{"font-weight": this.state.fontWeight500Credits}}
                             onClick={() => {
                                 this.setState({amount: 500});
-                                this.setState({fontWeight100Credits: "normal"});
-                                this.setState({fontWeight500Credits: "bold"});
-                                this.setState({fontWeight1000Credits: "normal"});
+                                this.setState({fontWeight100Credits: "700"});
+                                this.setState({fontWeight500Credits: "900"});
+                                this.setState({fontWeight1000Credits: "700"});
                             }}
                         >
                             500 Credits
@@ -169,9 +157,9 @@ class TopUpAccount extends React.Component {
                             style={{"font-weight": this.state.fontWeight1000Credits}}
                             onClick={() => {
                                 this.setState({amount: 1000});
-                                this.setState({fontWeight100Credits: "normal"});
-                                this.setState({fontWeight500Credits: "normal"});
-                                this.setState({fontWeight1000Credits: "bold"});
+                                this.setState({fontWeight100Credits: "700"});
+                                this.setState({fontWeight500Credits: "700"});
+                                this.setState({fontWeight1000Credits: "900"});
                             }}
                         >
                             1000 Credits

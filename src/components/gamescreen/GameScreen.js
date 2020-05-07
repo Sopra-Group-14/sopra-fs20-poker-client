@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {BaseContainer} from '../../helpers/layout';
 import {api, handleError} from '../../helpers/api';
 import {withRouter} from 'react-router-dom';
-import {Button} from '../../views/design/Button';
 import chips from '../../graphics/chips.png';
 import GameLog from "../shared/models/GameLog";
 import {graphicsList} from '../../images'
@@ -12,6 +11,36 @@ import Slider from "../Slider/Slider";
 import User from "../shared/models/User";
 import Player from "../../views/Player";
 
+const Button = styled.div`
+  &:hover {
+    transform: translateY(-3px);
+    letter-spacing: 0.125rem;
+    background: rgba(237,94,2,1);
+    
+  }
+  line-height: 35px;
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-size: 15px;
+  text-align: center;
+  padding: 0px;
+  margin-top: 15px; 
+  color: #000000;
+  margin-left: 0%
+  margin-right: 0%
+  width: 100%;
+  height: 35px;
+  border: none;
+  border-radius: 8px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  transition: all 0.3s ease;
+  background: rgba(237,94,2,0.85);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  font-weight: 900;
+  color: $black;
+  text-transform: uppercase;
+`;
 
 const PlayersContainer = styled.div`
   margin: auto;
@@ -22,7 +51,7 @@ const PlayersContainer = styled.div`
   justify-content: space-between;
 `;
 const PlayerContainer = styled.div`
-     background: #417D44; 
+     background: rgba(237,94,2,0.85); 
      width: 100px;
      height: 119px;
      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -33,7 +62,7 @@ const PlayerContainer = styled.div`
       justify-content: center;
   `;
 const ActivePlayerContainer = styled.div`
-     background: #417D44;
+     background: rgba(237,94,2,0.85);
      border: 1px solid #FFFFFF;
      width: 100px;
      height: 119px;
@@ -47,7 +76,7 @@ const ActivePlayerContainer = styled.div`
 
 const PotContainer = styled.div`
   margin: auto;
-  background: #417D44; 
+  background: rgba(237,94,2,0.85); 
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   display: flex; 
@@ -81,6 +110,7 @@ const HandCardContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  justify-content: top; 
 `;
 const CardContainer = styled.div`
        margin: auto;
@@ -122,7 +152,7 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   width: 200px;
   display: flex;
-  justify-content: 'center';  
+  justify-content: top;  
 `;
 
 const ButtonContainerRow = styled.div`
@@ -130,16 +160,19 @@ const ButtonContainerRow = styled.div`
   flex-direction: row;
   width: 200px;
   display: flex;
-  justify-content: 'center';  
+  justify-content: center;  
 `;
 const BoxText = styled.div`
+ margin-top: 5px;
+ margin-left: 18px;
  width: 600px; 
- textAlign: 'center';
-`
+ text-align: top;
+ justify-content: top; 
+`;
 
 
 const ContainerRow = styled.div`
-  margin: auto;
+  margin-bottom: 20px;
   width: 600px; 
   display: flex;
   flex-direction: row;
@@ -147,17 +180,27 @@ const ContainerRow = styled.div`
 `;
 const ControlContainer= styled.div`
   margin: auto;
-  margin-top: 60px;
+  margin-top: 30px;
   width: 600px; 
   height: 250px;
   display: flex;
   flex-direction: column;
-  background: #417D44;
+  background: rgba(0,0,0,0.9);
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  justify-content: space-between;
+  justify-content: top;
 `;
 
+const Label = styled.label`
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-weight: 600;
+  font-size: 17px;
+  color: rgb(237,94,2);
+  margin-top: 10px;
+  margin-bottom: 5px;
+  text-align: center
+`;
 class GameScreen extends React.Component {
     constructor() {
         super();
@@ -705,7 +748,7 @@ I already do this in the getGamelog() method
 
                 <ControlContainer
                     style={{"border": this.state.controlContainerBorder}}>
-                    <BoxText><h4>{this.state.username+ "     " +this.state.userState} </h4></BoxText>
+                    <BoxText><Label>{this.state.username+ "     " +this.state.userState} </Label></BoxText>
 
                     <ContainerRow>
                     <ButtonContainer>
@@ -852,7 +895,8 @@ I already do this in the getGamelog() method
                 </ControlContainer>
 
                 <Button
-                    margin-bottom="40px"
+                    style = {{width: '15%'}}
+                margin-bottom="40px"
                     height="30%"
                     onClick={() => {
                         this.leave();
