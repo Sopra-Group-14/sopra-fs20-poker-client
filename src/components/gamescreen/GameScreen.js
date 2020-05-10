@@ -10,6 +10,8 @@ import Card from "../shared/models/Card";
 import Slider from "../Slider/Slider";
 import User from "../shared/models/User";
 import Player from "../../views/Player";
+import {Chat} from "../chat/Chat";
+
 
 const Button = styled.div`
   &:hover {
@@ -906,6 +908,12 @@ I already do this in the getGamelog() method
                 >
                     Leave Game
                 </Button>
+                <ChatContainer>
+                    <Chat>
+                    </Chat>
+
+
+                </ChatContainer>
             </BaseContainer>
         );
     }
@@ -917,17 +925,13 @@ I already do this in the getGamelog() method
  */
 export default withRouter(GameScreen);
 
-/*    <ChatContainer>
+/*   <h1>Player Chat</h1>
 
-        <h1>Player Chat</h1>
+                    <InputField
+                        placeholder="new message"
+                        onChange={e => {
+                            this.handleInputChange('message', e.target.value);
+                        }}
+                    />
 
-        <InputField
-            placeholder="new message"
-            onChange={e => {
-                this.handleInputChange('message', e.target.value);
-            }}
-        />
-
-
-
-    </ChatContainer>*/
+  */
