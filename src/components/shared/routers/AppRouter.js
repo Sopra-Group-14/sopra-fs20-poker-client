@@ -18,7 +18,7 @@ import JoinLobby from "../../joinlobby/JoinLobby";
 import TopUpAccount from "../../topupaccount/TopUpAccount";
 import JoinGameSpectator from "../../joingamespectator/JoinGameSpectator";
 import GameScreenSpectator from "../../gamescreenspectator/GameScreenSpectator";
-
+import Chat from "../../chat/Chat"
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -141,6 +141,13 @@ class AppRouter extends React.Component {
                 exact
                 render={() => (
                     <GameScreenSpectator />
+                )}
+            />
+            <Route
+                path="/chat"
+                exact
+                render={() => (
+                    <Chat />
                 )}
             />
             <Route path="/" exact render={() => <Redirect to={"/welcomepage"} />} />
