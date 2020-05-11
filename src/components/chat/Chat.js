@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import {BaseContainer} from '../../helpers/layout';
 import {api, handleError} from '../../helpers/api';
 import {withRouter} from 'react-router-dom';
+import 'react-chat-elements/dist/main.css';
+
 import {
     MessageBox,
     ChatItem,
@@ -27,7 +29,7 @@ export class Chat extends React.Component {
         super(props);
         this.state = {
             show: true,
-            messageList: [],
+            messageList: [{username: 'lara',text:'message 1'},{username: 'user2', text: 'Example text 2'}],
         };
     }
 
@@ -62,29 +64,24 @@ export class Chat extends React.Component {
 
         return (
             <div className='container' >
-                <div
-                    className='chat-list'>
-                    <SideBar
 
-                        center={
-                           <ChatList
-                              dataSource={chatSource} />
-                        }
-                        bottom={
-                            <span>
-                            </span>
-                        } />
+                <div className='right-panel'>
+
+                    {this.state.messageList.map(message => {
+                           return(
+                            <MessageBox
+                                title={message.username}
+                                position={'left'}
+                                type={'text'}
+                                text={message.text}
+                            />
+                           )
+                        })
+                    }
                 </div>
-                <div
-                    className='right-panel'>
-                    <MessageList
-                        className='message-list'
-                        lockable={true}
-                        downButtonBadge={10}
-                        dataSource={this.state.messageList} />
 
                     <Input
-                        margin-top= "100vh"
+                        margin-bottom="0"
                         placeholder="Write your message here."
                         defaultValue=""
                         ref='input'
@@ -105,8 +102,11 @@ export class Chat extends React.Component {
                             <Button
                                 text='Send'
                                 onClick={this.addMessage.bind(this)} />
-                        } />
-                </div>
+                        }
+                    />
+
+
+
             </div>
         );
     }

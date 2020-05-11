@@ -92,10 +92,11 @@ const ChatContainer = styled.div`
   
   position: absolute;
   width: 200px;
-  height: 100%;
+  height: flex;
   top: 0px;
   right: 0px;
-  background: #C14E4E;
+  bottom: 0px
+  background: rgba(237,94,2,0.85);
 `;
 const TableCardContainer = styled.div`
   padding-top: 60px; 
@@ -911,7 +912,6 @@ I already do this in the getGamelog() method
                 <ChatContainer>
                     <Chat>
                     </Chat>
-
 
                 </ChatContainer>
             </BaseContainer>
