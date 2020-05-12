@@ -31,32 +31,24 @@ const ChatContainer = styled.div`
   
 `;
 const ChatButton = styled.div`
-
-  &:hover {
-    transform: translateY(-3px);
-    letter-spacing: 0.125rem;
-    background: rgba(237,94,2,1);
-    
-  }
+ 
   line-height: 4px;
   font-family: 'Roboto', sans-serif;
   font-style: 1rem;
-  font-size: 10px;
+  font-size: 15px;
   text-align: center;
-  padding: 25px;
+  padding: 10px;
   margin-top: 15px; 
   color: #000000;
-  margin-left: 10%
-  margin-right: 10%
-  width: 40%;
+  margin-left: 5%
+  margin-right: 5%
+  width: 30%;
   height: 30px;
   border: none;
   border-radius: 8px;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   transition: all 0.3s ease;
-  background: rgba(237,94,2,0.85);
-  font-weight: 100;
   color: $black;
   text-transform: uppercase;
   
@@ -64,9 +56,8 @@ const ChatButton = styled.div`
 `;
 
 const ButtonContainerRow = styled.div`
-  margin: auto;
   flex-direction: row;
-  width: 200px;
+  width: 180px;
   display: flex;
   justify-content: 'center';  
 `;
@@ -84,6 +75,9 @@ export class Chat extends React.Component {
             PlayerMessageList: [{username: 'Player',position: 'left',text:'message 1'},{username: 'List',position: 'left', text: 'Example text 2'},{username: 'Me',position: 'right', text: 'Example text 3'}],
             PlayerChat: true,
             write: true,
+            message: null,
+            fontWeightspectator: "200",
+            fontWeightplayer: "200",
         };
     }
     tick() {
@@ -97,9 +91,11 @@ export class Chat extends React.Component {
     playerOrSpectator(){
         if(localStorage.spectatorId >0){
             this.state.spectator = true;
+            this.state.user ='spectators';
         }
         else{
             this.state.spectator = false;
+            this.state.user = 'players';
         }
     }
     async getMessages(){
@@ -116,12 +112,13 @@ export class Chat extends React.Component {
     }
 
 
-    addMessage() {
-        const list = this.state.messageList;
-       // list.push(this.random('message'));
-        this.setState({
-            messageList: list,
+    async addMessage() {
+        const requestBody = JSON.stringify({
+            username: localStorage.getItem("username"),
+            message: this.state.message,
         });
+
+        const response = await api.put('/games/'+localStorage.getItem('gameId')+'/chats/'+ this.state.user, requestBody);
     }
 
     render() {
@@ -136,20 +133,25 @@ export class Chat extends React.Component {
                 {this.state.spectator ?
                     <ButtonContainerRow>
                     <ChatButton
+                        style={{"font-weight": this.state.fontWeightplayer}}
                         onClick={() => {
                             this.setState({'write': false});
                             this.setState({'PlayerChat': true});
+                            this.setState({'fontWeightspectator': "200"});
+                            this.setState({'fontWeightplayer': "600"});
 
                         }}
                     >
                         Player
                     </ChatButton>
                     <ChatButton
+                        style={{"font-weight": this.state.fontWeightspectator}}
 
                         onClick={() => {
                             this.setState({'write': true});
                             this.setState({'PlayerChat': false});
-
+                            this.setState({'fontWeightspectator': "600"});
+                            this.setState({'fontWeightplayer': "200"});
 
                         }}
                     >
@@ -188,6 +190,7 @@ export class Chat extends React.Component {
                                 }
                                 if (e.charCode === 13) {
                                     this.refs.input.clear();
+                                    this.setState({'message':e})
                                     this.addMessage();
                                     e.preventDefault();
                                     return false;
