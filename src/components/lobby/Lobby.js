@@ -211,6 +211,10 @@ class Lobby extends React.Component {
                             Start
                         </Button>
                     </ButtonContainer>
+                    {!(this.state.ready === 'true')?
+                    < Label style = {{fontSize: 20}}>You need to wait until at least 2 players are ready to start the game</Label>
+                        :null
+                    }
                 </Form>
             </FormContainer>
         );

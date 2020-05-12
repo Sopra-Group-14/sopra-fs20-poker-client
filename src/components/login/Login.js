@@ -154,6 +154,9 @@ class Login extends React.Component {
                 this.handleInputChange('password', e.target.value);
               }}
             />
+            {!(this.state.username || this.state.password) ?
+                <Label> Please type in your username and password to log in </Label>: null
+            }
             <ButtonContainer>
               <Button
                   //style={{"background": 'rgba(253, 167, 24)'}}
@@ -165,6 +168,7 @@ class Login extends React.Component {
               >
                 Login
               </Button>
+
               <Button
                   //style={{"background": 'rgb(253, 167, 24)'}}
 
