@@ -910,11 +910,11 @@ I already do this in the getGamelog() method
                     Leave Game
                 </Button>
                 <ChatContainer>
-                    <h2>Chat</h2>
-                    <Chat>
+                    <Chat >
                     </Chat>
 
                 </ChatContainer>
+
             </BaseContainer>
         );
     }

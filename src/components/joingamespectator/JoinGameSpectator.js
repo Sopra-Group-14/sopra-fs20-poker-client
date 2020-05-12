@@ -83,9 +83,10 @@ class JoinGameSpectator extends React.Component {
             status:'spectator'
         });*/
         this.props.history.push(`/gamescreenspectator`);
+        localStorage.setItem('spectatorId', 4);
         //ToDo Check if this request exists, or how the variable for id is called !
-       // const response = await api.put('/games/'+ this.state.gameId , requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
-       // localStorage.setItem("spectatorId", response.spectatorId);
+//        const response = await api.put('/games/'+ this.state.gameId , requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
+  //      localStorage.setItem("spectatorId", response.spectatorId);
     }
 
 

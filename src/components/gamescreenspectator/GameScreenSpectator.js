@@ -12,6 +12,38 @@ import Slider from "../Slider/Slider";
 import User from "../shared/models/User";
 import {Chat} from "../chat/Chat";
 
+const ChatButton = styled.div`
+
+  &:hover {
+    transform: translateY(-3px);
+    letter-spacing: 0.125rem;
+    background: rgba(237,94,2,1);
+    
+  }
+  line-height: 4px;
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-size: 10px;
+  text-align: center;
+  padding: 25px;
+  margin-top: 15px; 
+  color: #000000;
+  margin-left: 10%
+  margin-right: 10%
+  width: 40%;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
+  opacity: ${props => (props.disabled ? 0.4 : 1)};
+  transition: all 0.3s ease;
+  background: rgba(237,94,2,0.85);
+  font-weight: 100;
+  color: $black;
+  text-transform: uppercase;
+  
+  
+`;
 
 const PlayersContainer = styled.div`
   margin: auto;
@@ -64,7 +96,7 @@ const ChatContainer = styled.div`
   height: 100%;
   top: 0px;
   right: 0px;
-  background: #C14E4E;
+  background: rgba(237,94,2,0.85);
 `;
 const TableCardContainer = styled.div`
   padding-top: 20px; 
@@ -161,6 +193,7 @@ class GameScreenSpectator extends React.Component {
     constructor() {
         super();
         this.state = {
+
 
             //ActivePlayer
             activePlayerId:null,
@@ -318,6 +351,7 @@ class GameScreenSpectator extends React.Component {
 
 
     async leave(){
+        localStorage.removeItem('spectatorId');
         if (localStorage.getItem('id') === null){
             this.props.history.push(`/welcomepage`);
         }
@@ -454,11 +488,10 @@ class GameScreenSpectator extends React.Component {
 
                 <ChatContainer>
 
-                    <h1>Player Chat</h1>
-                    <Chat>
-
+                    <Chat >
                     </Chat>
                 </ChatContainer>
+
 
                 <Button
                     style = {{width: '15%'}}
