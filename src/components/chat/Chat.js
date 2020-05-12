@@ -21,7 +21,14 @@ import {
     Dropdown,
     Popup,
 } from 'react-chat-elements';
-
+const ChatContainer = styled.div`
+  
+  position: absolute;
+  width: 200px;
+  bottom: 10px;
+  height: flex;
+  
+`;
 
 export class Chat extends React.Component {
 
@@ -65,7 +72,6 @@ export class Chat extends React.Component {
         return (
             <div className='container' >
 
-                <div className='right-panel'>
 
                     {this.state.messageList.map(message => {
                            return(
@@ -78,11 +84,10 @@ export class Chat extends React.Component {
                            )
                         })
                     }
-                </div>
-
+                <ChatContainer>
+                    
                     <Input
-                        margin-bottom="0"
-                        placeholder="Write your message here."
+                        placeholder="type here"
                         defaultValue=""
                         ref='input'
                         multiline={true}
@@ -106,7 +111,7 @@ export class Chat extends React.Component {
                     />
 
 
-
+                    </ChatContainer>
             </div>
         );
     }

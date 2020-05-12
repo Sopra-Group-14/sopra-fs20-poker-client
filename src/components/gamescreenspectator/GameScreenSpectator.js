@@ -10,6 +10,7 @@ import {graphicsList} from '../../images'
 import Card from "../shared/models/Card";
 import Slider from "../Slider/Slider";
 import User from "../shared/models/User";
+import {Chat} from "../chat/Chat";
 
 
 const PlayersContainer = styled.div`
@@ -370,22 +371,7 @@ class GameScreenSpectator extends React.Component {
     }
 
 
-    /*
-               <ChatContainer>
 
-                    <h1>Player Chat</h1>
-
-                    <InputField
-                        placeholder="new message"
-                        onChange={e => {
-                            this.handleInputChange('message', e.target.value);
-                        }}
-                    />
-
-
-
-                </ChatContainer>
-     */
     render() {
 
         return (
@@ -464,9 +450,15 @@ class GameScreenSpectator extends React.Component {
                     </HandCardContainer>
 
 
-
-
                 </ControlContainer>
+
+                <ChatContainer>
+
+                    <h1>Player Chat</h1>
+                    <Chat>
+
+                    </Chat>
+                </ChatContainer>
 
                 <Button
                     style = {{width: '15%'}}
