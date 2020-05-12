@@ -86,10 +86,13 @@ export class Chat extends React.Component {
             write: true,
         };
     }
-
-    componentWillMount() {
-        // setInterval(this.addMessage.bind(this), 3000);
+    tick() {
         this.getMessages();
+    }
+
+    componentDidMount() {
+        // setInterval(this.addMessage.bind(this), 3000);
+        this.interval = setInterval(() => this.tick(), 100);
     }
     playerOrSpectator(){
         if(localStorage.spectatorId >0){
@@ -105,7 +108,8 @@ export class Chat extends React.Component {
             //const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/players');
             this.state.messageList =  [{username: 'Player',position: 'left',text:'message 1'},{username: 'List',position: 'left', text: 'Example text 2'},{username: 'Me',position: 'right', text: 'Example text 3'}];
 
-        }else{
+        }else  if(this.state.PlayerChat === false) {
+
            // const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/spectators' );
             this.state.messageList =  [{username: 'Spectator',position: 'left',text:'message 1'},{username: 'List',position: 'left', text: 'Example text 2'},{username: 'Me',position: 'right', text: 'Example text 3'}];
         }
@@ -133,8 +137,9 @@ export class Chat extends React.Component {
                     <ButtonContainerRow>
                     <ChatButton
                         onClick={() => {
-                            this.state.write = false;
-                            this.state.playerChat = true;
+                            this.setState({'write': false});
+                            this.setState({'PlayerChat': true});
+
                         }}
                     >
                         Player
@@ -142,8 +147,8 @@ export class Chat extends React.Component {
                     <ChatButton
 
                         onClick={() => {
-                            this.state.write = true; 
-                            this.state.playerChat= false;
+                            this.setState({'write': true});
+                            this.setState({'PlayerChat': false});
 
 
                         }}
