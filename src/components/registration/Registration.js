@@ -169,6 +169,8 @@ class Registration extends React.Component {
                                 this.handleInputChange('repeat_password', e.target.value);
                             }}
                         />
+                        {<Label style={{"font-weight": '500', 'text-transform': 'none'}}
+                        > Please type in your username and password to register </Label>}
                         <ButtonContainer>
                             <Button
                                 disabled={!this.state.username || !this.state.password || this.state.password !== this.state.repeat_password}

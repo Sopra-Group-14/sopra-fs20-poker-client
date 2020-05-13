@@ -140,6 +140,7 @@ class Login extends React.Component {
       <BaseContainer>
         <FormContainer>
           <Form>
+
             <Label>Username</Label>
             <InputField
               placeholder="Enter here.."
@@ -154,9 +155,9 @@ class Login extends React.Component {
                 this.handleInputChange('password', e.target.value);
               }}
             />
-            {!(this.state.username || this.state.password) ?
-                <Label> Please type in your username and password to log in </Label>: null
-            }
+            {<Label style={{"font-weight": '500', 'text-transform': 'none'}}
+                > Please type in your username and password to log in </Label>}
+
             <ButtonContainer>
               <Button
                   //style={{"background": 'rgba(253, 167, 24)'}}
