@@ -20,7 +20,7 @@ const Form = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 45%;
-  height: 425px; 
+  height: 435px; 
   font-family: Pontano Sans;
   font-style: normal;
   font-weight: normal;
@@ -170,7 +170,7 @@ class Registration extends React.Component {
                             }}
                         />
                         {<Label style={{"font-weight": '500', 'text-transform': 'none'}}
-                        > Please type in your username and password to register </Label>}
+                        > Please type in your username and password to register      </Label>}
                         <ButtonContainer>
                             <Button
                                 disabled={!this.state.username || !this.state.password || this.state.password !== this.state.repeat_password}

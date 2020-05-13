@@ -20,7 +20,7 @@ const Form = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 45%;
-  height: 400px; 
+  height: 360px; 
   font-family: Pontano Sans;
   font-style: normal;
   font-weight: normal;
