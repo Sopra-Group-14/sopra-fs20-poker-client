@@ -8,7 +8,7 @@ import { Button } from '../../views/design/Button';
 
 
 const FormContainer = styled.div`
-  margin-top: 7.6%;
+  margin-top: 5%;
   display: flex;
   flex-direction: column;
   align-items: center;

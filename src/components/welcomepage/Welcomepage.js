@@ -5,7 +5,7 @@ import { Button } from '../../views/design/Button';
 import { Form } from '../../views/design/Form';
 
 const FormContainer = styled.div`
-  margin-top: 10%;
+  margin-top: 8%;
   display: flex;
   flex-direction: column;
   align-items: center;

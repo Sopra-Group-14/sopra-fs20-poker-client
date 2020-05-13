@@ -35,7 +35,7 @@ const ButtonGreen = styled.div`
 `;
 
 const FormContainer = styled.div`
-  margin-top: 3%;
+  margin-top: 2%;
   display: flex;
   flex-direction: column;
   align-items: center;

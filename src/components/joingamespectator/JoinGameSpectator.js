@@ -12,7 +12,7 @@ import GameModel from "../shared/models/GameModel";
 
 
 const FormContainer = styled.div`
-  margin-top: 7.8%;
+  margin-top: 4%;
   display: flex;
   flex-direction: column;
   align-items: center;

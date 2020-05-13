@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 
 const FormContainer = styled.div`
-  margin-top: 4.5%;
+  margin-top: 0%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +20,7 @@ const Form = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 45%;
-  height: 350px; 
+  height: 400px; 
   font-family: Pontano Sans;
   font-style: normal;
   font-weight: normal;
