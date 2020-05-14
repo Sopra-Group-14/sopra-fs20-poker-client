@@ -869,7 +869,7 @@ I already do this in the getGamelog() method
                             <Slider max={this.state.playerCredit-this.state.amountToCall}
                                     handleraiseAmountInput={this.callbackFunction}
                                     key={'raiseAmountInput'}
-                                    color={"#C14E4E"}
+                                    color={"#c14e4e"}
                             /> : null}
 
                         <Button

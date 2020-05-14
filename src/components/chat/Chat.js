@@ -1,6 +1,6 @@
 
 /* explanations: https://github.com/detaysoft/react-chat-elements#messagelist-component */
-/*
+
 import React from 'react';
 import styled from 'styled-components';
 import {BaseContainer} from '../../helpers/layout';
@@ -69,24 +69,25 @@ export class Chat extends React.Component {
         super(props);
         this.state = {
             show: true,
-            messageList: [],
+            messageList:{  data: [] },
             user: null,
+            username: null,
             spectator:null,
             SpectatorMessageList: [{username: 'Spectator',position: 'left',text:'message 1'},{username: 'List',position: 'left', text: 'Example text 2'},{username: 'Me',position: 'right', text: 'Example text 3'}],
-            PlayerMessageList: [{username: 'Player',position: 'left',text:'message 1'},{username: 'List',position: 'left', text: 'Example text 2'},{username: 'Me',position: 'right', text: 'Example text 3'}],
+            PlayerMessageList: {  data: [] },
             PlayerChat: true,
             write: true,
             message: null,
             fontWeightspectator: "200",
             fontWeightplayer: "200",
+            af: false,
         };
     }
     tick() {
-        this.getMessages();
+        //this.getMessages();
     }
 
     componentDidMount() {
-        // setInterval(this.addMessage.bind(this), 3000);
         this.interval = setInterval(() => this.tick(), 100);
     }
     playerOrSpectator(){
@@ -102,24 +103,42 @@ export class Chat extends React.Component {
     async getMessages(){
         //Get Messages
         if(this.state.PlayerChat === true) {
-            //const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/players');
-            this.state.messageList =  [{username: 'Player',position: 'left',text:'message 1'},{username: 'List',position: 'left', text: 'Example text 2'},{username: 'Me',position: 'right', text: 'Example text 3'}];
-
+            const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/players',{headers:{ Authorization: localStorage.getItem("token")}});
+            this.state.messageList = response;
         }else  if(this.state.PlayerChat === false) {
 
-           // const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/spectators' );
-            this.state.messageList =  [{username: 'Spectator',position: 'left',text:'message 1'},{username: 'List',position: 'left', text: 'Example text 2'},{username: 'Me',position: 'right', text: 'Example text 3'}];
+            const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/spectators' ,{headers:{ Authorization: localStorage.getItem("token")}});
+            this.state.messageList =  response;
         }
     }
+    handleInputChange(key, value) {
+        // Example: if the key is username, this statement is the equivalent to the following one:
 
+        this.setState({ [key]: value });
+    }
 
     async addMessage() {
-        const requestBody = JSON.stringify({
-            username: localStorage.getItem("username"),
+        //IN PLAYERCHAT
+      //  if(this.state.PlayerChat === true) {
+            const requestBody = JSON.stringify({
+            username: localStorage.getItem("id"),
             message: this.state.message,
         });
+        await api.put('/games/'+localStorage.getItem('gameId')+'/chats/players', requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
 
-        const response = await api.put('/games/'+localStorage.getItem('gameId')+'/chats/'+ this.state.user, requestBody);
+    /*    //IN SPECTATORCHAT
+        }else  if(this.state.PlayerChat === false) {
+            if (!localStorage.username) {
+                this.setState({"username": 'spectator' + localStorage.spectatorId});
+            } else {
+                this.setState({"username": localStorage.username});
+            }
+            const requestBody = JSON.stringify({
+                username: localStorage.getItem("username"),
+                message: this.state.message,
+            });
+            await api.put('/games/'+localStorage.getItem('gameId')+'/chats/spectators', requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
+        }*/
     }
 
     render() {
@@ -162,19 +181,22 @@ export class Chat extends React.Component {
                     :
                     <h2>Chat</h2>
                 }
-                    {this.state.messageList.map(message => {
 
-                        return(
-                            <MessageBox
+                    {!this.state.af ?
+                        <label>no messages</label>
+                            :
+                            this.state.messageList.map(message => {
+                                return (
+                                    <MessageBox
+                                        title={message.username}
+                                        position={"right"}
+                                        type={'text'}
+                                        text={message.message}
+                                    />
 
-                                title={message.username}
-                                position={message.position}
-                                type={'text'}
-                                text={message.text}
-                            />
+                                )
+                            })
 
-                           )
-                        })
                     }
 
                 <ChatContainer>
@@ -186,21 +208,15 @@ export class Chat extends React.Component {
                             multiline={true}
                             // buttonsFloat='left'
                             onKeyPress={(e) => {
-                                if (e.shiftKey && e.charCode === 13) {
-                                    return true;
-                                }
-                                if (e.charCode === 13) {
-                                    this.refs.input.clear();
-                                    this.setState({'message':e})
-                                    this.addMessage();
-                                    e.preventDefault();
-                                    return false;
-                                }
+                                this.handleInputChange('message', e.target.value);
                             }}
                             rightButtons={
                                 <Button
                                     text='Send'
-                                    onClick={this.addMessage.bind(this)}/>
+                                    onClick={
+                                        this.addMessage.bind(this)
+                                    }
+                                />
                             }
                         /> :null
                     }
@@ -212,4 +228,3 @@ export class Chat extends React.Component {
 }
 
 export default withRouter(Chat);
-*/
