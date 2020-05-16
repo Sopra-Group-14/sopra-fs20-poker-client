@@ -92,7 +92,7 @@ const PotContainer = styled.div`
 const ChatContainer = styled.div`
   
   position: absolute;
-  width: 200px;
+  width: 230px;
   height: flex;
   top: 0px;
   right: 0px;
@@ -873,7 +873,7 @@ I already do this in the getGamelog() method
                             <Slider max={this.state.playerCredit-this.state.amountToCall}
                                     handleraiseAmountInput={this.callbackFunction}
                                     key={'raiseAmountInput'}
-                                    color={"#C14E4E"}
+                                    color={"#c14e4e"}
                             /> : null}
 
                         <Button
