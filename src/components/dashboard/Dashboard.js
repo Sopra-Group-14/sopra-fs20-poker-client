@@ -5,8 +5,7 @@ import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
-
-
+import Popup from "reactjs-popup";
 
 
 const FormContainer = styled.div`
@@ -143,7 +142,38 @@ class Dashboard extends React.Component {
                     >
                         Watch a Game
                     </Button>
-                        <Button
+                        <Popup trigger={<Button> Game Rules </Button>} modal>
+                            {close => (
+                                <div className="modal">
+                                    <a className="close" onClick={close}>
+                                        &times;
+                                    </a>
+                                    <div className="header"> How to Play </div>
+                                    <div className="content">
+                                        {" "}
+                                        The first player of first round (preflop) has to bet the small blind.
+                                        {" "}
+
+                                        The second player of first round has to raise (preflop) at least as high as the bigblind or higher
+                                        {" "}
+
+                                        if pot type no limit: maximum bet or raise can be until all the credit, player has left. (all in)
+
+                                    </div>
+                                    <button
+                                            className="button"
+                                            onClick={() => {
+                                                console.log("closed ");
+                                                close();
+                                            }}
+                                        >
+                                            close
+                                        </button>
+                                </div>
+                            )}
+                        </Popup>
+
+                     <Button
                             onClick={() => {
                                 this.logout();
                                 this.props.history.push(`/welcomepage`);
