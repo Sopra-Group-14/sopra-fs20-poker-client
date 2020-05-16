@@ -139,7 +139,6 @@ export class Chat extends React.Component {
             message: this.state.message,
         });
         await api.put('/games/'+localStorage.getItem('gameId')+'/chats/players', requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
-
         //IN SPECTATORCHAT
         }else  if(this.state.PlayerChat === false) {
             if (!localStorage.getItem("id")) {
