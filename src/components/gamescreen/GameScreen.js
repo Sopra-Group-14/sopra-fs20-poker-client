@@ -92,7 +92,7 @@ const PotContainer = styled.div`
 const ChatContainer = styled.div`
   
   position: absolute;
-  width: 200px;
+  width: 230px;
   height: flex;
   top: 0px;
   right: 0px;
