@@ -238,10 +238,6 @@ class GameScreenSpectator extends React.Component {
             activePlayers : null,
             thisPlayersTurn : null,
             nextPlayersTurn : null,
-
-
-
-
         };
     }
 
@@ -268,7 +264,6 @@ class GameScreenSpectator extends React.Component {
         this.handleInputChange('activePlayers', gamelog.activePlayers);
         this.handleInputChange('thisPlayersTurn', gamelog.thisPlayersTurn);
         this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
-
     }
 
 
@@ -280,13 +275,11 @@ class GameScreenSpectator extends React.Component {
         if (gamelog.winner != null){
             localStorage.setItem("winner", gamelog.winner);
             this.props.history.push(`/dashboard`);
-
         }
     }
 
     async displayHandCards() {
         try {
-
             //Backend with Postman:
             //localStorage.setItem("gameId", "2");
             //localStorage.setItem("playerId", "1");
@@ -313,9 +306,41 @@ class GameScreenSpectator extends React.Component {
         } catch (error) {
             alert(`Something went wrong when trying to load the hand cards: \n${handleError(error)}`);
         }
+    }
+/*
+    async getOddsPreFlop(){
+        const response =  await api.get('https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/pre-flop?hole=Ac%252C3c', {headers: {'x-rapidapi-host': "sf-api-on-demand-poker-odds-v1.p.rapidapi.com", "x-rapidapi-key": "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0"}});
+        const odds = response.data;
+        alert(odds.message);
+        alert("lol");
+    }
+*/
+    async getOddsPreFlop(){
+        const data = null;
+
+        const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === this.DONE) {
+                console.log(this.responseText);
+            }
+        });
+
+        xhr.open("GET", "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/pre-flop?hole=Ac%2C3s");
+        xhr.setRequestHeader("x-rapidapi-host", "sf-api-on-demand-poker-odds-v1.p.rapidapi.com");
+        xhr.setRequestHeader("x-rapidapi-key", "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0");
+
+        xhr.send(data);
+
+        xhr.onload = function () {
+            alert(xhr.status)
+        };
+
+
+
 
     }
-
 
     async displayTableCards() {
         try {
@@ -367,7 +392,6 @@ class GameScreenSpectator extends React.Component {
         this.setState({ [key]: value });
     }
 
-
     callbackFunction = (data) => {
         this.setState({raiseAmountInput: data})
     };
@@ -389,7 +413,6 @@ class GameScreenSpectator extends React.Component {
         //alert("Everything gets refreshed");
         this.playRound();
         this.displayHandCards();
-
     }
 
     componentWillUnmount() {
@@ -399,15 +422,12 @@ class GameScreenSpectator extends React.Component {
     componentDidMount() {
         this.getGamelog();
         this.displayTableCards();
-
         this.interval = setInterval(() => this.tick(), 2000);
-
     }
 
 
 
     render() {
-
         return (
             <BaseContainer>
                 <PlayersContainer>
@@ -440,7 +460,6 @@ class GameScreenSpectator extends React.Component {
 
 
                 </PlayersContainer>
-
                 <TableCardContainer>
                     <PotContainer>  <img width={80}  src={chips} />
                         <label>{this.state.potAmount} </label></PotContainer>
@@ -498,7 +517,7 @@ class GameScreenSpectator extends React.Component {
                     margin-bottom="40px"
                     height="30%"
                     onClick={() => {
-                        this.leave();
+                        this.getOddsPreFlop();
 
                     }}
                 >

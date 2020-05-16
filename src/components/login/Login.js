@@ -166,6 +166,11 @@ class Login extends React.Component {
                 onClick={() => {
                   this.login();
                 }}
+                onKeyPress={event => {
+                  if (event.key === 'Enter') {
+                    this.login();
+                  }
+                }}
               >
                 Login
               </Button>

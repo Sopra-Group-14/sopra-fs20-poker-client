@@ -1,6 +1,6 @@
 
 /* explanations: https://github.com/detaysoft/react-chat-elements#messagelist-component */
-/*
+
 import React from 'react';
 import styled from 'styled-components';
 import {BaseContainer} from '../../helpers/layout';
@@ -212,4 +212,3 @@ export class Chat extends React.Component {
 }
 
 export default withRouter(Chat);
-*/
