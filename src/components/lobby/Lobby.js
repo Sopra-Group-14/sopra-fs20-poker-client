@@ -103,7 +103,7 @@ class Lobby extends React.Component {
             //alert(gameModel.gameStarted);
 
         } catch (error) {
-            alert(`Something went wrong during the login: \n${handleError(error)}`);
+            alert(`Something went wrong when getting the players: \n${handleError(error)}`);
         }
     }
 
@@ -179,7 +179,7 @@ class Lobby extends React.Component {
                         style = {{fontSize: 40, textTransform: 'uppercase'}}>
                         {this.state.gameName} </Label>
 
-                    <Label style = {{fontSize: 25}}>
+                    <Label style={{fontSize: 25}}>
                         Playerlist:
 
                         <div>
@@ -212,7 +212,7 @@ class Lobby extends React.Component {
                         </Button>
                     </ButtonContainer>
                     {!(this.state.ready === 'true')?
-                    < Label style = {{fontSize: 20}}>You need to wait until at least 2 players are ready to start the game</Label>
+                    < Label style={{"font-weight": '500', 'text-transform': 'none', fontSize: 20, marginTop: '5%'}}> You need to wait until at least 2 players are ready to start the game</Label>
                         :null
                     }
                 </Form>

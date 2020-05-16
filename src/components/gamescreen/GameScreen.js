@@ -596,7 +596,7 @@ I already do this in the getGamelog() method
             this.state.userState = "you are Big Blind";
             if (this.state.gameRound === "Preflop" && !this.state.betBigBlindDone) {
                 this.handleInputChange("betBigBlind", true);
-                this.handleInputChange("raiseorbigblind", "Bet the BigBlind");
+                this.handleInputChange("raiseorbigblind", "BigBlind");
             }
 
             else {
@@ -616,7 +616,7 @@ I already do this in the getGamelog() method
             this.state.userState = "you are Small Blind";
             if (this.state.gameRound === "Preflop" && !this.state.betSmallBlindDone) {
                 this.handleInputChange("betSmallBlind", true);
-                this.handleInputChange("betorsmallblind", "Bet the SmallBlind");
+                this.handleInputChange("betorsmallblind", "SmallBlind");
             }
             else {
                 //this.handleInputChange("betSmallBlind", false);
@@ -785,6 +785,7 @@ I already do this in the getGamelog() method
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
                                 if(this.state.betSmallBlind){
+                                    this.handleInputChange("nextPlayerId", null);
                                     this.betSmallBlind();
                                     //this.handleInputChange("betorsmallblind", "Bet");
                                 }
@@ -804,6 +805,7 @@ I already do this in the getGamelog() method
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
                                 if(this.state.betBigBlind){
+                                    this.handleInputChange("nextPlayerId", null);
                                     this.betBigBlind();
                                     //this.handleInputChange("raiseorbigblind", "Raise");
                                 }
@@ -825,10 +827,12 @@ I already do this in the getGamelog() method
                                 disabled={this.state.raiseAmountInput === null || this.state.raiseAmountInput === ""}
                                 onClick={() => {
                                     if(this.state.betraisebuttontext === "Raise") {
+                                        this.handleInputChange("nextPlayerId", null);
                                         this.raise();
                                         //alert("raise" + this.state.raiseAmountInput)
                                     }
                                     if(this.state.betraisebuttontext === "Bet") {
+                                        this.handleInputChange("nextPlayerId", null);
                                         this.bet();
                                         //alert("bet" + this.state.raiseAmountInput)
                                     }
