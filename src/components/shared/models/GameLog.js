@@ -26,6 +26,7 @@ class GameLog {
         this.nextPlayersTurn = null;
         this.bigBlind = null;
         this.smallBlind = null;
+        this.possibleRaiseAndBetAmount = null;
 
         Object.assign(this, data);
     }

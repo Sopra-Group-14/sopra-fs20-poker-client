@@ -253,6 +253,7 @@ class GameScreen extends React.Component {
             bigBlind : null,
             smallBlind : null,
             userState : null,
+            possibleRaiseAndBetAmount: null,
 
             //Conditional Button Rendering
             betraisebuttontext: "Bet",
@@ -305,6 +306,10 @@ class GameScreen extends React.Component {
         this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
         this.handleInputChange('bigBlind', gamelog.bigBlind);
         this.handleInputChange('smallBlind', gamelog.smallBlind);
+        this.handleInputChange('possibleRaiseAndBetAmount', gamelog.possibleRaiseAndBetAmount);
+
+
+
         //Make white border on ControlContainer if its your turn
         if(localStorage.getItem("id") === String(this.state.nextPlayerId)){
             this.handleInputChange('controlContainerBorder', "1px solid #FFFFFF");
@@ -870,7 +875,7 @@ I already do this in the getGamelog() method
                         </ButtonContainerRow> : null}
 
                         {this.state.inputfieldvisible ?
-                            <Slider max={this.state.playerCredit-this.state.amountToCall}
+                            <Slider max={this.state.possibleRaiseAndBetAmount}
                                     handleraiseAmountInput={this.callbackFunction}
                                     key={'raiseAmountInput'}
                                     color={"#c14e4e"}
