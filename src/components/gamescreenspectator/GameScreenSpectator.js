@@ -207,9 +207,9 @@ const Label = styled.label`
   font-family: 'Roboto', sans-serif;
   font-style: 1rem;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 15px;
   color:#FFFFFF;
-  margin-top: 10px;
+  margin-top: 5px;
   margin-bottom: 5px;
   text-align: center
 `;
