@@ -44,7 +44,13 @@ const ChatButton = styled.div`
   
   
 `;
-
+const BoxText = styled.div`
+ margin-top: 5px;
+ margin-left: 18px;
+ width: 600px; 
+ text-align: top;
+ justify-content: top; 
+`;
 const PlayersContainer = styled.div`
   margin: auto;
   display: flex;
@@ -92,7 +98,7 @@ background: rgba(237,94,2,0.85);
 const ChatContainer = styled.div`
   
   position: absolute;
-  width: 200px;
+  width: 230px;
   height: 100%;
   top: 0px;
   right: 0px;
@@ -148,6 +154,13 @@ const InputFieldRaise = styled.input`
   color: black;
 `;
 
+const ContainerRow = styled.div`
+  margin-bottom: 20px;
+  width: 800px; 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; 
+`;
 
 const ButtonContainer = styled.div`
   margin: auto;
@@ -428,6 +441,16 @@ class GameScreenSpectator extends React.Component {
 
 
     render() {
+      /*  window.onbeforeunload = function() {
+            localStorage.removeItem('spectatorId');
+            localStorage.removeItem('gameId');
+            localStorage.removeItem('token');
+            localStorage.removeItem('winner');
+            localStorage.removeItem('playerId');
+            localStorage.removeItem('id');
+
+            return '';
+        };*/
         return (
             <BaseContainer>
                 <PlayersContainer>
@@ -484,8 +507,9 @@ class GameScreenSpectator extends React.Component {
 
 
                 <ControlContainer>
-                    <label>{this.state.activeUsername}</label>
+                    <BoxText><Label>{this.state.activeUsername }</Label></BoxText>
 
+                    <ContainerRow>
                     <HandCardContainer>
                         <CardContainer>
                             <img width={95}  src={this.state.posh1} />
@@ -502,6 +526,7 @@ class GameScreenSpectator extends React.Component {
                         <Label>This are the winning stats of this player: xy</Label>
                     </HandCardContainer>
 
+                        </ContainerRow>
 
                 </ControlContainer>
 
@@ -524,7 +549,9 @@ class GameScreenSpectator extends React.Component {
                     Leave Game
                 </Button>
             </BaseContainer>
+
         );
+
     }
 }
 

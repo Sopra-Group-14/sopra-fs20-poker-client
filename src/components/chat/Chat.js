@@ -23,19 +23,29 @@ import {
     Popup,
 } from 'react-chat-elements';
 import GameLog from "../shared/models/GameLog";
+
 const ChatContainer = styled.div`
-  
   position: absolute;
-  width: 200px;
-  bottom: 10px;
-  height: flex;
-  
+  width: 230px;
+  bottom: 20px;
+  max-height: 20px; 
+
 `;
+
+const RightSide = styled.div`
+    position: absolute;
+    flex-direction: Column;
+    width: 230px;
+    height: 750px;
+
+`
 const ScrollBox = styled.div`
   
   position: top;
   width: 230px;
-  height: 650px;
+  height: flex;
+  flex-shrink: 0;
+  max-height: 600px; 
   overflow-y: scroll; 
 `;
 const ChatButton = styled.div`
@@ -97,7 +107,7 @@ export class Chat extends React.Component {
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => this.tick(), 5000);
+        this.interval = setInterval(() => this.tick(), 1000);
     }
     playerOrSpectator(){
         if(localStorage.spectatorId >0){
@@ -134,20 +144,15 @@ export class Chat extends React.Component {
         //IN PLAYERCHAT
         if(this.state.PlayerChat === true) {
             const requestBody = JSON.stringify({
-            username: localStorage.getItem("id"),
+            userId: localStorage.getItem("id"),
             chatMode: 'players',
             message: this.state.message,
         });
         await api.put('/games/'+localStorage.getItem('gameId')+'/chats/players', requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
         //IN SPECTATORCHAT
         }else  if(this.state.PlayerChat === false) {
-            if (!localStorage.getItem("id")) {
-                this.setState({"username": 'spectator' + localStorage.spectatorId});
-            } else {
-                this.setState({"username": localStorage.id});
-            }
             const requestBody = JSON.stringify({
-                username: localStorage.getItem("username"),
+                userid: localStorage.getItem("spectatorid"),
                 chatMode: 'spectators',
                 message: this.state.message,
             });
@@ -163,8 +168,7 @@ export class Chat extends React.Component {
         this.playerOrSpectator();
 
         return (
-            <div className='container' >
-
+            <RightSide>
                 {this.state.spectator ?
                     <ButtonContainerRow>
                     <ChatButton
@@ -207,7 +211,7 @@ export class Chat extends React.Component {
                     :
                     (
                         this.state.messageList.map(chat =>{
-                            if(localStorage.getItem('id')===chat.username){
+                            if(localStorage.getItem('id')===chat.userId){
                                 this.state.position = 'right';
                             }else{this.state.position = 'left';}
                             return(
@@ -217,6 +221,7 @@ export class Chat extends React.Component {
                                     position={this.state.position}
                                     type={'text'}
                                     text={chat.message}
+                                    dateString={chat.time}
                                 />
                             )
 
@@ -228,30 +233,37 @@ export class Chat extends React.Component {
                 }
                     </ScrollBox>
 
-                    <ChatContainer>
-                    {this.state.write ?
-                        <Input
+                        <ChatContainer>
+                        {this.state.write ?
+
+
+                            <Input
                             placeholder="type here"
                             defaultValue=""
                             ref='input'
-                            multiline={true}
-                            // buttonsFloat='left'
-                            onKeyPress={(e) => {
-                                this.handleInputChange('message', e.target.value);
+                            onChange={(e) => {
+                                this.handleInputChange('message',e.target.value)
+
                             }}
-                            rightButtons={
-                                <Button
-                                    text='Send'
-                                    onClick={
+                            rightButtons={ <Button
+                                text='Send'
+                                onClick={
+                                    this.addMessage.bind(this)
+                                }
+                                onKeyPress={event => {
+                                    if (event.key === "enter") {
                                         this.addMessage.bind(this)
                                     }
-                                />
-                            }
-                        /> :null
-                    }
+                                }}
+                            />}
+                            />
 
-                    </ChatContainer>
-            </div>
+                        :null
+
+                    }</ChatContainer>
+
+
+            </RightSide>
         );
     }
 }

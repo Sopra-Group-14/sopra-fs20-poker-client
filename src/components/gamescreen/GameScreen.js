@@ -701,6 +701,16 @@ I already do this in the getGamelog() method
                         /> : null}
      */
     render() {
+        /*window.onbeforeunload = function() {
+            localStorage.removeItem('spectatorId');
+            localStorage.removeItem('gameId');
+            localStorage.removeItem('token');
+            localStorage.removeItem('winner');
+            localStorage.removeItem('playerId');
+            localStorage.removeItem('id');
+
+            return '';
+        };*/
         return (
             <BaseContainer>
                 <PlayersContainer>
