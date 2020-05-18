@@ -150,14 +150,35 @@ class Dashboard extends React.Component {
                                     </a>
                                     <div className="header"> How to Play </div>
                                     <div className="content">
-                                        {" "}
-                                        The first player of first round (preflop) has to bet the small blind.
-                                        {" "}
+                                            <p>
+                                            <h3>The Basics</h3>
+                                            In Poker the highest 5 card poker hand wins. Meaning the Person who can get the highest combination of
+                                            cards between their hand cards and the table cards gets the pot.<br/>
+                                            During the Game you have the following options: <br/>
+                                            Bet: you can choose an amount to put in the pot<br/>
+                                            Raise: somebody already made a bet, you can raise it by putting more in the pot <br/>
+                                            Call: somebody made a bet, to stay in the game you can put the same amount in the pot <br/>
+                                            Check: if nobody has made a bet, you can check, nothing happens and you are still in the game <br/>
+                                            Fold: if you fold you are out of the current round. You loose the credit you might already have bet.<br/>
+                                            <br/>
+                                            The first player of first round (preflop) has to bet the small blind.<br/>
+                                            The second player of first round has to raise (preflop) at least as high as the bigblind or higher<br/>
+                                            </p>
+                                            <h3>There are different Limits</h3>
+                                            <p>
+                                               no limit: There is no limit, the player can raise or bet as much as he has. (all in)<br/>
+                                               fixed limit: In the rounds preflop and flop the betted amount must be the lower limit. in the other
+                                                -             rounds it must be high limit. <br/>
+                                                -             lower limit = big blind<br/>
+                                                -             higher limit = 2* big blind <br/>
+                                                -             it isnt possible to reaise more then three times per round. <br/>
+                                               pot limit: The betted/raised amount mustn't be bigger than the amount that is in the pot. <br/>
+                                               split limit: In the rounds preflop and flop, the betted amount can't be higher then high limit.<br/>
+                                               -              lower limit = big blind<br/>
+                                               -              higher limit = 2* big blind <br/>
+                                               -              per round it is not possible to raise more than three times.
 
-                                        The second player of first round has to raise (preflop) at least as high as the bigblind or higher
-                                        {" "}
-
-                                        if pot type no limit: maximum bet or raise can be until all the credit, player has left. (all in)
+                                            </p>
 
                                     </div>
                                     <button
