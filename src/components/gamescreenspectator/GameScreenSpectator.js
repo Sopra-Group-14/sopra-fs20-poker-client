@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {BaseContainer} from '../../helpers/layout';
 import {api, handleError} from '../../helpers/api';
 import {withRouter} from 'react-router-dom';
-import {Button} from '../../views/design/Button';
+//import {Button} from '../../views/design/Button';
 import chips from '../../graphics/chips.png';
 import GameLog from "../shared/models/GameLog";
 import {graphicsList} from '../../images'
@@ -12,37 +12,47 @@ import Slider from "../Slider/Slider";
 import User from "../shared/models/User";
 import {Chat} from "../chat/Chat";
 
-const ChatButton = styled.div`
-
+const Button = styled.div`
   &:hover {
     transform: translateY(-3px);
     letter-spacing: 0.125rem;
-    background: rgba(237,94,2,1);
+    background: rgba(189,47,12,1);
     
   }
-  line-height: 4px;
+  line-height: 35px;
   font-family: 'Roboto', sans-serif;
   font-style: 1rem;
-  font-size: 10px;
+  font-size: 15px;
   text-align: center;
-  padding: 25px;
+  padding: 0px;
   margin-top: 15px; 
   color: #000000;
-  margin-left: 10%
-  margin-right: 10%
-  width: 40%;
-  height: 30px;
+  margin-left: 0%
+  margin-right: 0%
+  width: 100%;
+  height: 35px;
   border: none;
   border-radius: 8px;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   transition: all 0.3s ease;
-  background: rgba(237,94,2,0.85);
-  font-weight: 100;
+     background: rgba(189,47,12,.85);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  font-weight: 900;
   color: $black;
   text-transform: uppercase;
-  
-  
+`;
+
+const StyledBody = styled.div`
+ background: rgb(48,152,58);
+background: radial-gradient(circle, rgba(48,152,58,1) 12%, rgba(30,62,0,1) 82%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
 `;
 const BoxText = styled.div`
  margin-top: 5px;
@@ -60,9 +70,10 @@ const PlayersContainer = styled.div`
   justify-content: space-between;
 `;
 const PlayerContainer = styled.div`
-     background: rgba(237,94,2,0.85); 
+     border: 1px solid #FFFFFF;
      width: 100px;
      height: 119px;
+     text-color: #FFFFFF;
      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
      border-radius: 8px;
       display: flex; 
@@ -71,7 +82,7 @@ const PlayerContainer = styled.div`
       justify-content: center;
   `;
 const ActivePlayerContainer = styled.div`
-background: rgba(237,94,2,0.85); 
+     background: rgba(0,0,0,0.85); 
      border: 1px solid #FFFFFF;
      width: 100px;
      height: 119px;
@@ -85,7 +96,7 @@ background: rgba(237,94,2,0.85);
 
 const PotContainer = styled.div`
   margin: auto;
-background: rgba(237,94,2,0.85); 
+  border: 1px solid #FFFFFF;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   display: flex; 
@@ -96,13 +107,13 @@ background: rgba(237,94,2,0.85);
   height: 119px;
 `;
 const ChatContainer = styled.div`
-  
+  border: 1px solid #FFFFFF;
+  text-align: center;
   position: absolute;
   width: 230px;
   height: 100%;
   top: 0px;
   right: 0px;
-  background: rgba(237,94,2,0.85);
 `;
 const TableCardContainer = styled.div`
   padding-top: 20px; 
@@ -179,13 +190,14 @@ const ButtonContainerRow = styled.div`
 `;
 
 const ControlContainer= styled.div`
+     border: 1px solid #FFFFFF;
+
   margin: auto;
   margin-top: 30px;
   width: 600px; 
   height: 250px;
   display: flex;
   flex-direction: row;
-  background: rgba(0,0,0,0.85);
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   justify-content: space-between;
@@ -194,9 +206,9 @@ const ControlContainer= styled.div`
 const Label = styled.label`
   font-family: 'Roboto', sans-serif;
   font-style: 1rem;
-  font-weight: 600;
-  font-size: 17px;
-  color: rgb(237,94,2);
+  font-weight: 500;
+  font-size: 16px;
+  color:#FFFFFF;
   margin-top: 10px;
   margin-bottom: 5px;
   text-align: center
@@ -452,7 +464,11 @@ class GameScreenSpectator extends React.Component {
             return '';
         };*/
         return (
-            <BaseContainer>
+            <StyledBody>
+                <BaseContainer
+                    style = {{"margin-top": '10px'}}
+                >
+
                 <PlayersContainer>
                     {this.state.players.map(user => {
                         if(user.id === this.state.activePlayerId){
@@ -460,11 +476,11 @@ class GameScreenSpectator extends React.Component {
                             this.state.activeplayerCredit = user.credit;
                             this.state.activeUsername = user.playerName;
                             return(
-                                <PlayerContainer key={user.id}   >
-                                    <label>{user.playerName}</label>
+                                <PlayerContainer key={user.id} >
+                                    <Label>{user.playerName}</Label>
                                     <img width={80}  src={chips} />
-                                    <label> {user.credit} </label>
-                                    <label>{user.action}</label>
+                                    <Label> {user.credit} </Label>
+                                    <Label>{user.action}</Label>
                                 </PlayerContainer>
                             )
                         } else {
@@ -472,10 +488,10 @@ class GameScreenSpectator extends React.Component {
                                 <PlayerContainer key={user.id}  onClick={() => {
                                     this.handleInputChange("activePlayerId",user.id);
                                 }}   >
-                                    <label>{user.playerName}</label>
+                                    <Label>{user.playerName}</Label>
                                     <img width={80}  src={chips} />
-                                    <label> {user.credit} </label>
-                                    <label>{user.action}</label>
+                                    <Label> {user.credit} </Label>
+                                    <Label>{user.action}</Label>
                                 </PlayerContainer>
                             );
                         }
@@ -485,7 +501,7 @@ class GameScreenSpectator extends React.Component {
                 </PlayersContainer>
                 <TableCardContainer>
                     <PotContainer>  <img width={80}  src={chips} />
-                        <label>{this.state.potAmount} </label></PotContainer>
+                        <Label>{this.state.potAmount} </Label></PotContainer>
                     <CardContainer>
                         <img width={95}  src={this.state.tablecard1} />
                     </CardContainer>
@@ -543,13 +559,13 @@ class GameScreenSpectator extends React.Component {
                     height="30%"
                     onClick={() => {
                         this.getOddsPreFlop();
-
+                        localStorage.removeItem("Spectator")
                     }}
                 >
                     Leave Game
                 </Button>
             </BaseContainer>
-
+            </StyledBody>
         );
 
     }

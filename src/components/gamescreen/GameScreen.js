@@ -13,12 +13,23 @@ import Player from "../../views/Player";
 import {Chat} from "../chat/Chat";
 
 
+const StyledBody = styled.div`
+ background: rgb(48,152,58);
+background: radial-gradient(circle, rgba(48,152,58,1) 12%, rgba(30,62,0,1) 82%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+`;
 
 const Button = styled.div`
   &:hover {
     transform: translateY(-3px);
     letter-spacing: 0.125rem;
-    background: rgba(237,94,2,1);
+    background: rgba(189,47,12,1);
     
   }
   line-height: 35px;
@@ -38,7 +49,7 @@ const Button = styled.div`
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   transition: all 0.3s ease;
-  background: rgba(237,94,2,0.85);
+     background: rgba(189,47,12,.85);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   font-weight: 900;
   color: $black;
@@ -54,7 +65,7 @@ const PlayersContainer = styled.div`
   justify-content: space-between;
 `;
 const PlayerContainer = styled.div`
-     background: rgba(237,94,2,0.85); 
+     border: 1px solid #FFFFFF;
      width: 100px;
      height: 119px;
      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -65,8 +76,7 @@ const PlayerContainer = styled.div`
       justify-content: center;
   `;
 const ActivePlayerContainer = styled.div`
-     background: rgba(237,94,2,0.85);
-     border: 1px solid #FFFFFF;
+     border: 2px solid rgba(189,47,12,.85);
      width: 100px;
      height: 119px;
      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -79,7 +89,7 @@ const ActivePlayerContainer = styled.div`
 
 const PotContainer = styled.div`
   margin: auto;
-  background: rgba(237,94,2,0.85); 
+     border: 1px solid #FFFFFF;
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   display: flex; 
@@ -90,16 +100,17 @@ const PotContainer = styled.div`
   height: 119px;
 `;
 const ChatContainer = styled.div`
-  
+ border: 1px solid #FFFFFF;
+ text-align: center;
   position: absolute;
   width: 230px;
   height: flex;
   top: 0px;
   right: 0px;
   bottom: 0px
-  background: rgba(237,94,2,0.85);
 `;
 const TableCardContainer = styled.div`
+
   padding-top: 60px; 
   margin: auto;
   width: 700px; 
@@ -184,12 +195,12 @@ const ContainerRow = styled.div`
 `;
 const ControlContainer= styled.div`
   margin: auto;
+  border: 1px solid #FFFFFF;
   margin-top: 30px;
   width: 600px; 
   height: 250px;
   display: flex;
   flex-direction: column;
-  background: rgba(0,0,0,0.9);
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   justify-content: top;
@@ -198,10 +209,10 @@ const ControlContainer= styled.div`
 const Label = styled.label`
   font-family: 'Roboto', sans-serif;
   font-style: 1rem;
-  font-weight: 600;
-  font-size: 17px;
-  color: rgb(237,94,2);
-  margin-top: 10px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #FFFFFF;
+  margin-top: 5px;
   margin-bottom: 5px;
   text-align: center
 `;
@@ -360,7 +371,6 @@ I already do this in the getGamelog() method
         let gamelog = new GameLog(response.data);
         if (gamelog.winner != null){
             let name = gamelog.winner.playerName;
-            name = "lara";
             localStorage.setItem("winner", name);
             alert("this is name:" + name);
 
@@ -712,7 +722,10 @@ I already do this in the getGamelog() method
             return '';
         };*/
         return (
-            <BaseContainer>
+         <StyledBody>
+            <BaseContainer
+                style = {{"margin-top": '10px'}}
+            >
                 <PlayersContainer>
                     {this.state.players.map(user => {
                         if(user.playerName === this.state.username){
@@ -721,9 +734,10 @@ I already do this in the getGamelog() method
                         else if (user.id === this.state.nextPlayerId){
                             return(
                                 <ActivePlayerContainer key={user.id}>
-                                    <label>{user.playerName}</label>
+                                    <Label>{user.playerName}</Label>
                                     <img width={80}  src={chips} />
-                                    <label> {user.credit} </label>
+                                    <Label> {user.credit} </Label>
+                                    <Label> last action </Label>
                                 </ActivePlayerContainer>
                             )
                         }
@@ -731,10 +745,10 @@ I already do this in the getGamelog() method
                         else {
                             return (
                                 <PlayerContainer key={user.id}>
-                                    <label>{user.playerName}</label>
+                                    <Label>{user.playerName}</Label>
                                     <img width={80}  src={chips} />
-                                    <label> {user.credit} </label>
-                                    <label>{user.action}</label>
+                                    <Label> {user.credit} </Label>
+                                    <Label>last action</Label>
                                 </PlayerContainer>
                             );
                         }
@@ -746,7 +760,7 @@ I already do this in the getGamelog() method
 
                 <TableCardContainer>
                     <PotContainer>  <img width={80}  src={chips} />
-                        <label>{this.state.potAmount} </label></PotContainer>
+                        <Label>{this.state.potAmount} </Label></PotContainer>
                     <CardContainer>
                         <img width={95}  src={this.state.tablecard1} />
                     </CardContainer>
@@ -936,6 +950,7 @@ I already do this in the getGamelog() method
                 </ChatContainer>
 
             </BaseContainer>
+         </StyledBody>
         );
     }
 }

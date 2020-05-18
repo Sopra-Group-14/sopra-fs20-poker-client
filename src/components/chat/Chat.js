@@ -67,7 +67,7 @@ const ChatButton = styled.div`
   cursor: ${props => (props.disabled ? "default" : "pointer")};
   opacity: ${props => (props.disabled ? 0.4 : 1)};
   transition: all 0.3s ease;
-  color: $black;
+  color: #FFFFFF;
   text-transform: uppercase;
   
   
@@ -110,7 +110,7 @@ export class Chat extends React.Component {
         this.interval = setInterval(() => this.tick(), 1000);
     }
     playerOrSpectator(){
-        if(localStorage.spectatorId >0){
+        if(localStorage.Spectator === "true"){
             this.state.spectator = true;
             this.state.user ='spectators';
         }
@@ -175,7 +175,6 @@ export class Chat extends React.Component {
                         style={{"font-weight": this.state.fontWeightplayer}}
                         onClick={() => {
                             this.setState({'write': false});
-                            this.setState({'switchSpecChat': false});
                             this.setState({'PlayerChat': true});
                             this.setState({'fontWeightspectator': "200"});
                             this.setState({'fontWeightplayer': "600"});
@@ -186,10 +185,8 @@ export class Chat extends React.Component {
                     </ChatButton>
                     <ChatButton
                         style={{"font-weight": this.state.fontWeightspectator}}
-
                         onClick={() => {
                             this.setState({'write': true});
-                            this.setState({'switchSpecChat': true});
                             this.setState({'PlayerChat': false});
                             this.setState({'fontWeightspectator': "600"});
                             this.setState({'fontWeightplayer': "200"});
@@ -200,7 +197,7 @@ export class Chat extends React.Component {
                     </ChatButton>
                 </ButtonContainerRow>
                     :
-                    <h2>Chat</h2>
+                    <h2 style={ {'color':'#FFFFFF'}}>Chat</h2>
                 }
 
                 <ScrollBox>
@@ -245,8 +242,10 @@ export class Chat extends React.Component {
                                 this.handleInputChange('message',e.target.value)
 
                             }}
-                            rightButtons={ <Button
-                                text='Send'
+                            rightButtons={
+                                    <Button
+                                      text='Send'
+
                                 onClick={
                                     this.addMessage.bind(this)
                                 }
