@@ -595,7 +595,7 @@ class GameScreenSpectator extends React.Component {
                             )
                         } else {
                             return (
-                                <PlayerContainer key={user.id}  onClick={() => {
+                                <PlayerContainer style={{cursor: "pointer"}} key={user.id}  onClick={() => {
                                     this.handleInputChange("activePlayerId",user.id);
                                 }}   >
                                     <Label>{user.playerName}</Label>
