@@ -66,7 +66,7 @@ class EndScreen extends React.Component {
         this.state = {
             username: null,
 
-            winnertext: " Congratulations, you won!!!",
+            winnertext: "Congratulations, you won!!!",
             losertext: "you lost, the winner is: ",
             winner: [],
             credit: null,
