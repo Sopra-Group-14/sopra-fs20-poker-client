@@ -266,6 +266,10 @@ class GameScreen extends React.Component {
             userState : null,
             possibleRaiseAndBetAmount: null,
 
+            gameRules : null,
+            sliderMin : null,
+            sliderStart : null,
+
             //Conditional Button Rendering
             betraisebuttontext: "Bet",
             input_cancel_visible: false,
@@ -318,6 +322,7 @@ class GameScreen extends React.Component {
         this.handleInputChange('bigBlind', gamelog.bigBlind);
         this.handleInputChange('smallBlind', gamelog.smallBlind);
         this.handleInputChange('possibleRaiseAndBetAmount', gamelog.possibleRaiseAndBetAmount);
+        this.handleInputChange('gameRules', gamelog.gameRules);
 
 
 
@@ -333,10 +338,11 @@ class GameScreen extends React.Component {
             this.handleInputChange('betSmallBlindDone', false);
             this.handleInputChange('betBigBlindDone', false);
         }
-        //this.setState({["potAmount"]: gamelog.potAmount});
 
-        //alert("id"+localStorage.getItem("id"));
-        //alert("nextid"+this.state.nextPlayerId);
+        if(this.state.gameRules === 'fixed limit'){
+            this.handleInputChange('raiseAmountInput', this.state.possibleRaiseAndBetAmount);
+
+        }
     }
 
     async getUser(){
@@ -898,12 +904,15 @@ I already do this in the getGamelog() method
                             </Button> : null}
                         </ButtonContainerRow> : null}
 
-                        {this.state.inputfieldvisible ?
+                        {(this.state.inputfieldvisible && this.state.gameRules !== 'fixed limit') ?
                             <Slider max={this.state.possibleRaiseAndBetAmount}
                                     handleraiseAmountInput={this.callbackFunction}
                                     key={'raiseAmountInput'}
                                     color={"#c14e4e"}
                             /> : null}
+
+                        {(this.state.inputfieldvisible && this.state.gameRules === 'fixed limit') ?
+                            <Label>Fixed Limit to: {this.state.possibleRaiseAndBetAmount}</Label> : null}
 
                         <Button
                             height="30%"

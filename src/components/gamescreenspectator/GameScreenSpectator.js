@@ -374,7 +374,7 @@ class GameScreenSpectator extends React.Component {
         xhr.setRequestHeader("x-rapidapi-host", "sf-api-on-demand-poker-odds-v1.p.rapidapi.com");
         xhr.setRequestHeader("x-rapidapi-key", "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0");
 
-        xhr.send(data);
+        await xhr.send(data);
 
         xhr.onload = function () {
             const preflop = new PreFlopOdds(xhr.response);
@@ -418,21 +418,17 @@ class GameScreenSpectator extends React.Component {
 
     async getOddsFlop(){
         const data = null;
-
         const xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
         xhr.responseType = 'json';
-        //flop?hole=Ac%252C3c&board=As%252C2h%252CTh
         xhr.open("GET", "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/flop?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1] + '&board=' + this.state.apitable[0]  + "%2C" + this.state.apitable[1]  + "%2C" + this.state.apitable[2]);
         xhr.setRequestHeader("x-rapidapi-host", "sf-api-on-demand-poker-odds-v1.p.rapidapi.com");
         xhr.setRequestHeader("x-rapidapi-key", "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0");
-
         xhr.send(data);
 
         xhr.onload = function () {
             const flop = new OddsFlopTurnRiver(xhr.response);
             localStorage.setItem('flop_prob', flop.data.winning.average['probability']);
-            //alert(localStorage.getItem('flop_prob'))
         };
     }
 
@@ -695,7 +691,7 @@ class GameScreenSpectator extends React.Component {
 
                     {this.state.gameRound === 'Flop' ? <HandCardContainer
                         style={{"flex-direction": "column"}}>
-                        <Label>Winning Probability Flop for average Hand: {this.state.flop_prob}%</Label>
+                        <Label>Winning Probability Flop for average Hand: {this.state.flop_prob}</Label>
                         <Button
                             style = {{width: '80%'}}
                             margin-bottom="40px"
@@ -711,7 +707,7 @@ class GameScreenSpectator extends React.Component {
 
                     {this.state.gameRound === 'TurnCard' ? <HandCardContainer
                         style={{"flex-direction": "column"}}>
-                        <Label>Winning Probability Turn for average Hand : {this.state.turn_prob}%</Label>
+                        <Label>Winning Probability Turn for average Hand : {this.state.turn_prob}</Label>
                         <Button
                             style = {{width: '80%'}}
                             margin-bottom="40px"
@@ -727,7 +723,7 @@ class GameScreenSpectator extends React.Component {
 
                     {this.state.gameRound === 'RiverCard' ? <HandCardContainer
                         style={{"flex-direction": "column"}}>
-                        <Label>Winning Probability: {this.state.river_prob}%</Label>
+                        <Label>Winning Probability: {this.state.river_prob}</Label>
                         <Button
                             style = {{width: '80%'}}
                             margin-bottom="40px"
