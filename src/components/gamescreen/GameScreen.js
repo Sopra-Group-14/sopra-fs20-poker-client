@@ -242,7 +242,7 @@ class GameScreen extends React.Component {
             //Gamelog
             currentPlayerName: null,
             currentPlayerId : null,
-            lastPlayer: null,
+            lastPlayerId: null,
             players:[],
 
             playerPot: null,
@@ -296,10 +296,8 @@ class GameScreen extends React.Component {
     }
 
     async getGamelog(){
-        //localStorage.setItem("gameId", "4");
-        //Koni const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
+        this.handleInputChange('lastPlayerId',this.state.nextPlayerId);
 
-        this.handleInputChange("lastPlayer",this.state.activePlayerId);
         const response = await api.get('/games/' + localStorage.getItem("gameId"));
         let gamelog = new GameLog(response.data);
 
@@ -463,8 +461,7 @@ class GameScreen extends React.Component {
 
 
     async whatButtonsToDisplay(){
-        //localStorage.setItem("gameId", "2");
-        //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
+        this.handleInputChange('lastPlayerId',this.state.nextPlayerId);
         const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
         const gamelog = new GameLog(response.data);
         if(this.state.input_cancel_visible){
@@ -524,7 +521,6 @@ class GameScreen extends React.Component {
         const requestBody = JSON.stringify({
             action: "CHECK",
             amount: 0,
-            //token: localStorage.getItem("token") ,
         });
         await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody, {headers:{ Authorization: localStorage.getItem("token")}})
     }
@@ -533,7 +529,6 @@ class GameScreen extends React.Component {
         const requestBody = JSON.stringify({
             action: "FOLD",
             amount: 0,
-            //token: localStorage.getItem("token") ,
         });
         await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody, {headers:{ Authorization: localStorage.getItem("token")}})
     }
@@ -542,7 +537,6 @@ class GameScreen extends React.Component {
         const requestBody = JSON.stringify({
             action: "RAISE",
             amount: this.state.raiseAmountInput,
-            //token: localStorage.getItem("token") ,
         });
         await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody, {headers:{ Authorization: localStorage.getItem("token")}})
     }
@@ -666,7 +660,6 @@ class GameScreen extends React.Component {
 
 
     tick() {
-        //alert("Everything gets refreshed");
         this.playRound();
 
     }
@@ -730,13 +723,13 @@ class GameScreen extends React.Component {
                                 </ActivePlayerContainer>
                             );
                         }
-                        else if(user.id === this.state.lastPlayer){
+                        else if(user.id === this.state.lastPlayerId){
                                 return(
                                     <PlayerContainer key={user.id}>
                                         <Label>{user.playerName}</Label>
                                         <img width={80}  src={chips} />
                                         <Label> {user.credit} </Label>
-                                        <Label>{this.state.action}</Label>
+                                        <Label>ACTIon{this.state.action}</Label>
                                     </PlayerContainer>
                                 )
                             }
