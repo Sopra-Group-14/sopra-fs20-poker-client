@@ -13,6 +13,7 @@ import User from "../shared/models/User";
 import {Chat} from "../chat/Chat";
 import PreFlopOdds from "../shared/models/OddsPreFlop";
 import OddsFlopTurnRiver from "../shared/models/OddsFlopTurnRiver";
+import {Spinner} from "../../views/design/Spinner";
 
 const Button = styled.div`
   &:hover {
@@ -343,7 +344,8 @@ class GameScreenSpectator extends React.Component {
             //const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
 
             const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+this.state.activePlayerId,{headers:{ Authorization: localStorage.getItem("token")}});
-            console.log("response body " + response);
+            //debugger;
+            //console.log("response body " + response);
             const player = response.data;
             this.state.handcards = player.hand;
             this.state.apihand = player.apiHand;
@@ -547,17 +549,18 @@ class GameScreenSpectator extends React.Component {
     tick() {
         //alert("Everything gets refreshed");
         this.playRound();
-        this.displayHandCards();
+        //this.displayHandCards();
     }
 
     componentWillUnmount() {
         clearInterval(this.interval);
+        this.interval = null;
     }
 
     componentDidMount() {
         this.getGamelog();
         this.displayTableCards();
-        this.interval = setInterval(() => this.tick(), 2000);
+        this.interval = setInterval(() => this.tick(), 3000);
     }
 
 
