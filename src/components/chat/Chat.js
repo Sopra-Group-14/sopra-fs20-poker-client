@@ -90,16 +90,23 @@ export class Chat extends React.Component {
             user: null,
             username: null,
             spectator:null,
+
             SpectatorMessageList: [{username: 'Spectator',position: 'left',text:'message 1'},{username: 'List',position: 'left', text: 'Example text 2'},{username: 'Me',position: 'right', text: 'Example text 3'}],
             PlayerMessageList: {  data: [] },
             PlayerChat: true,
             switchSpecChat: null,
             write: true,
             message: null,
+
+
             fontWeightspectator: "200",
             fontWeightplayer: "200",
             chatEmpty: true,
             position: 'left',
+
+
+            inputRef: React.createRef(),
+
         };
     }
     tick() {
@@ -149,7 +156,6 @@ export class Chat extends React.Component {
 
     async addMessage() {
         //IN PLAYERCHAT
-
         if(this.state.PlayerChat === true) {
             const requestBody = JSON.stringify({
             userId: localStorage.getItem("id"),
@@ -166,43 +172,10 @@ export class Chat extends React.Component {
             });
             await api.put('/games/'+localStorage.getItem('gameId')+'/chats/spectators', requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
         }
+        this.state.inputRef.clear();
 
     }
 
-
-    onChange(e) {
-        if (this.props.maxlength && (e.target.value || '').length > this.props.maxlength) {
-            if (this.props.onMaxLengthExceed instanceof Function)
-                this.props.onMaxLengthExceed();
-            return;
-        }
-
-        this.setState({
-            value: e.target.value
-        });
-        if (this.props.onChange instanceof Function)
-            this.props.onChange(e);
-
-        if (this.props.multiline === true) {
-            if (this.props.autoHeight === true) {
-                e.target.style.height = this.props.minHeight + 'px';
-
-                if (e.target.scrollHeight <= this.props.maxHeight)
-                    e.target.style.height = e.target.scrollHeight + 'px';
-                else
-                    e.target.style.height = this.props.maxHeight + 'px';
-            }
-        }
-    }
-
-    clear() {
-        var event = {
-            FAKE_EVENT: true,
-            target: this.input,
-        };
-        this.input.value = '';
-        this.onChange(event);
-    }
 
     render(){
         const arr = [];
@@ -211,7 +184,7 @@ export class Chat extends React.Component {
          const chatSource = arr.map(x => "Rössli")
 
         return (
-            <RightSide>
+        <RightSide>
                 <h2 style={ {'color':'#FFFFFF'}}>Chat</h2>
 
                 <ScrollBox>
@@ -248,33 +221,38 @@ export class Chat extends React.Component {
                         <ChatContainer>
 
                             <Input
-                            placeholder="type here"
-                            type = 'text'
-                            ref='input'
-                            onChange={(e) => {
-                                this.handleInputChange('message',e.target.value)
-
-                            }}
-                            rightButtons={
-                                    <Button
-                                      text='Send'
-
-                                onClick={
-                                    this.addMessage.bind(this)
-                                }
-                                onKeyPress={event => {
-                                    if (event.key === 13) {
-                                        this.addMessage.bind(this)
-                                    }
+                                ref={el => (this.state.inputRef = el)}
+                                placeholder="type here"
+                                type = 'text'
+                                value= {this.state.value}
+                                onChange={(e) => {
+                                    this.handleInputChange('message',e.target.value)
                                 }}
-                            />}
+                                rightButtons={
+                                    <Button
+                                        text='Send'
+
+                                        onClick={
+                                            this.addMessage.bind(this)
+                                        }
+                                        onKeyPress={event => {
+                                            if (event.key === 13) {
+                                                this.addMessage.bind(this)
+                                            }
+                                        }}
+                                    />
+
+                                }
+
                             />
 
                  </ChatContainer>
 
 
             </RightSide>
-        );
+
+    );
+
     }
 }
 
