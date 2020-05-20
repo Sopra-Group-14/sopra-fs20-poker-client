@@ -530,6 +530,7 @@ class GameScreenSpectator extends React.Component {
 
     async leave(){
         localStorage.removeItem('spectatorId');
+        localStorage.removeItem('Spectator');
         if (localStorage.getItem('id') === null){
             this.props.history.push(`/welcomepage`);
         }
@@ -771,7 +772,7 @@ class GameScreenSpectator extends React.Component {
                     margin-bottom="40px"
                     height="30%"
                     onClick={() => {
-                        localStorage.removeItem("Spectator")
+                        this.leave();
                     }}
                 >
                     Leave Game
