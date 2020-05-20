@@ -102,12 +102,15 @@ class EndScreen extends React.Component {
 
     render() {
 
-            this.state.winner.map(user => {
+          this.state.winner.map(user => {
 
             if(String(user.id) === localStorage.getItem("id")){
+                let lt = this.state.winnertext
+
                 return(
-                  this.state.text = this.state.winnertext
-               );
+                    this.state.text = lt
+
+                );
             }else {
                 let lt = "you lost, the winner is: " + user.playerName;
 
