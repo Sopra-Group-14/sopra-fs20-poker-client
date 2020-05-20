@@ -104,6 +104,8 @@ export class Chat extends React.Component {
     }
     tick() {
         this.getMessages();
+        this.playerOrSpectator();
+
     }
 
     componentDidMount() {
@@ -112,10 +114,14 @@ export class Chat extends React.Component {
     playerOrSpectator(){
         if(localStorage.Spectator === "true"){
             this.state.spectator = true;
+            this.setState({'write': true});
+            this.setState({'PlayerChat': false});
             this.state.user ='spectators';
         }
         else{
             this.state.spectator = false;
+            this.setState({'PlayerChat': true});
+
             this.state.user = 'players';
         }
     }
@@ -165,40 +171,10 @@ export class Chat extends React.Component {
         for (let i = 0; i < 5; i++)
             arr.push(i);
          const chatSource = arr.map(x => "Rössli")
-        this.playerOrSpectator();
 
         return (
             <RightSide>
-                {this.state.spectator ?
-                    <ButtonContainerRow>
-                    <ChatButton
-                        style={{"font-weight": this.state.fontWeightplayer}}
-                        onClick={() => {
-                            this.setState({'write': false});
-                            this.setState({'PlayerChat': true});
-                            this.setState({'fontWeightspectator': "200"});
-                            this.setState({'fontWeightplayer': "600"});
-
-                        }}
-                    >
-                        Player
-                    </ChatButton>
-                    <ChatButton
-                        style={{"font-weight": this.state.fontWeightspectator}}
-                        onClick={() => {
-                            this.setState({'write': true});
-                            this.setState({'PlayerChat': false});
-                            this.setState({'fontWeightspectator': "600"});
-                            this.setState({'fontWeightplayer': "200"});
-
-                        }}
-                    >
-                        Spectator
-                    </ChatButton>
-                </ButtonContainerRow>
-                    :
-                    <h2 style={ {'color':'#FFFFFF'}}>Chat</h2>
-                }
+                <h2 style={ {'color':'#FFFFFF'}}>Chat</h2>
 
                 <ScrollBox>
                 {this.state.chatEmpty ?(
