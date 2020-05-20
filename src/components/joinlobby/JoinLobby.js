@@ -128,6 +128,7 @@ class JoinLobby extends React.Component {
         /*setTimeout(function(){
 
         },1000);*/
+        this.getPlayers();
         this.interval = setInterval(() => this.tick(), 1000);
     }
 

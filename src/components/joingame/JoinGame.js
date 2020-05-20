@@ -124,6 +124,9 @@ class JoinGame extends React.Component {
         this.interval = setInterval(() => this.tick(), 1000);
 
     }
+    componentDidMount() {
+        this.gamelist();
+    }
 
 
     render() {

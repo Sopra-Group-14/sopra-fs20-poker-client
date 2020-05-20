@@ -302,6 +302,9 @@ class GameScreen extends React.Component {
         const response = await api.get('/games/' + localStorage.getItem("gameId"));
         let gamelog = new GameLog(response.data);
 
+        let oldSmallBlind = new User(this.state.smallBlind);
+        let oldSmallBLindId = oldSmallBlind.id;
+
         this.handleInputChange('players', gamelog.players);
         this.handleInputChange('currentPlayerName', gamelog.playerName);
         this.handleInputChange('playerPot', gamelog.playerPot);
@@ -326,7 +329,8 @@ class GameScreen extends React.Component {
         this.handleInputChange('possibleRaiseAndBetAmount', gamelog.possibleRaiseAndBetAmount);
         this.handleInputChange('gameRules', gamelog.gameRules);
 
-
+        let newSmallBlind = new User(this.state.smallBlind);
+        let newSmallBLindId = newSmallBlind.id;
 
         //Make white border on ControlContainer if its your turn
         if(localStorage.getItem("id") === String(this.state.nextPlayerId)){
@@ -336,9 +340,9 @@ class GameScreen extends React.Component {
             this.handleInputChange('controlContainerBorder', "");
         }
 
-        if(this.state.roundOver === true){
-            this.handleInputChange('betSmallBlindDone', false);
-            this.handleInputChange('betBigBlindDone', false);
+        if(oldSmallBLindId !== newSmallBLindId){
+            //Happens whenever a new round starts
+            this.blind();
         }
 
         if(this.state.gameRules === 'fixed limit'){
@@ -607,43 +611,20 @@ I already do this in the getGamelog() method
 
     async blind() {
 
-        let player = new User(this.state.bigBlind);
-        let player2 = new User(this.state.smallBlind);
+        this.handleInputChange('showBigBlindButton', true);
 
 
-        if (localStorage.getItem("id") === String(player.id)) {
-            this.state.userState = "you are Big Blind";
-            if (this.state.gameRound === "Preflop" && !this.state.betBigBlindDone) {
-                this.handleInputChange("betBigBlind", true);
-                this.handleInputChange("raiseorbigblind", "BigBlind");
-            }
+        let sB = new User(this.state.bigBlind);
+        let bB = new User(this.state.smallBlind);
 
-            else {
-                //this.handleInputChange("betBigBlind", false);
-                //this.handleInputChange("raiseorbigblind", "Raise");
-            }
-        } else {
-            this.state.userState = "";
-            //this.handleInputChange("betBigBlind", false);
-            //this.handleInputChange("raiseorbigblind", "Raise");
+
+        if (localStorage.getItem("id") === String(sB.id)) {
+            this.handleInputChange('showSmallBlindButton', true);
         }
 
 
-
-
-        if (localStorage.getItem("id") === String(player2.id)) {
-            this.state.userState = "you are Small Blind";
-            if (this.state.gameRound === "Preflop" && !this.state.betSmallBlindDone) {
-                this.handleInputChange("betSmallBlind", true);
-                this.handleInputChange("betorsmallblind", "SmallBlind");
-            }
-            else {
-                //this.handleInputChange("betSmallBlind", false);
-                //this.handleInputChange("betorsmallblind", "Bet");
-            }
-        } else {
-            //this.handleInputChange("betSmallBlind", false);
-            //this.handleInputChange("betorsmallblind", "Bet");
+        if (localStorage.getItem("id") === String(bB.id)) {
+            this.handleInputChange('showBigBlindButton', true);
         }
     }
 
@@ -664,7 +645,6 @@ I already do this in the getGamelog() method
         if(this.state.gameOver === false){
             this.getGamelog();
             this.getUser();
-            this.blind();
             this.displayHandCards();
             this.displayTableCards();
             this.whatButtonsToDisplay();
@@ -690,7 +670,6 @@ I already do this in the getGamelog() method
     }
 
     componentDidMount() {
-        this.blind();
         this.getGamelog();
         this.getUser();
         this.displayHandCards();
