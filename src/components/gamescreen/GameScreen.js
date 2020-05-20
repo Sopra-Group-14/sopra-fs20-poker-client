@@ -610,15 +610,20 @@ I already do this in the getGamelog() method
     };
 
     async blind() {
-        let sB = new User(this.state.bigBlind);
-        let bB = new User(this.state.smallBlind);
+        let sB = new User(this.state.smallBlind);
+        let bB = new User(this.state.bigBlind);
 
         if (localStorage.getItem("id") === String(sB.id)) {
+            this.state.userState = "you are the SmallBlind";
             this.handleInputChange('showSmallBlindButton', true);
         }
 
         if (localStorage.getItem("id") === String(bB.id)) {
+            this.state.userState = "you are the BigBlind";
             this.handleInputChange('showBigBlindButton', true);
+        }
+        if ((localStorage.getItem("id") !== String(sB.id)) && (localStorage.getItem("id") !== String(bB.id))) {
+            this.state.userState = "";
         }
     }
 
@@ -772,7 +777,7 @@ I already do this in the getGamelog() method
                     <ContainerRow>
 
                         <ButtonContainer>
-                            {!this.state.showSmallBlindButton || !this.state.showBigBlindButton ? <ButtonContainer>
+                            {!this.state.showSmallBlindButton && !this.state.showBigBlindButton ? <ButtonContainer>
                         {this.state.call_visible ? <Button
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
