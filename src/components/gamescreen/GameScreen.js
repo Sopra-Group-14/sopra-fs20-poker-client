@@ -242,6 +242,7 @@ class GameScreen extends React.Component {
             //Gamelog
             currentPlayerName: null,
             currentPlayerId : null,
+            lastPlayer: null,
             players:[],
 
             playerPot: null,
@@ -297,6 +298,8 @@ class GameScreen extends React.Component {
     async getGamelog(){
         //localStorage.setItem("gameId", "4");
         //Koni const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
+
+        this.handleInputChange("lastPlayer",this.state.activePlayerId);
         const response = await api.get('/games/' + localStorage.getItem("gameId"));
         let gamelog = new GameLog(response.data);
 
@@ -360,17 +363,6 @@ class GameScreen extends React.Component {
 
         //alert(user.credit);
     }
-/*
-I already do this in the getGamelog() method
-    async currentPlayer(){
-        //localStorage.setItem("gameId", "2");
-        const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
-        //lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-        //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-        const gamelog = new GameLog(response.data);
-        this.state.currentPlayerName = gamelog.playerName;
-    }
- */
 
     async nextRound(){
         const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
@@ -379,8 +371,6 @@ I already do this in the getGamelog() method
             let name = gamelog.winner.playerName;
             localStorage.setItem("winner", name);
             alert("this is name:" + name);
-
-
 
         }
     }
@@ -399,12 +389,7 @@ I already do this in the getGamelog() method
             console.log("response body " + response);
             const player = response.data;
             this.state.handcards = player.hand;
-            /*
-            alert("playerhand"+player.hand);
-            alert("player"+player);
-            alert("response"+response.data);
-             */
-            //alert(localStorage.getItem("id"));
+
 
             this.setState({ ["posh1"]: this.getImageOfCard(this.state.handcards[0])});
             this.setState({ ["posh2"]: this.getImageOfCard(this.state.handcards[1])});
@@ -593,7 +578,7 @@ I already do this in the getGamelog() method
     }
 
     async leave(){
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/leave')
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/leave', localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}})
     }
 
     handleInputChange(key, value) {
@@ -661,7 +646,6 @@ I already do this in the getGamelog() method
 
          */
 
-
     playRound(){
         if(this.state.gameOver === false){
             this.getGamelog();
@@ -670,17 +654,16 @@ I already do this in the getGamelog() method
             this.displayHandCards();
             this.displayTableCards();
             this.whatButtonsToDisplay();
-
-
-
         }
         this.nextRound();
         if(this.state.gameOver === true){
-            //localStorage.setItem("winner", this.state.winner);
-            //this.props.history.push(`/endscreen`);
+            localStorage.setItem("winner", this.state.winner);
+            this.props.history.push(`/endscreen`);
 
         }
     }
+
+
 
     tick() {
         //alert("Everything gets refreshed");
@@ -737,34 +720,44 @@ I already do this in the getGamelog() method
                         if(user.playerName === this.state.username){
                             return;
                         }
+
                         else if (user.id === this.state.nextPlayerId){
                             return(
                                 <ActivePlayerContainer key={user.id}>
                                     <Label>{user.playerName}</Label>
                                     <img width={80}  src={chips} />
                                     <Label> {user.credit} </Label>
-                                    <Label> last action </Label>
                                 </ActivePlayerContainer>
-                            )
+                            );
                         }
-
-                        else {
+                        else if(user.id === this.state.lastPlayer){
+                                return(
+                                    <PlayerContainer key={user.id}>
+                                        <Label>{user.playerName}</Label>
+                                        <img width={80}  src={chips} />
+                                        <Label> {user.credit} </Label>
+                                        <Label>{this.state.action}</Label>
+                                    </PlayerContainer>
+                                )
+                            }
+                         else{
                             return (
                                 <PlayerContainer key={user.id}>
                                     <Label>{user.playerName}</Label>
                                     <img width={80}  src={chips} />
                                     <Label> {user.credit} </Label>
-                                    <Label>last action</Label>
                                 </PlayerContainer>
                             );
                         }
-                    })}
 
-
+                    }
+                        )
+                    }
 
                 </PlayersContainer>
 
                 <TableCardContainer>
+
                     <PotContainer>  <img width={80}  src={chips} />
                         <Label>{this.state.potAmount} </Label></PotContainer>
                     <CardContainer>

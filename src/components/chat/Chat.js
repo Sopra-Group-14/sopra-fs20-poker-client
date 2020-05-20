@@ -107,7 +107,7 @@ export class Chat extends React.Component {
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => this.tick(), 1000);
+        this.interval = setInterval(() => this.tick(), 5000);
     }
     playerOrSpectator(){
         if(localStorage.Spectator === "true"){
