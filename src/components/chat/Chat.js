@@ -111,6 +111,7 @@ export class Chat extends React.Component {
     componentDidMount() {
         this.interval = setInterval(() => this.tick(), 5000);
     }
+
     playerOrSpectator(){
         if(localStorage.Spectator === "true"){
             this.state.spectator = true;
@@ -148,6 +149,7 @@ export class Chat extends React.Component {
 
     async addMessage() {
         //IN PLAYERCHAT
+
         if(this.state.PlayerChat === true) {
             const requestBody = JSON.stringify({
             userId: localStorage.getItem("id"),
@@ -164,6 +166,42 @@ export class Chat extends React.Component {
             });
             await api.put('/games/'+localStorage.getItem('gameId')+'/chats/spectators', requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
         }
+
+    }
+
+
+    onChange(e) {
+        if (this.props.maxlength && (e.target.value || '').length > this.props.maxlength) {
+            if (this.props.onMaxLengthExceed instanceof Function)
+                this.props.onMaxLengthExceed();
+            return;
+        }
+
+        this.setState({
+            value: e.target.value
+        });
+        if (this.props.onChange instanceof Function)
+            this.props.onChange(e);
+
+        if (this.props.multiline === true) {
+            if (this.props.autoHeight === true) {
+                e.target.style.height = this.props.minHeight + 'px';
+
+                if (e.target.scrollHeight <= this.props.maxHeight)
+                    e.target.style.height = e.target.scrollHeight + 'px';
+                else
+                    e.target.style.height = this.props.maxHeight + 'px';
+            }
+        }
+    }
+
+    clear() {
+        var event = {
+            FAKE_EVENT: true,
+            target: this.input,
+        };
+        this.input.value = '';
+        this.onChange(event);
     }
 
     render(){
@@ -208,12 +246,10 @@ export class Chat extends React.Component {
                     </ScrollBox>
 
                         <ChatContainer>
-                        {this.state.write ?
-
 
                             <Input
                             placeholder="type here"
-                            defaultValue=""
+                            type = 'text'
                             ref='input'
                             onChange={(e) => {
                                 this.handleInputChange('message',e.target.value)
@@ -227,16 +263,14 @@ export class Chat extends React.Component {
                                     this.addMessage.bind(this)
                                 }
                                 onKeyPress={event => {
-                                    if (event.key === "enter") {
+                                    if (event.key === 13) {
                                         this.addMessage.bind(this)
                                     }
                                 }}
                             />}
                             />
 
-                        :null
-
-                    }</ChatContainer>
+                 </ChatContainer>
 
 
             </RightSide>

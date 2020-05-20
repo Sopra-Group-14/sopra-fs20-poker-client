@@ -78,17 +78,17 @@ class JoinGameSpectator extends React.Component {
     }
 
     async watch(){
-       // localStorage.setItem("spectatorId", 5 /*response.spectatorId*/);
 
         const requestBody = JSON.stringify({
             userId: localStorage.getItem("id"),
             status:'spectator'
         });
 
-        const response = await api.put('/games/'+ this.state.gameId , requestBody);
+      //  const response = await api.put('/games/'+ this.state.gameId , requestBody);
 
-        localStorage.setItem("spectatorId",response.data);
-         localStorage.setItem("Spectator","true");
+      //  localStorage.setItem("spectatorId",response.data);
+        localStorage.setItem("spectatorId", 5);
+        localStorage.setItem("Spectator","true");
         this.props.history.push(`/gamescreenspectator`);
 
     }
