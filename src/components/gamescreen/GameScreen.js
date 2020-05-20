@@ -835,10 +835,12 @@ I already do this in the getGamelog() method
                                 disabled={this.state.raiseAmountInput === null || this.state.raiseAmountInput === ""}
                                 onClick={() => {
                                     if(this.state.betraisebuttontext === "Raise") {
+                                        this.handleInputChange("nextPlayerId", null);
                                         this.raise();
                                         //alert("raise" + this.state.raiseAmountInput)
                                     }
                                     if(this.state.betraisebuttontext === "Bet") {
+                                        this.handleInputChange("nextPlayerId", null);
                                         this.bet();
                                         //alert("bet" + this.state.raiseAmountInput)
                                     }
@@ -889,6 +891,7 @@ I already do this in the getGamelog() method
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
+                                this.handleInputChange("nextPlayerId", null);
                                 this.fold();
                             }}
                         >
@@ -899,6 +902,7 @@ I already do this in the getGamelog() method
                                 height="30%"
                                 disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                                 onClick={() => {
+                                    this.handleInputChange("nextPlayerId", null);
                                     this.betSmallBlind();
                                 }}
                             >
@@ -909,6 +913,7 @@ I already do this in the getGamelog() method
                                 height="30%"
                                 disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                                 onClick={() => {
+                                    this.handleInputChange("nextPlayerId", null);
                                     this.betBigBlind();
                                 }}
                             >
