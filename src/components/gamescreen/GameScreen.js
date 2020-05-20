@@ -290,7 +290,10 @@ class GameScreen extends React.Component {
             betBigBlindDone: false,
 
             betBigBlind: false,
-            betSmallBlind: false
+            betSmallBlind: false,
+
+            showSmallBlindButton: null,
+            showBigBlindButton: null,
 
 
         };
@@ -573,9 +576,8 @@ I already do this in the getGamelog() method
     }
 
     async betSmallBlind(){
-        this.handleInputChange("betSmallBlindDone", true);
-        this.handleInputChange("betSmallBlind", false);
-        this.handleInputChange("betorsmallblind", "Bet");
+        this.handleInputChange("showSmallBlindButton", false);
+
         const requestBody = JSON.stringify({
             action: "BET",
             amount: 5,
@@ -584,9 +586,7 @@ I already do this in the getGamelog() method
     }
 
     async betBigBlind(){
-        this.handleInputChange("betBigBlindDone", true);
-        this.handleInputChange("betBigBlind", false);
-        this.handleInputChange("raiseorbigblind", "Raise");
+        this.handleInputChange("showBigBlindButton", false);
         const requestBody = JSON.stringify({
             action: "RAISE",
             amount: 5,
@@ -610,18 +610,12 @@ I already do this in the getGamelog() method
     };
 
     async blind() {
-
-        this.handleInputChange('showBigBlindButton', true);
-
-
         let sB = new User(this.state.bigBlind);
         let bB = new User(this.state.smallBlind);
-
 
         if (localStorage.getItem("id") === String(sB.id)) {
             this.handleInputChange('showSmallBlindButton', true);
         }
-
 
         if (localStorage.getItem("id") === String(bB.id)) {
             this.handleInputChange('showBigBlindButton', true);
@@ -776,7 +770,9 @@ I already do this in the getGamelog() method
                     <BoxText><Label>{this.state.username+ "     " +this.state.userState} </Label></BoxText>
 
                     <ContainerRow>
-                    <ButtonContainer>
+
+                        <ButtonContainer>
+                            {!this.state.showSmallBlindButton || !this.state.showBigBlindButton ? <ButtonContainer>
                         {this.state.call_visible ? <Button
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
@@ -805,40 +801,26 @@ I already do this in the getGamelog() method
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
-                                if(this.state.betSmallBlind){
-                                    this.handleInputChange("nextPlayerId", null);
-                                    this.betSmallBlind();
-                                    //this.handleInputChange("betorsmallblind", "Bet");
-                                }
-                                else {
                                     this.handleInputChange("inputfieldvisible", true);
                                     this.handleInputChange("input_cancel_visible", true);
                                     this.handleInputChange("bet_visible", false);
                                     this.handleInputChange("raiseAmountInput", 0);
-                                }
                             }}
                         >
-                            {this.state.betorsmallblind}
+                            Bet
                         </Button> : null}
 
                         {this.state.raise_visible ? <Button
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
-                                if(this.state.betBigBlind){
-                                    this.handleInputChange("nextPlayerId", null);
-                                    this.betBigBlind();
-                                    //this.handleInputChange("raiseorbigblind", "Raise");
-                                }
-                                else {
                                     this.handleInputChange("inputfieldvisible", true);
                                     this.handleInputChange("input_cancel_visible", true);
                                     this.handleInputChange("raise_visible", false);
                                     this.handleInputChange("raiseAmountInput", 0);
-                                }
                             }}
                         >
-                            {this.state.raiseorbigblind}
+                            Raise
                         </Button> : null}
 
                         {this.state.input_cancel_visible ? <ButtonContainerRow>
@@ -848,12 +830,10 @@ I already do this in the getGamelog() method
                                 disabled={this.state.raiseAmountInput === null || this.state.raiseAmountInput === ""}
                                 onClick={() => {
                                     if(this.state.betraisebuttontext === "Raise") {
-                                        this.handleInputChange("nextPlayerId", null);
                                         this.raise();
                                         //alert("raise" + this.state.raiseAmountInput)
                                     }
                                     if(this.state.betraisebuttontext === "Bet") {
-                                        this.handleInputChange("nextPlayerId", null);
                                         this.bet();
                                         //alert("bet" + this.state.raiseAmountInput)
                                     }
@@ -909,7 +889,27 @@ I already do this in the getGamelog() method
                         >
                             Fold
                         </Button>
-                    </ButtonContainer>
+                    </ButtonContainer> : null}
+                            {this.state.showSmallBlindButton ? <Button
+                                height="30%"
+                                disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
+                                onClick={() => {
+                                    this.betSmallBlind();
+                                }}
+                            >
+                                Small Blind
+                            </Button> : null}
+
+                            {this.state.showBigBlindButton ? <Button
+                                height="30%"
+                                disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
+                                onClick={() => {
+                                    this.betBigBlind();
+                                }}
+                            >
+                                Big Blind
+                            </Button> : null}
+                        </ButtonContainer>
 
                     <HandCardContainer>
                         <CardContainer>
