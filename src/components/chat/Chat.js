@@ -128,7 +128,7 @@ export class Chat extends React.Component {
             const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/players',{headers:{ Authorization: localStorage.getItem("token")}});
             this.state.messageList = response.data;
 
-        }else  if(this.state.switchSpecChat === true) {
+        }else  if(this.state.PlayerChat === false) {
             const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/spectators' ,{headers:{ Authorization: localStorage.getItem("token")}});
             this.state.messageList =  response.data;
 
@@ -152,7 +152,7 @@ export class Chat extends React.Component {
         //IN SPECTATORCHAT
         }else  if(this.state.PlayerChat === false) {
             const requestBody = JSON.stringify({
-                userid: localStorage.getItem("spectatorid"),
+                userId: localStorage.getItem("spectatorId"),
                 chatMode: 'spectators',
                 message: this.state.message,
             });
@@ -208,11 +208,12 @@ export class Chat extends React.Component {
                     :
                     (
                         this.state.messageList.map(chat =>{
-                            if(localStorage.getItem('id')===chat.userId){
+                            if(localStorage.getItem('id') ===chat.userId) {
                                 this.state.position = 'right';
+                            }else if(localStorage.getItem('spectatorId') ===chat.userId){
+                                this.state.position='right';
                             }else{this.state.position = 'left';}
                             return(
-
                                 <MessageBox
                                     title={chat.username}
                                     position={this.state.position}
