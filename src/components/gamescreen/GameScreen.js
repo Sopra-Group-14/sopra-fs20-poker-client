@@ -593,7 +593,7 @@ I already do this in the getGamelog() method
     }
 
     async leave(){
-        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/leave',{}, {headers:{ Authorization: localStorage.getItem("token")}})
+        await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/leave')
     }
 
     handleInputChange(key, value) {

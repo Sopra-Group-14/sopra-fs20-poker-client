@@ -213,7 +213,19 @@ const Label = styled.label`
   color:#FFFFFF;
   margin-top: 5px;
   margin-bottom: 5px;
-  text-align: center
+  text-align: center;
+`;
+
+const LabelOdds = styled.label`
+  font-family: 'Roboto', sans-serif;
+  font-style: 1rem;
+  font-weight: 500;
+  font-size: 15px;
+  color:#FFFFFF;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  margin-right: 5px;
+  text-align: right;
 `;
 
 class GameScreenSpectator extends React.Component {
@@ -283,9 +295,6 @@ class GameScreenSpectator extends React.Component {
             turn_prob : null,
             river_prob : null,
 
-
-
-
         };
     }
 
@@ -314,9 +323,7 @@ class GameScreenSpectator extends React.Component {
         this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
     }
 
-
-
-    async nextRound(){
+        async nextRound(){
         const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
         let gamelog = new GameLog(response.data);
 
@@ -359,16 +366,29 @@ class GameScreenSpectator extends React.Component {
     }
 
     async getOddsPreFlop(){
+        const response = await api.get( "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/pre-flop?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1],{headers:{ 'x-rapidapi-host': "sf-api-on-demand-poker-odds-v1.p.rapidapi.com", "x-rapidapi-key": "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0"}});
+        const preflop = new PreFlopOdds(response.data);
+        this.setState({['preflop_HC']: preflop.data.hit['HC'].toFixed(5)*100});
+        this.setState({['preflop_1P']: preflop.data.hit['1P'].toFixed(5)*100});
+        this.setState({['preflop_2P']: preflop.data.hit['2P'].toFixed(5)*100});
+        this.setState({['preflop_3K']: preflop.data.hit['3K'].toFixed(5)*100});
+        this.setState({['preflop_ST']: preflop.data.hit['ST'].toFixed(5)*100});
+        this.setState({['preflop_FL']: preflop.data.hit['FL'].toFixed(5)*100});
+        this.setState({['preflop_FH']: preflop.data.hit['FH'].toFixed(5)*100});
+        this.setState({['preflop_4K']: preflop.data.hit['4K'].toFixed(5)*100});
+        this.setState({['preflop_SF']: preflop.data.hit['SF'].toFixed(5)*100});
+
+        /*
         const data = null;
 
         const xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
         xhr.responseType = 'json';
-        /*xhr.addEventListener("readystatechange", function () {
+        xhr.addEventListener("readystatechange", function () {
             if (this.readyState === this.DONE) {
                 console.log(this.responseText);
             }
-        });*/
+        });
 
         xhr.open("GET", "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/pre-flop?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1]);
         xhr.setRequestHeader("x-rapidapi-host", "sf-api-on-demand-poker-odds-v1.p.rapidapi.com");
@@ -390,33 +410,14 @@ class GameScreenSpectator extends React.Component {
             localStorage.setItem('preflop_4K', preflop.data.hit['4K'].toFixed(5)*100);
             localStorage.setItem('preflop_SF', preflop.data.hit['SF'].toFixed(5)*100);
         };
-    }
-
-    async setOddsPreFlop(){
-        await this.getOddsPreFlop();
-
-        this.setState({ ['preflop_HC']: localStorage.getItem("preflop_HC") });
-        this.setState({ ['preflop_1P']: localStorage.getItem("preflop_1P") });
-        this.setState({ ['preflop_2P']: localStorage.getItem("preflop_2P") });
-        this.setState({ ['preflop_3K']: localStorage.getItem("preflop_3K") });
-        this.setState({ ['preflop_ST']: localStorage.getItem("preflop_ST") });
-        this.setState({ ['preflop_FL']: localStorage.getItem("preflop_FL") });
-        this.setState({ ['preflop_FH']: localStorage.getItem("preflop_FH") });
-        this.setState({ ['preflop_4K']: localStorage.getItem("preflop_4K") });
-        this.setState({ ['preflop_SF']: localStorage.getItem("preflop_SF") });
-
-        localStorage.setItem('preflop_HC', '');
-        localStorage.setItem('preflop_1P', '');
-        localStorage.setItem('preflop_2P', '');
-        localStorage.setItem('preflop_3K', '');
-        localStorage.setItem('preflop_ST', '');
-        localStorage.setItem('preflop_FL', '');
-        localStorage.setItem('preflop_FH', '');
-        localStorage.setItem('preflop_4K', '');
-        localStorage.setItem('preflop_SF', '');
+        */
     }
 
     async getOddsFlop(){
+        const response = await api.get( "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/flop?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1] + '&board=' + this.state.apitable[0]  + "%2C" + this.state.apitable[1]  + "%2C" + this.state.apitable[2],{headers:{ 'x-rapidapi-host': "sf-api-on-demand-poker-odds-v1.p.rapidapi.com", "x-rapidapi-key": "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0"}});
+        const flop = new OddsFlopTurnRiver(response.data);
+        this.setState({ ['flop_prob']: flop.data.winning.average['probability']});
+        /*
         const data = null;
         const xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
@@ -425,25 +426,19 @@ class GameScreenSpectator extends React.Component {
         xhr.setRequestHeader("x-rapidapi-host", "sf-api-on-demand-poker-odds-v1.p.rapidapi.com");
         xhr.setRequestHeader("x-rapidapi-key", "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0");
         xhr.send(data);
-
         xhr.onload = function () {
             const flop = new OddsFlopTurnRiver(xhr.response);
             localStorage.setItem('flop_prob', flop.data.winning.average['probability']);
         };
-    }
-
-    async setOddsFlop(){
-        await this.getOddsFlop();
-
-        this.setState({ ['flop_prob']: localStorage.getItem("flop_prob") });
-
-        localStorage.setItem('flop_prob', '');
-
+         */
     }
 
     async getOddsTurn(){
+        const response = await api.get( "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/turn?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1] + '&board=' + this.state.apitable[0]  + "%2C" + this.state.apitable[1]  + "%2C" + this.state.apitable[2] + "%2C" + this.state.apitable[3],{headers:{ 'x-rapidapi-host': "sf-api-on-demand-poker-odds-v1.p.rapidapi.com", "x-rapidapi-key": "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0"}});
+        const flop = new OddsFlopTurnRiver(response.data);
+        this.setState({ ['turn_prob']: flop.data.winning.average['probability']});
+        /*
         const data = null;
-
         const xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
         xhr.responseType = 'json';
@@ -457,21 +452,19 @@ class GameScreenSpectator extends React.Component {
             localStorage.setItem('turn_prob', flop.data.winning.average['probability']);
             //alert(localStorage.getItem('flop_prob'))
         };
-    }
-
-    async setOddsTurn(){
-        await this.getOddsTurn();
-        this.setState({ ['turn_prob']: localStorage.getItem("turn_prob") });
-        localStorage.setItem('turn_prob', '');
+        */
     }
 
     async getOddsRiver(){
-        const data = null;
+        const response = await api.get( "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/river?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1] + '&board=' + this.state.apitable[0]  + "%2C" + this.state.apitable[1]  + "%2C" + this.state.apitable[2] + "%2C" + this.state.apitable[3]  + "%2C" + this.state.apitable[4],{headers:{ 'x-rapidapi-host': "sf-api-on-demand-poker-odds-v1.p.rapidapi.com", "x-rapidapi-key": "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0"}});
+        const flop = new OddsFlopTurnRiver(response.data);
+        this.setState({ ['river_prob']: flop.data.winning['probability']});
 
+        /*
+        const data = null;
         const xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
         xhr.responseType = 'json';
-        //flop?hole=Ac%252C3c&board=As%252C2h%252CTh
         xhr.open("GET", "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/river?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1] + '&board=' + this.state.apitable[0]  + "%2C" + this.state.apitable[1]  + "%2C" + this.state.apitable[2] + "%2C" + this.state.apitable[3]  + "%2C" + this.state.apitable[4]);
         xhr.setRequestHeader("x-rapidapi-host", "sf-api-on-demand-poker-odds-v1.p.rapidapi.com");
         xhr.setRequestHeader("x-rapidapi-key", "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0");
@@ -480,14 +473,8 @@ class GameScreenSpectator extends React.Component {
             const flop = new OddsFlopTurnRiver(xhr.response);
             localStorage.setItem('river_prob', flop.data.winning['probability']);
         };
+         */
     }
-
-    async setOddsRiver(){
-        await this.getOddsRiver();
-        this.setState({ ['river_prob']: localStorage.getItem("river_prob") });
-        localStorage.setItem('river_prob', '');
-    }
-
 
     async displayTableCards() {
         try {
@@ -667,21 +654,21 @@ class GameScreenSpectator extends React.Component {
                         <Label
                             style={{"margin-bottom": "5px"}}>
                             Odds for</Label>
-                        <Label>High Card: {this.state.preflop_HC}%</Label>
-                        <Label>One Pair: {this.state.preflop_1P}%</Label>
-                        <Label>Two Pair: {this.state.preflop_2P}% </Label>
-                        <Label>Three of a Kind: {this.state.preflop_3K}%</Label>
-                        <Label>Straight: {this.state.preflop_ST}%</Label>
-                        <Label>Flush: {this.state.preflop_FL}%</Label>
-                        <Label>Full House: {this.state.preflop_FH}%</Label>
-                        <Label>Four of a Kind: {this.state.preflop_4K}%</Label>
-                        <Label>Straight Flush: {this.state.preflop_SF}%</Label>
+                        <LabelOdds>High Card: {this.state.preflop_HC}%</LabelOdds>
+                        <LabelOdds>One Pair: {this.state.preflop_1P}%</LabelOdds>
+                        <LabelOdds>Two Pair: {this.state.preflop_2P}% </LabelOdds>
+                        <LabelOdds>Three of a Kind: {this.state.preflop_3K}%</LabelOdds>
+                        <LabelOdds>Straight: {this.state.preflop_ST}%</LabelOdds>
+                        <LabelOdds>Flush: {this.state.preflop_FL}%</LabelOdds>
+                        <LabelOdds>Full House: {this.state.preflop_FH}%</LabelOdds>
+                        <LabelOdds>Four of a Kind: {this.state.preflop_4K}%</LabelOdds>
+                        <LabelOdds>Straight Flush: {this.state.preflop_SF}%</LabelOdds>
                         <Button
                             style = {{width: '80%'}}
                             margin-bottom="40px"
                             height="30%"
                             onClick={() => {
-                                this.setOddsPreFlop();
+                                this.getOddsPreFlop();
 
                             }}
                         >
@@ -697,7 +684,7 @@ class GameScreenSpectator extends React.Component {
                             margin-bottom="40px"
                             height="30%"
                             onClick={() => {
-                                this.setOddsFlop();
+                                this.getOddsFlop();
 
                             }}
                         >
@@ -713,7 +700,7 @@ class GameScreenSpectator extends React.Component {
                             margin-bottom="40px"
                             height="30%"
                             onClick={() => {
-                                this.setOddsTurn();
+                                this.getOddsTurn();
 
                             }}
                         >
@@ -729,7 +716,7 @@ class GameScreenSpectator extends React.Component {
                             margin-bottom="40px"
                             height="30%"
                             onClick={() => {
-                                this.setOddsRiver();
+                                this.getOddsRiver();
 
                             }}
                         >
