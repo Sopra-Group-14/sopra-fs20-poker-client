@@ -226,7 +226,7 @@ const LabelOdds = styled.label`
   margin-top: 1px;
   margin-bottom: 1px;
   margin-right: 5px;
-  text-align: right;
+  text-align: left;
 `;
 
 class GameScreenSpectator extends React.Component {
@@ -280,6 +280,8 @@ class GameScreenSpectator extends React.Component {
             activePlayers : null,
             thisPlayersTurn : null,
             nextPlayersTurn : null,
+
+            showOdds : false,
             //preflop
             preflop_HC : null,
             preflop_1P : null,
@@ -303,6 +305,8 @@ class GameScreenSpectator extends React.Component {
         const response = await api.get('/games/' + localStorage.getItem("gameId"));
         let gamelog = new GameLog(response.data);
 
+        let oldGameround = this.state.gameRound;
+
         this.handleInputChange('players', gamelog.players);
         this.handleInputChange('currentPlayerName', gamelog.playerName);
         this.handleInputChange('playerPot', gamelog.playerPot);
@@ -322,6 +326,10 @@ class GameScreenSpectator extends React.Component {
         this.handleInputChange('activePlayers', gamelog.activePlayers);
         this.handleInputChange('thisPlayersTurn', gamelog.thisPlayersTurn);
         this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
+
+        if(oldGameround !== this.state.gameRound){
+            this.handleInputChange('showOdds', false);
+        }
     }
 
         async nextRound(){
@@ -370,15 +378,17 @@ class GameScreenSpectator extends React.Component {
     async getOddsPreFlop(){
         const response = await api.get( "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/pre-flop?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1],{headers:{ 'x-rapidapi-host': "sf-api-on-demand-poker-odds-v1.p.rapidapi.com", "x-rapidapi-key": "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0"}});
         const preflop = new PreFlopOdds(response.data);
-        this.setState({['preflop_HC']: preflop.data.hit['HC'].toFixed(5)*100});
-        this.setState({['preflop_1P']: preflop.data.hit['1P'].toFixed(5)*100});
-        this.setState({['preflop_2P']: preflop.data.hit['2P'].toFixed(5)*100});
-        this.setState({['preflop_3K']: preflop.data.hit['3K'].toFixed(5)*100});
-        this.setState({['preflop_ST']: preflop.data.hit['ST'].toFixed(5)*100});
-        this.setState({['preflop_FL']: preflop.data.hit['FL'].toFixed(5)*100});
-        this.setState({['preflop_FH']: preflop.data.hit['FH'].toFixed(5)*100});
-        this.setState({['preflop_4K']: preflop.data.hit['4K'].toFixed(5)*100});
-        this.setState({['preflop_SF']: preflop.data.hit['SF'].toFixed(5)*100});
+        this.setState({['preflop_HC']: Math.round(preflop.data.hit['HC']*10000)/100});
+        this.setState({['preflop_1P']: Math.round(preflop.data.hit['1P']*10000)/100});
+        this.setState({['preflop_2P']: Math.round(preflop.data.hit['2P']*10000)/100});
+        this.setState({['preflop_3K']: Math.round(preflop.data.hit['3K']*10000)/100});
+        this.setState({['preflop_ST']: Math.round(preflop.data.hit['ST']*10000)/100});
+        this.setState({['preflop_FL']: Math.round(preflop.data.hit['FL']*10000)/100});
+        this.setState({['preflop_FH']: Math.round(preflop.data.hit['FH']*10000)/100});
+        this.setState({['preflop_4K']: Math.round(preflop.data.hit['4K']*10000)/100});
+        this.setState({['preflop_SF']: Math.round(preflop.data.hit['SF']*10000)/100});
+        this.handleInputChange('showOdds', true);
+
 
         /*
         const data = null;
@@ -418,7 +428,9 @@ class GameScreenSpectator extends React.Component {
     async getOddsFlop(){
         const response = await api.get( "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/flop?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1] + '&board=' + this.state.apitable[0]  + "%2C" + this.state.apitable[1]  + "%2C" + this.state.apitable[2],{headers:{ 'x-rapidapi-host': "sf-api-on-demand-poker-odds-v1.p.rapidapi.com", "x-rapidapi-key": "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0"}});
         const flop = new OddsFlopTurnRiver(response.data);
-        this.setState({ ['flop_prob']: flop.data.winning.average['probability']});
+        this.setState({ ['flop_prob']: Math.round(flop.data.winning.average['probability']*10000)/100});
+        this.handleInputChange('showOdds', true);
+
         /*
         const data = null;
         const xhr = new XMLHttpRequest();
@@ -438,7 +450,9 @@ class GameScreenSpectator extends React.Component {
     async getOddsTurn(){
         const response = await api.get( "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/turn?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1] + '&board=' + this.state.apitable[0]  + "%2C" + this.state.apitable[1]  + "%2C" + this.state.apitable[2] + "%2C" + this.state.apitable[3],{headers:{ 'x-rapidapi-host': "sf-api-on-demand-poker-odds-v1.p.rapidapi.com", "x-rapidapi-key": "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0"}});
         const flop = new OddsFlopTurnRiver(response.data);
-        this.setState({ ['turn_prob']: flop.data.winning.average['probability']});
+        this.setState({ ['turn_prob']: Math.round(flop.data.winning.average['probability']*10000)/100});
+        this.handleInputChange('showOdds', true);
+
         /*
         const data = null;
         const xhr = new XMLHttpRequest();
@@ -460,7 +474,9 @@ class GameScreenSpectator extends React.Component {
     async getOddsRiver(){
         const response = await api.get( "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/river?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1] + '&board=' + this.state.apitable[0]  + "%2C" + this.state.apitable[1]  + "%2C" + this.state.apitable[2] + "%2C" + this.state.apitable[3]  + "%2C" + this.state.apitable[4],{headers:{ 'x-rapidapi-host': "sf-api-on-demand-poker-odds-v1.p.rapidapi.com", "x-rapidapi-key": "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0"}});
         const flop = new OddsFlopTurnRiver(response.data);
-        this.setState({ ['river_prob']: flop.data.winning['probability']});
+        this.setState({ ['river_prob']: Math.round(flop.data.winning['probability']*10000)/100});
+        this.handleInputChange('showOdds', true);
+
 
         /*
         const data = null;
@@ -600,6 +616,7 @@ class GameScreenSpectator extends React.Component {
                             return (
                                 <PlayerContainer style={{cursor: "pointer"}} key={user.id}  onClick={() => {
                                     this.handleInputChange("activePlayerId",user.id);
+                                    this.handleInputChange('showOdds', false);
                                 }}   >
                                     <Label>{user.playerName}</Label>
                                     <img width={80}  src={chips} />
@@ -652,10 +669,11 @@ class GameScreenSpectator extends React.Component {
                         <label>{this.state.playerCredit}</label>
                     </PotContainer>
 
-                    {this.state.gameRound === 'Preflop' ? <HandCardContainer
-                        style={{"flex-direction": "column"}}>
+                        {this.state.gameRound === 'Preflop'? <HandCardContainer>
+                    {this.state.gameRound === 'Preflop' && this.state.showOdds? <HandCardContainer
+                        style={{"flex-direction": "column", "margin-left": "15px"}}>
                         <Label
-                            style={{"margin-bottom": "5px"}}>
+                            style={{"margin-bottom": "5px", 'text-align': 'left'}}>
                             Odds for</Label>
                         <LabelOdds>High Card: {this.state.preflop_HC}%</LabelOdds>
                         <LabelOdds>One Pair: {this.state.preflop_1P}%</LabelOdds>
@@ -666,8 +684,10 @@ class GameScreenSpectator extends React.Component {
                         <LabelOdds>Full House: {this.state.preflop_FH}%</LabelOdds>
                         <LabelOdds>Four of a Kind: {this.state.preflop_4K}%</LabelOdds>
                         <LabelOdds>Straight Flush: {this.state.preflop_SF}%</LabelOdds>
-                        <Button
-                            style = {{width: '80%'}}
+                    </HandCardContainer> : null}
+
+                        {this.state.gameRound === 'Preflop' && !this.state.showOdds? <Button
+                            style = {{width: '80%', 'margin-left': '15px'}}
                             margin-bottom="40px"
                             height="30%"
                             onClick={() => {
@@ -676,56 +696,66 @@ class GameScreenSpectator extends React.Component {
                             }}
                         >
                             Get Odds
-                        </Button>
-                    </HandCardContainer> : null}
+                        </Button> : null}
+                        </HandCardContainer> : null}
 
-                    {this.state.gameRound === 'Flop' ? <HandCardContainer
-                        style={{"flex-direction": "column"}}>
-                        <Label>Winning Probability Flop for average Hand: {this.state.flop_prob}</Label>
-                        <Button
-                            style = {{width: '80%'}}
-                            margin-bottom="40px"
-                            height="30%"
-                            onClick={() => {
-                                this.getOddsFlop();
+                        {this.state.gameRound === 'Flop'? <HandCardContainer>
+                            {this.state.gameRound === 'Flop' && this.state.showOdds? <HandCardContainer
+                                style={{"flex-direction": "column", "margin-left": "15px"}}>
+                                <LabelOdds>Winning Chance F: {this.state.flop_prob}%</LabelOdds>
+                            </HandCardContainer> : null}
 
-                            }}
-                        >
-                            Get Odds
-                        </Button>
-                    </HandCardContainer> : null}
+                            {this.state.gameRound === 'Flop' && !this.state.showOdds? <Button
+                                style = {{width: '80%', 'margin-left': '15px'}}
+                                margin-bottom="40px"
+                                height="30%"
+                                onClick={() => {
+                                    this.getOddsFlop();
+                                }}
+                            >
+                                Get Odds
+                            </Button> : null}
+                        </HandCardContainer> : null}
 
-                    {this.state.gameRound === 'TurnCard' ? <HandCardContainer
-                        style={{"flex-direction": "column"}}>
-                        <Label>Winning Probability Turn for average Hand : {this.state.turn_prob}</Label>
-                        <Button
-                            style = {{width: '80%'}}
-                            margin-bottom="40px"
-                            height="30%"
-                            onClick={() => {
-                                this.getOddsTurn();
+                        {this.state.gameRound === 'TurnCard'? <HandCardContainer>
+                            {this.state.gameRound === 'TurnCard' && this.state.showOdds? <HandCardContainer
+                                style={{"flex-direction": "column", "margin-left": "15px"}}>
+                                <LabelOdds>Winning Chance T: {this.state.turn_prob}%</LabelOdds>
+                            </HandCardContainer> : null}
 
-                            }}
-                        >
-                            Get Odds
-                        </Button>
-                    </HandCardContainer> : null}
+                            {this.state.gameRound === 'TurnCard' && !this.state.showOdds? <Button
+                                style = {{width: '80%', 'margin-left': '15px'}}
+                                margin-bottom="40px"
+                                height="30%"
+                                onClick={() => {
+                                    this.getOddsTurn();
+                                }}
+                            >
+                                Get Odds
+                            </Button> : null}
+                        </HandCardContainer> : null}
 
-                    {this.state.gameRound === 'RiverCard' ? <HandCardContainer
-                        style={{"flex-direction": "column"}}>
-                        <Label>Winning Probability: {this.state.river_prob}</Label>
-                        <Button
-                            style = {{width: '80%'}}
-                            margin-bottom="40px"
-                            height="30%"
-                            onClick={() => {
-                                this.getOddsRiver();
 
-                            }}
-                        >
-                            Get Odds
-                        </Button>
-                    </HandCardContainer> : null}
+
+
+                        {this.state.gameRound === 'RiverCard'? <HandCardContainer>
+                            {this.state.gameRound === 'RiverCard' && this.state.showOdds? <HandCardContainer
+                                style={{"flex-direction": "column", "margin-left": "15px"}}>
+                                <LabelOdds>Winning Chance R: {this.state.river_prob}%</LabelOdds>
+                            </HandCardContainer> : null}
+
+                            {this.state.gameRound === 'RiverCard' && !this.state.showOdds? <Button
+                                style = {{width: '80%', 'margin-left': '15px'}}
+                                margin-bottom="40px"
+                                height="30%"
+                                onClick={() => {
+                                    this.getOddsRiver();
+                                }}
+                            >
+                                Get Odds
+                            </Button> : null}
+                        </HandCardContainer> : null}
+
                     </ContainerRow>
                 </ControlContainer>
 
