@@ -123,16 +123,14 @@ class Registration extends React.Component {
         }
     }
 
-    /**
-     *  Every time the user enters something in the input field, the state gets updated.
-     * @param key (the key of the state for identifying the field that needs to be updated)
-     * @param value (the value that gets assigned to the identified state key)
-     */
     handleInputChange(key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
         // this.setState({'username': value});
         this.setState({ [key]: value });
     }
+
+
+
 
     /**
      * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
@@ -150,6 +148,13 @@ class Registration extends React.Component {
                     <Form>
                         <Label>Username</Label>
                         <InputField
+                            onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                    if(!(!this.state.username || !this.state.password || this.state.password !== this.state.repeat_password)){
+                                        this.registration();
+                                    }
+                                }
+                            }}
                             placeholder="Enter here.."
                             onChange={e => {
                                 this.handleInputChange('username', e.target.value);
@@ -157,6 +162,13 @@ class Registration extends React.Component {
                         />
                         <Label>Password</Label>
                         <InputField
+                            onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                    if(!(!this.state.username || !this.state.password || this.state.password !== this.state.repeat_password)){
+                                        this.registration();
+                                    }
+                                }
+                            }}
                             placeholder="Enter here.."
                             onChange={e => {
                                 this.handleInputChange('password', e.target.value);
@@ -164,6 +176,14 @@ class Registration extends React.Component {
                         />
                         <Label>Repeat Password</Label>
                         <InputField
+                            onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                    if(!(!this.state.username || !this.state.password || this.state.password !== this.state.repeat_password)){
+                                    this.registration();
+                                    }
+                                }
+                            }
+                            }
                             placeholder="Enter here.."
                             onChange={e => {
                                 this.handleInputChange('repeat_password', e.target.value);
@@ -174,10 +194,13 @@ class Registration extends React.Component {
                         <ButtonContainer>
                             <Button
                                 disabled={!this.state.username || !this.state.password || this.state.password !== this.state.repeat_password}
+                                type="button"
                                 width="50%"
                                 onClick={() => {
                                     this.registration();
-                                }}
+                                }
+
+                                }
                             >
                                 Register
                             </Button>
