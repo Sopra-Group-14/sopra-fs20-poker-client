@@ -7,6 +7,7 @@ import { Button } from '../../views/design/Button';
 import GameModel from "../shared/models/GameModel";
 import Player from "../../views/Player";
 import GameLog from "../shared/models/GameLog";
+import {Spinner} from "../../views/design/Spinner";
 
 
 const FormContainer = styled.div`
@@ -71,7 +72,7 @@ class Lobby extends React.Component {
             username: User.username,
             players: [],
             gameName: null,
-            gameStarted: false
+            gameStarted: false,
         };
 
 

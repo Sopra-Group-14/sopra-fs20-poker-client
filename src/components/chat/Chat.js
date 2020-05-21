@@ -38,7 +38,7 @@ const RightSide = styled.div`
     width: 230px;
     height: 750px;
 
-`
+`;
 const ScrollBox = styled.div`
   
   position: top;
