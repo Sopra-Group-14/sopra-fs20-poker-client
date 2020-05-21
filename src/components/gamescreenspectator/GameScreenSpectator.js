@@ -221,8 +221,8 @@ const Label = styled.label`
 const LabelOdds = styled.label`
   font-family: 'Roboto', sans-serif;
   font-style: 1rem;
-  font-weight: 500;
-  font-size: 15px;
+  font-weight: 900;
+  font-size: 14px;
   color:#FFFFFF;
   margin-top: 1px;
   margin-bottom: 1px;
@@ -703,12 +703,12 @@ class GameScreenSpectator extends React.Component {
                             {!this.state.showOddsSpinner ?  <Container>
                     {this.state.gameRound === 'Preflop' && this.state.showOdds? <HandCardContainer
                         style={{"flex-direction": "column", "margin-left": "15px"}}>
-                        <Label
+                        <LabelOdds
                             style={{"margin-bottom": "5px", 'text-align': 'left'}}>
-                            Odds for</Label>
+                            Chance to get</LabelOdds>
                         <LabelOdds>High Card: {this.state.preflop_HC}%</LabelOdds>
                         <LabelOdds>One Pair: {this.state.preflop_1P}%</LabelOdds>
-                        <LabelOdds>Two Pair: {this.state.preflop_2P}% </LabelOdds>
+                        <LabelOdds>Two Pairs: {this.state.preflop_2P}% </LabelOdds>
                         <LabelOdds>Three of a Kind: {this.state.preflop_3K}%</LabelOdds>
                         <LabelOdds>Straight: {this.state.preflop_ST}%</LabelOdds>
                         <LabelOdds>Flush: {this.state.preflop_FL}%</LabelOdds>
@@ -741,7 +741,7 @@ class GameScreenSpectator extends React.Component {
                             {!this.state.showOddsSpinner ?  <Container>
                             {this.state.gameRound === 'Flop' && this.state.showOdds? <HandCardContainer
                                 style={{"flex-direction": "column", "margin-left": "15px"}}>
-                                <LabelOdds>Winning Chance: {this.state.flop_prob}%</LabelOdds>
+                                <LabelOdds>Winning Chance: <div>{this.state.flop_prob}%</div></LabelOdds>
                             </HandCardContainer> : null}
                             </Container> : <div
                                 style={{"flex": 1,
@@ -766,7 +766,7 @@ class GameScreenSpectator extends React.Component {
                             {!this.state.showOddsSpinner ?  <Container>
                             {this.state.gameRound === 'TurnCard' && this.state.showOdds? <HandCardContainer
                                 style={{"flex-direction": "column", "margin-left": "15px"}}>
-                                <LabelOdds>Winning Chance: {this.state.turn_prob}%</LabelOdds>
+                                <LabelOdds>Winning Chance: <div>{this.state.turn_prob}%</div></LabelOdds>
                             </HandCardContainer> : null}
                             </Container> : <div
                                 style={{"flex": 1,
@@ -794,7 +794,7 @@ class GameScreenSpectator extends React.Component {
                             {!this.state.showOddsSpinner ?  <Container>
                             {this.state.gameRound === 'RiverCard' && this.state.showOdds? <HandCardContainer
                                 style={{"flex-direction": "column", "margin-left": "15px"}}>
-                                <LabelOdds>Winning Chance: {this.state.river_prob}%</LabelOdds>
+                                <LabelOdds>Winning Chance: <div>{this.state.river_prob}%</div></LabelOdds>
                             </HandCardContainer> : null}
                             </Container> : <div
                                 style={{"flex": 1,

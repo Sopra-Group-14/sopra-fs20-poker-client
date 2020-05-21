@@ -390,6 +390,8 @@ I already do this in the getGamelog() method
             localStorage.setItem("winner", name);
             alert("this is name:" + name);
             }
+
+
     }
 
     async displayHandCards() {
@@ -617,15 +619,18 @@ I already do this in the getGamelog() method
         let sB = new User(this.state.smallBlind);
         let bB = new User(this.state.bigBlind);
 
-        if (localStorage.getItem("id") === String(sB.id)) {
-            this.state.userState = "you are the SmallBlind";
-            this.handleInputChange('showSmallBlindButton', true);
-        }
+        if(this.state.gameRound === 'Preflop'  || this.state.gameRound === null){
+            if (localStorage.getItem("id") === String(sB.id)) {
+                this.state.userState = "you are the SmallBlind";
+                this.handleInputChange('showSmallBlindButton', true);
+            }
 
-        if (localStorage.getItem("id") === String(bB.id)) {
-            this.state.userState = "you are the BigBlind";
-            this.handleInputChange('showBigBlindButton', true);
-        }
+            if (localStorage.getItem("id") === String(bB.id)) {
+                this.state.userState = "you are the BigBlind";
+                this.handleInputChange('showBigBlindButton', true);
+            }
+
+    }
         if ((localStorage.getItem("id") !== String(sB.id)) && (localStorage.getItem("id") !== String(bB.id))) {
             this.state.userState = "";
         }
