@@ -280,6 +280,7 @@ class GameScreen extends React.Component {
             raise_visible: false,
             check_visible: true,
             bet_visible: true,
+            fold_visible : true,
             controlContainerBorder: "",
             betorsmallblind: "Bet",
             raiseorbigblind: "Raise",
@@ -388,15 +389,11 @@ I already do this in the getGamelog() method
             let name = gamelog.winner.playerName;
             localStorage.setItem("winner", name);
             alert("this is name:" + name);
-
-
-
-        }
+            }
     }
 
     async displayHandCards() {
         try {
-
             //Backend with Postman:
             //localStorage.setItem("gameId", "2");
             //localStorage.setItem("playerId", "1");
@@ -529,6 +526,13 @@ I already do this in the getGamelog() method
         }
         else{
             this.handleInputChange("bet_visible", false)
+        }
+
+        if(gamelog.possibleActions.includes("FOLD")){
+            this.handleInputChange("fold_visible", true)
+        }
+        else{
+            this.handleInputChange("fold_visible", false)
         }
 
     }
@@ -887,16 +891,19 @@ I already do this in the getGamelog() method
                         {(this.state.inputfieldvisible && this.state.gameRules === 'fixed limit') ?
                             <Label>Fixed Limit to: {this.state.possibleRaiseAndBetAmount}</Label> : null}
 
-                        <Button
+                                {this.state.fold_visible ? <Button
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
                                 this.handleInputChange("nextPlayerId", null);
+                                this.handleInputChange("input_cancel_visible", false);
+                                this.handleInputChange("inputfieldvisible", false);
                                 this.fold();
                             }}
                         >
                             Fold
-                        </Button>
+                        </Button> : null}
+
                     </ButtonContainer> : null}
                             {this.state.showSmallBlindButton ? <Button
                                 height="30%"

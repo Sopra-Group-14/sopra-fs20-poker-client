@@ -49,6 +49,7 @@ class Dashboard extends React.Component {
             username: null,
             spectator: "spectator",
             player: "player",
+            balance: null
 
         };
     }
@@ -70,6 +71,20 @@ class Dashboard extends React.Component {
 
     }
 
+    async getUser() {
+        try {
+            //localStorage.setItem("playerId", "4");
+            // const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/' + localStorage.getItem("playerId"));
+            const response = await api.get('/users/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
+            const user = new User(response.data);
+            this.handleInputChange('balance', user.balance);
+
+        } catch (error) {
+            alert(`Something went wrong when trying to get the User: \n${handleError(error)}`);
+        }
+
+    }
+
     async playGame() {
         try {
             const requestBody = JSON.stringify({
@@ -81,6 +96,10 @@ class Dashboard extends React.Component {
             alert(`Something went wrong when trying to play a game: \n${handleError(error)}`);
         }
 
+    }
+
+    handleInputChange(key, value) {
+        this.setState({ [key]: value });
     }
 
     async logout() {
@@ -108,6 +127,10 @@ class Dashboard extends React.Component {
 
     }
 
+    componentDidMount() {
+        this.getUser()
+    }
+
     render() {
         return (
             <FormContainer>
@@ -115,6 +138,7 @@ class Dashboard extends React.Component {
                     <ButtonContainer>
                         <Button
                             height="30%"
+                            disabled={(this.state.balance < 10)}
                             onClick={() => {
                                 this.playGame();
                                 this.props.history.push(`/play`);
