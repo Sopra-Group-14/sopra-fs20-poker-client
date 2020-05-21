@@ -11,6 +11,7 @@ import Slider from "../Slider/Slider";
 import User from "../shared/models/User";
 import Player from "../../views/Player";
 import {Chat} from "../chat/Chat";
+import Popup from "reactjs-popup";
 
 
 const StyledBody = styled.div`
@@ -296,6 +297,7 @@ class GameScreen extends React.Component {
             showSmallBlindButton: null,
             showBigBlindButton: null,
 
+            popup:null,
 
         };
     }
@@ -332,6 +334,8 @@ class GameScreen extends React.Component {
         this.handleInputChange('smallBlind', gamelog.smallBlind);
         this.handleInputChange('possibleRaiseAndBetAmount', gamelog.possibleRaiseAndBetAmount);
         this.handleInputChange('gameRules', gamelog.gameRules);
+        this.handleInputChange('winnerList', gamelog.winners);
+
 
         let newSmallBlind = new User(this.state.smallBlind);
         let newSmallBLindId = newSmallBlind.id;
@@ -359,8 +363,6 @@ class GameScreen extends React.Component {
 
         const response = await api.get('/users/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
 
-        //localStorage.setItem("id", "4");
-        //const response= await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/'+localStorage.getItem("id"));
         const user = new User(response.data);
 
         this.handleInputChange('username', user.username);
@@ -370,17 +372,6 @@ class GameScreen extends React.Component {
 
         //alert(user.credit);
     }
-/*
-I already do this in the getGamelog() method
-    async currentPlayer(){
-        //localStorage.setItem("gameId", "2");
-        const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
-        //lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-        //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-        const gamelog = new GameLog(response.data);
-        this.state.currentPlayerName = gamelog.playerName;
-    }
- */
 
     async nextRound(){
         const response = await api.get('/games/' + localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
@@ -600,6 +591,18 @@ I already do this in the getGamelog() method
         await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody, {headers:{ Authorization: localStorage.getItem("token")}})
     }
 
+    async getCurrentWinner(){
+        if(this.state.gameRound === 'Preflop'){
+            this.handleInputChange('popup',true);
+
+
+        }
+        /*this.handleInputChange('winnerName', this.state.winners.username);
+        this.handleInputChange('winnerHand', this.state.winners.winningCombo);
+        */
+    }
+
+
     async leave(){
         await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/leave',{}, {headers:{ Authorization: localStorage.getItem("token")}})
     }
@@ -727,7 +730,7 @@ I already do this in the getGamelog() method
                                     <Label>{user.playerName}</Label>
                                     <img width={80}  src={chips} />
                                     <Label> {user.credit} </Label>
-                                    <Label> last action </Label>
+                                    <Label>  </Label>
                                 </ActivePlayerContainer>
                             )
                         }
@@ -737,7 +740,7 @@ I already do this in the getGamelog() method
                                         <Label>{user.playerName}</Label>
                                         <img width={80}  src={chips} />
                                         <Label> {user.credit} </Label>
-                                        <Label>ACTIon{this.state.action}</Label>
+                                        <Label>{this.state.action}</Label>
                                     </PlayerContainer>
                                 )
                             }
@@ -748,7 +751,7 @@ I already do this in the getGamelog() method
                                     <Label>{user.playerName}</Label>
                                     <img width={80}  src={chips} />
                                     <Label> {user.credit} </Label>
-                                    <Label>last action</Label>
+                                    <Label></Label>
                                 </PlayerContainer>
                             );
                         }
@@ -778,6 +781,40 @@ I already do this in the getGamelog() method
                     </CardContainer>
 
                 </TableCardContainer>
+
+
+                <Popup
+                    trigger={ this.state.popup === true }
+
+                    modal>
+                    {close => (
+                        <div className="modal">
+                            <a className="close" onClick={close}>
+                                &times;
+                            </a>
+                            <div className="header"> Round over </div>
+                            <div className="content">
+                                <p>
+                                    The winner of this Round was:{this.state.winner} <br/>
+                                    with:
+                                </p>
+
+                            </div>
+                            <button
+                                className="button"
+                                onClick={() => {
+                                    console.log("closed ");
+                                    close();
+                                }}
+                            >
+                                close
+                            </button>
+                        </div>
+                    )}
+                </Popup>
+
+
+
 
                 <ControlContainer
                     style={{"border": this.state.controlContainerBorder}}>
