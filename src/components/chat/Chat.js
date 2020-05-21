@@ -7,6 +7,7 @@ import {BaseContainer} from '../../helpers/layout';
 import {api, handleError} from '../../helpers/api';
 import {withRouter} from 'react-router-dom';
 import 'react-chat-elements/dist/main.css';
+import keydown from 'react-keydown';
 
 import {
     MessageBox,
@@ -79,7 +80,6 @@ const ButtonContainerRow = styled.div`
   display: flex;
   justify-content: 'center';  
 `;
-
 export class Chat extends React.Component {
 
     constructor(props) {
@@ -114,6 +114,10 @@ export class Chat extends React.Component {
         this.playerOrSpectator();
 
     }
+
+
+
+
 
     componentDidMount() {
         this.interval = setInterval(() => this.tick(), 5000);
@@ -177,11 +181,12 @@ export class Chat extends React.Component {
     }
 
 
+
+
     render(){
         const arr = [];
         for (let i = 0; i < 5; i++)
             arr.push(i);
-         const chatSource = arr.map(x => "Rössli")
 
         return (
         <RightSide>
@@ -228,18 +233,17 @@ export class Chat extends React.Component {
                                 onChange={(e) => {
                                     this.handleInputChange('message',e.target.value)
                                 }}
+
+
+
                                 rightButtons={
                                     <Button
                                         text='Send'
-
                                         onClick={
                                             this.addMessage.bind(this)
                                         }
-                                        onKeyPress={event => {
-                                            if (event.key === 13) {
-                                                this.addMessage.bind(this)
-                                            }
-                                        }}
+
+
                                     />
 
                                 }

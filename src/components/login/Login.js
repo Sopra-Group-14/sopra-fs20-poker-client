@@ -143,6 +143,13 @@ class Login extends React.Component {
 
             <Label>Username</Label>
             <InputField
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    if(!(!this.state.username || !this.state.password )){
+                      this.login();
+                    }
+                  }
+                }}
               placeholder="Enter here.."
               onChange={e => {
                 this.handleInputChange('username', e.target.value);
@@ -150,6 +157,13 @@ class Login extends React.Component {
             />
             <Label>Password</Label>
             <InputField
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    if(!(!this.state.username || !this.state.password)){
+                      this.login();
+                    }
+                  }
+                }}
               placeholder="Enter here.."
               onChange={e => {
                 this.handleInputChange('password', e.target.value);

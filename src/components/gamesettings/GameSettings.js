@@ -6,6 +6,7 @@ import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import GameModel from "../shared/models/GameModel";
+import {Input} from "react-chat-elements";
 
 const ButtonGreen = styled.div`
     &:hover {
@@ -155,6 +156,14 @@ class GameSettings extends React.Component {
                 <Form>
                     <Label>Choose a Game Name:</Label>
                     <InputField
+                        onKeyPress={(e) => {
+                            if(!(this.state.limit === null || this.state.gamename === null || this.state.gamename === "")){
+                            if (e.key === "Enter") {
+                                this.createGame();
+                                this.props.history.push(`/lobby`);
+
+                            }}
+                        }}
                         placeholder="Enter here.."
                         onChange={e => {
                             this.handleInputChange("gamename", e.target.value);
