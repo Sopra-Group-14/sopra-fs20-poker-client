@@ -74,20 +74,28 @@ class JoinGameSpectator extends React.Component {
             gameId: null,
             load: null,
             gamesEmpty: true,
+            spectatorId:null,
         };
     }
 
     async watch(){
 
-        const requestBody = JSON.stringify({
-            userId: localStorage.getItem("id"),
-            mode:'spectator'
-        });
 
-       const response = await api.put('/games/'+ this.state.gameId , requestBody);
+   /*    if (localStorage.getItem('id')!= null){
+           const requestBody = JSON.stringify({
+               userId: localStorage.getItem("id"),
+               mode:"spectator",
+           });
+           const response = await api.put('/games/'+ this.state.gameId , requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
 
-       localStorage.setItem("spectatorId",response.data);
-      //  localStorage.setItem("spectatorId", 5);
+       }
+       else {*/
+
+           const response = await api.put('/games/' + this.state.gameId + '/spectator');
+           let gamelog = new GameLog(response.data);
+           this.setState({'spectatorId': gamelog.createdSpectatorId});
+           localStorage.setItem("spectatorId", this.state.spectatorId);
+       
         localStorage.setItem("Spectator","true");
         this.props.history.push(`/gamescreenspectator`);
 

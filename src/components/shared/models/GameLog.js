@@ -28,6 +28,7 @@ class GameLog {
         this.smallBlind = null;
         this.possibleRaiseAndBetAmount = null;
         this.gameRules = null;
+        this.createdSpectatorId = null;
 
         Object.assign(this, data);
     }
