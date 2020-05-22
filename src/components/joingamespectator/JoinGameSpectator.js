@@ -95,7 +95,7 @@ class JoinGameSpectator extends React.Component {
            let gamelog = new GameLog(response.data);
            this.setState({'spectatorId': gamelog.createdSpectatorId});
            localStorage.setItem("spectatorId", this.state.spectatorId);
-       
+
         localStorage.setItem("Spectator","true");
         this.props.history.push(`/gamescreenspectator`);
 
