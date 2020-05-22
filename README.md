@@ -18,8 +18,10 @@ Account: the account of the user, where he can check on his credit
 
 
 ## Launch and Deplyment.
-install npm
-npm run dev
+install npm <br/>
+npm run dev <br/>
+npm install reactjs-popup --save
+
 
 ## Illustrations
 To play poker the user needs to register or log in. Then he can create or join a pokergame. The user has an account where he can top up his credit once every 24h. As a not logged in (as well as a logged in) user it is possible to join a game as a spectator and see the hand cards of the different Players as well as some winning odds. 
