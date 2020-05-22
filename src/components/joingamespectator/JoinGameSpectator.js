@@ -81,7 +81,7 @@ class JoinGameSpectator extends React.Component {
 
         const requestBody = JSON.stringify({
             userId: localStorage.getItem("id"),
-            status:'spectator'
+            mode:'spectator'
         });
 
       //  const response = await api.put('/games/'+ this.state.gameId , requestBody);
