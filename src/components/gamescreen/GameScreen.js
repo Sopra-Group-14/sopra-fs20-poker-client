@@ -640,17 +640,6 @@ class GameScreen extends React.Component {
 
 
 
-        /*else{
-            this.state.userState = "";
-            this.handleInputChange("betSmallBlind", false);
-            this.handleInputChange("betBigBlind", false);
-            this.handleInputChange("betorsmallblind", "Bet");
-            this.handleInputChange("raiseorbigblind", "Raise");
-        }
-
-         */
-
-
     playRound(){
         if(this.state.gameOver === false){
             this.getGamelog();
