@@ -217,6 +217,10 @@ const Label = styled.label`
   margin-bottom: 5px;
   text-align: center
 `;
+
+
+
+
 class GameScreen extends React.Component {
     constructor() {
         super();
@@ -297,7 +301,9 @@ class GameScreen extends React.Component {
             showSmallBlindButton: null,
             showBigBlindButton: null,
 
-            popup:null,
+            popup:false,
+            winnerName: null,
+            winnerHand: null,
 
         };
     }
@@ -591,16 +597,7 @@ class GameScreen extends React.Component {
         await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/actions', requestBody, {headers:{ Authorization: localStorage.getItem("token")}})
     }
 
-    async getCurrentWinner(){
-        if(this.state.gameRound === 'Preflop'){
-            this.handleInputChange('popup',true);
 
-
-        }
-        /*this.handleInputChange('winnerName', this.state.winners.username);
-        this.handleInputChange('winnerHand', this.state.winners.winningCombo);
-        */
-    }
 
 
     async leave(){
@@ -621,7 +618,7 @@ class GameScreen extends React.Component {
     async blind() {
         let sB = new User(this.state.smallBlind);
         let bB = new User(this.state.bigBlind);
-
+        this.handleInputChange('popup',true);
         if(this.state.gameRound === 'Preflop'  || this.state.gameRound === null){
             if (localStorage.getItem("id") === String(sB.id)) {
                 this.state.userState = "you are the SmallBlind";
@@ -659,7 +656,6 @@ class GameScreen extends React.Component {
             this.displayHandCards();
             this.displayTableCards();
             this.whatButtonsToDisplay();
-
 
 
         }
@@ -714,6 +710,11 @@ class GameScreen extends React.Component {
 
             return '';
         };*/
+        if(this.state.popup === true){
+            alert(this.state.winnerName + ' won with ' + this.state.winnerHand);
+            this.handleInputChange('popup',false);
+
+        }
         return (
          <StyledBody>
             <BaseContainer
@@ -784,9 +785,9 @@ class GameScreen extends React.Component {
 
 
                 <Popup
-                    trigger={ this.state.popup === true }
-
-                    modal>
+                    open={this.state.popup}
+                    closeOnDocumentClick
+                >
                     {close => (
                         <div className="modal">
                             <a className="close" onClick={close}>
@@ -804,6 +805,7 @@ class GameScreen extends React.Component {
                                 className="button"
                                 onClick={() => {
                                     console.log("closed ");
+                                    this.handleInputChange('popup',false);
                                     close();
                                 }}
                             >
