@@ -7,7 +7,6 @@ import {BaseContainer} from '../../helpers/layout';
 import {api, handleError} from '../../helpers/api';
 import {withRouter} from 'react-router-dom';
 import 'react-chat-elements/dist/main.css';
-import keydown from 'react-keydown';
 
 import {
     MessageBox,
