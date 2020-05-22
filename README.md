@@ -1,4 +1,4 @@
-# SoPra FS20 - Client Template
+# SoPra FS20 Group 14 Poker - Client
 
 ## Introduction
 

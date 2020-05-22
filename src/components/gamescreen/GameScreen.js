@@ -357,6 +357,9 @@ class GameScreen extends React.Component {
         if(oldSmallBLindId !== newSmallBLindId){
             //Happens whenever a new round starts
             this.blind();
+            this.handleInputChange('popup',true);
+
+
         }
 
         if(this.state.gameRules === 'fixed limit'){
@@ -618,7 +621,6 @@ class GameScreen extends React.Component {
     async blind() {
         let sB = new User(this.state.smallBlind);
         let bB = new User(this.state.bigBlind);
-        this.handleInputChange('popup',true);
         if(this.state.gameRound === 'Preflop'  || this.state.gameRound === null){
             if (localStorage.getItem("id") === String(sB.id)) {
                 this.state.userState = "you are the SmallBlind";
@@ -636,17 +638,6 @@ class GameScreen extends React.Component {
         }
     }
 
-
-
-        /*else{
-            this.state.userState = "";
-            this.handleInputChange("betSmallBlind", false);
-            this.handleInputChange("betBigBlind", false);
-            this.handleInputChange("betorsmallblind", "Bet");
-            this.handleInputChange("raiseorbigblind", "Raise");
-        }
-
-         */
 
 
     playRound(){
@@ -786,7 +777,6 @@ class GameScreen extends React.Component {
 
                 <Popup
                     open={this.state.popup}
-                    closeOnDocumentClick
                 >
                     {close => (
                         <div className="modal">

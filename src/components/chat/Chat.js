@@ -7,7 +7,6 @@ import {BaseContainer} from '../../helpers/layout';
 import {api, handleError} from '../../helpers/api';
 import {withRouter} from 'react-router-dom';
 import 'react-chat-elements/dist/main.css';
-import keydown from 'react-keydown';
 
 import {
     MessageBox,
@@ -90,6 +89,7 @@ export class Chat extends React.Component {
             user: null,
             username: null,
             spectator:null,
+            id:null,
 
             SpectatorMessageList: [{username: 'Spectator',position: 'left',text:'message 1'},{username: 'List',position: 'left', text: 'Example text 2'},{username: 'Me',position: 'right', text: 'Example text 3'}],
             PlayerMessageList: {  data: [] },
@@ -120,6 +120,7 @@ export class Chat extends React.Component {
 
 
     componentDidMount() {
+
         this.interval = setInterval(() => this.tick(), 5000);
     }
 
@@ -129,6 +130,7 @@ export class Chat extends React.Component {
             this.setState({'write': true});
             this.setState({'PlayerChat': false});
             this.state.user ='spectators';
+
         }
         else{
             this.state.spectator = false;
@@ -169,8 +171,14 @@ export class Chat extends React.Component {
         await api.put('/games/'+localStorage.getItem('gameId')+'/chats/players', requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
         //IN SPECTATORCHAT
         }else  if(this.state.PlayerChat === false) {
+            if(localStorage.getItem('id') != null){
+                this.handleInputChange('id',localStorage.getItem('id'))
+
+            }else(
+                this.handleInputChange('id',localStorage.getItem('spectatorId'))
+            )
             const requestBody = JSON.stringify({
-                userId: localStorage.getItem("spectatorId"),
+                userId: this.state.id,
                 chatMode: 'spectators',
                 message: this.state.message,
             });
