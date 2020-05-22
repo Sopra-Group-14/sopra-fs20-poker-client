@@ -3,37 +3,41 @@
 ## Introduction
 
 This is the client of a poker game implemented for the SOPRA FS20.
+In this game the user can play poker with four different limits as well as watch other games live. He can also chat with other players and spectators. 
 
 ## Technologies
 
-we used React npm and node.js
-the following Packages were installed: 
-
+We used React npm and node.js
+the following Packages were installed: <br/>
+react-chat-elements <br/>
+reactjs-popup
 
 ## High-level components: 
 
-GameScreen: the main game
-Chat: the Chat feature used in both Game and Spectator Screen
-Account: the account of the user, where he can check on his credit
+GameScreen: the main game: src/components/gamescreen/GameScreen.js  <br/>
+Chat: the Chat feature used in both Game and Spectator Screen  src/components/chat/Chat.js  <br/>
+Account: the account of the user, where he can check on his credit src/components/account/Account.js
 
 
-## Launch and Deplyment.
+## Launch and Deployment.
+to launch this project install: <br/>
 install npm <br/>
-npm run dev <br/>
-npm install reactjs-popup --save
+npm install reactjs-popup --save<br/>
+npm install react-chat-elements --save<br/>
 
+To Launch the project use: <br/>
+npm run dev <br/>
 
 ## Illustrations
 To play poker the user needs to register or log in. Then he can create or join a pokergame. The user has an account where he can top up his credit once every 24h. As a not logged in (as well as a logged in) user it is possible to join a game as a spectator and see the hand cards of the different Players as well as some winning odds. 
 
 
 ## Roadmap
-
-As a next step we would add: 
-- 
+We could imagine adding sound effects, card animations as well as a
+friend list or private messages to stay in contact with people you liked to play with. 
 
 ## Authors and acknowledgment
-
+Csanad Erdei-Griff, Kevin Kindler, Konstantin Moser, Lara Fried, Andy Aidoo
 
 ## License
 MIT License
