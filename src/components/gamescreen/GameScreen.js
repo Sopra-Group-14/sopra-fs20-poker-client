@@ -639,6 +639,7 @@ class GameScreen extends React.Component {
 
         }
         this.nextRound();
+
         if(this.state.gameOver === true){
             localStorage.setItem("winner", this.state.winnerName);
             this.props.history.push(`/endscreen`);

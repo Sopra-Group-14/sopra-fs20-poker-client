@@ -13,6 +13,7 @@ class User {
     this.action = null;
     this.hand = null;
     this.playerName =null;
+    this.credit=null;
     Object.assign(this, data);
   }
 }

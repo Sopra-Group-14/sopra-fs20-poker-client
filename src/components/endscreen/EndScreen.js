@@ -65,28 +65,54 @@ class EndScreen extends React.Component {
         super();
         this.state = {
             username: null,
-
-            winnertext: "Congratulations, you won!!!",
-            losertext: "you lost, the winner is: ",
             winner: [],
             credit: null,
             text: null,
+            wonAmount: null,
+            players:null,
+            balance: null,
+            wonCredit:null,
+            id: localStorage.getItem('id'),
+
 
         };
     }
     async getuser(){
-
-
        const response = await api.get( '/users/' +localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
        let user = new User(response.data)
        this.setState({ ["username"]: user.username});
-
+       this.handleInputChange('balance',user.balance);
     }
+
+
+    handleInputChange(key, value) {
+        // Example: if the key is username, this statement is the equivalent to the following one:
+        // this.setState({'username': value});$
+        this.setState({ [key]: value });
+    }
+
     async getWinner(){
     // Winner should be in local storage after game ended
       const response = await api.get('/games/' + localStorage.getItem("gameId"));
       let gamelog = new GameLog(response.data);
-      this.state.winner = gamelog.winners;
+      this.handleInputChange('players',gamelog.players);
+
+        for (let i = 0; i < this.state.players.length; i++){
+            let player = new User(this.state.players[i]);
+            console.log(player.id);
+            console.log(player.credit);
+            if(String(player.id) === this.state.id){
+                console.log('equal');
+                this.handleInputChange('credit',player.credit);
+            }
+        }
+        console.log(this.state.credit);
+        console.log(this.state.balance);
+
+        let won = this.state.credit - this.state.balance;
+        this.handleInputChange('wonCredit',won)
+
+        this.handleInputChange('text', "you made "+this.state.wonCredit+" credit in this Game.")
 
     }
     componentWillMount() {
@@ -97,29 +123,13 @@ class EndScreen extends React.Component {
 
     render() {
 
-          this.state.winner.map(user => {
 
-            if(String(user.id) === localStorage.getItem("id")){
-                let lt = this.state.winnertext
-
-                return(
-                    this.state.text = lt
-
-                );
-            }else {
-                let lt = "you lost, the winner is: " + user.playerName;
-
-                return (
-                    this.state.text = lt
-            );
-            }
-        })
-        
 
 
         return (
             <FormContainer>
                 <Form>
+                    <h3>Game End</h3>
                     <h3>{this.state.text}</h3>
 
                     <ButtonContainer>
