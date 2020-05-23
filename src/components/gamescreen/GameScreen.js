@@ -303,7 +303,8 @@ class GameScreen extends React.Component {
 
             popup:false,
             winnerName: null,
-            winnerHand: null,
+            winnerComboValue: null,
+            winners: null,
 
         };
     }
@@ -340,8 +341,8 @@ class GameScreen extends React.Component {
         this.handleInputChange('smallBlind', gamelog.smallBlind);
         this.handleInputChange('possibleRaiseAndBetAmount', gamelog.possibleRaiseAndBetAmount);
         this.handleInputChange('gameRules', gamelog.gameRules);
-        this.handleInputChange('winnerList', gamelog.winners);
-
+        this.handleInputChange('winnerComboValue', gamelog.winnerComboValue);
+        this.handleInputChange('winners', gamelog.winners);
 
         let newSmallBlind = new User(this.state.smallBlind);
         let newSmallBLindId = newSmallBlind.id;
@@ -357,7 +358,11 @@ class GameScreen extends React.Component {
         if(oldSmallBLindId !== newSmallBLindId){
             //Happens whenever a new round starts
             this.blind();
-            this.handleInputChange('popup',true);
+           if(!(this.state.gameRound === null)) {
+               this.handleInputChange('popup', true);
+               this.handleInputChange('winnerName', this.state.winners.playerName);
+
+           }
 
 
         }
@@ -388,7 +393,6 @@ class GameScreen extends React.Component {
         if (gamelog.winner != null){
             let name = gamelog.winner.playerName;
             localStorage.setItem("winner", name);
-            alert("this is name:" + name);
             }
 
 
@@ -652,8 +656,8 @@ class GameScreen extends React.Component {
         }
         this.nextRound();
         if(this.state.gameOver === true){
-            //localStorage.setItem("winner", this.state.winner);
-            //this.props.history.push(`/endscreen`);
+            localStorage.setItem("winner", this.state.winnerName);
+            this.props.history.push(`/endscreen`);
 
         }
     }
@@ -702,7 +706,7 @@ class GameScreen extends React.Component {
             return '';
         };*/
         if(this.state.popup === true){
-            alert(this.state.winnerName + ' won with ' + this.state.winnerHand);
+            alert(this.state.winnerName + ' won with ' + this.state.winnerComboValue);
             this.handleInputChange('popup',false);
 
         }
