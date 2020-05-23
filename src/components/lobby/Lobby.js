@@ -54,15 +54,7 @@ const Label = styled.label`
   text-align: center
 `;
 
-/**
- * Classes in React allow you to have an internal state within the class and to have the React life-cycle for your component.
- * You should have a class (instead of a functional component) when:
- * - You need an internal state that cannot be achieved via props from other parent components
- * - You fetch data from the server (e.g., in componentDidMount())
- * - You want to access the DOM via Refs
- * https://reactjs.org/docs/react-component.html
- * @Class
- */
+
 class Lobby extends React.Component {
     constructor() {
         super();
@@ -79,21 +71,12 @@ class Lobby extends React.Component {
     }
 
     handleInputChange(key, value) {
-        // Example: if the key is username, this statement is the equivalent to the following one:
-        // this.setState({'username': value});$
         this.setState({ [key]: value });
     }
 
     async getPlayers() {
         try {
-          // const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
-           //Lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-          // const response = await api.get('/games/'+ localStorage.getItem("gameId"), {headers:{ Authorization: localStorage.getItem("token")}});
-          //  let gamelog = new GameLog(response.data);
-           //localStorage.setItem("gameId", "2");
-           //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
-           //Lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-          const response = await api.get("/games/"+ localStorage.getItem("gameId"), /*{headers:{ Authorization: localStorage.getItem("token")}}*/);
+             const response = await api.get("/games/"+ localStorage.getItem("gameId"), /*{headers:{ Authorization: localStorage.getItem("token")}}*/);
           let gameModel = new GameModel(response.data);
 
             this.setState({["players"]: gameModel.players});
@@ -101,7 +84,6 @@ class Lobby extends React.Component {
             this.setState({["bigBlind"]: gameModel.bigBlind});
             this.setState({["smallBlind"]: gameModel.smallBlind});
             this.setState({["gameStarted"]: gameModel.gameStarted});
-            //alert(gameModel.gameStarted);
 
         } catch (error) {
             alert(`Something went wrong when getting the players: \n${handleError(error)}`);
@@ -111,7 +93,6 @@ class Lobby extends React.Component {
 
     async playerReady() {
 
-        //lara const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
         const response = await api.get('/games/'+localStorage.getItem("gameId"),{headers:{ Authorization: localStorage.getItem("token")}});
 
         let gameModel = new GameModel(response.data);
@@ -146,7 +127,6 @@ class Lobby extends React.Component {
 
     }
     tick() {
-        //alert("Lobby gets refreshed");
         this.getPlayers();
         this.playerReady();
     }
@@ -160,8 +140,7 @@ class Lobby extends React.Component {
     componentDidMount() {
         this.getPlayers();
         this.playerReady();
-        /*setTimeout(function(){
-        },1000);*/
+
         this.interval = setInterval(() => this.tick(), 1000);
     }
 

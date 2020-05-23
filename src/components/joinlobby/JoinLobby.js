@@ -5,9 +5,6 @@ import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
 import GameModel from "../shared/models/GameModel";
-import Player from "../../views/Player";
-import GameLog from "../shared/models/GameLog";
-
 
 const FormContainer = styled.div`
   margin-top: 0%;
@@ -82,9 +79,6 @@ class JoinLobby extends React.Component {
 
     async getPlayers() {
         try {
-             //localStorage.setItem("gameId", "4");
-            //Koni const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+ localStorage.getItem("gameId"));
-            //const response = await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
             const response = await api.get("/games/"+ localStorage.getItem("gameId"), {headers:{ Authorization: localStorage.getItem("token")}});
             let gameModel = new GameModel(response.data);
 
@@ -104,7 +98,6 @@ class JoinLobby extends React.Component {
     blind(){
         this.player = new User(this.state.bigBlind);
         this.player2 = new User(this.state.smallBlind);
-        //    alert(this.player.playerName)
         if(this.username === this.player.playerName){
             alert("you are the Bigblind, please raise 5!");
         }
@@ -114,7 +107,6 @@ class JoinLobby extends React.Component {
     }
 
     tick() {
-        //alert("Lobby gets refreshed");
         this.getPlayers();
     }
 
@@ -125,9 +117,6 @@ class JoinLobby extends React.Component {
 
 
     componentDidMount() {
-        /*setTimeout(function(){
-
-        },1000);*/
         this.getPlayers();
         this.interval = setInterval(() => this.tick(), 1000);
     }
@@ -138,7 +127,6 @@ class JoinLobby extends React.Component {
     }
 
     async gameStart(){
-        //alert("game not ready yet")
         const response = await api.get('/games/'+localStorage.getItem("gameId"));
         this.blind();
         if(response.gameStart === true){

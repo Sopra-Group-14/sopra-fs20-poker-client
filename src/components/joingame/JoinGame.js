@@ -99,10 +99,8 @@ class JoinGame extends React.Component {
     async gamelist() {
         try {
            const response =  await api.get('/games');
-         //  this.state.games = response.data;
            this.setState({['games']: response.data});
-           //this.state.games =[{gameName: "abc",gameId: 1}, {gameName: "asdfasdf",gameId: 2}];
-            //alert(this.state.games.length)
+
             if(this.state.games.length > 0){
                this.setState({['gamesEmpty']: false});
            }

@@ -380,11 +380,6 @@ class GameScreen extends React.Component {
         const user = new User(response.data);
 
         this.handleInputChange('username', user.username);
-
-        //this.handleInputChange("playerCredit", user.credit);
-       //alert(this.state.playerCredit);
-
-        //alert(user.credit);
     }
 
     async nextRound(){
@@ -400,23 +395,11 @@ class GameScreen extends React.Component {
 
     async displayHandCards() {
         try {
-            //Backend with Postman:
-            //localStorage.setItem("gameId", "2");
-            //localStorage.setItem("playerId", "1");
-            //Lara  const response =  await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
 
-            //const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
-            
             const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
             console.log("response body " + response);
             const player = response.data;
             this.state.handcards = player.hand;
-            /*
-            alert("playerhand"+player.hand);
-            alert("player"+player);
-            alert("response"+response.data);
-             */
-            //alert(localStorage.getItem("id"));
 
             this.setState({ ["posh1"]: this.getImageOfCard(this.state.handcards[0])});
             this.setState({ ["posh2"]: this.getImageOfCard(this.state.handcards[1])});
@@ -432,11 +415,7 @@ class GameScreen extends React.Component {
     async displayTableCards() {
         try {
 
-            //Backend with Postman:
-            //4815cd7c29cb7c36a056db26c938e16ab48a74a9
-            //localStorage.setItem("gameId", "2");
-            //const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/' + localStorage.getItem("gameId"));
-            const response = await api.get('/games/' + localStorage.getItem("gameId"),/*{headers:{ Authorization: localStorage.getItem("token")}}*/);
+               const response = await api.get('/games/' + localStorage.getItem("gameId"),/*{headers:{ Authorization: localStorage.getItem("token")}}*/);
 
             let gamelog = new GameLog(response.data);
             this.state.tablecards = gamelog.revealedCards;
@@ -458,24 +437,6 @@ class GameScreen extends React.Component {
             }
 
 
-/*
-            if(this.state.tablecards[0] !== undefined) {
-                this.setState({["tablecard1"]: this.getImageOfCard(this.state.tablecards[0])});
-            }
-            if(this.state.tablecards[1] !== undefined) {
-                this.setState({["tablecard2"]: this.getImageOfCard(this.state.tablecards[1])})
-            }
-            if(this.state.tablecards[2] !== undefined) {
-                this.setState({["tablecard3"]: this.getImageOfCard(this.state.tablecards[2])});
-            }
-            if(this.state.tablecards[3] !== undefined) {
-                this.setState({["tablecard4"]: this.getImageOfCard(this.state.tablecards[3])});
-            }
-            if(this.state.tablecards[4] !== undefined) {
-                this.setState({["tablecard5"]: this.getImageOfCard(this.state.tablecards[4])});
-            }
-
-*/
         } catch (error) {
             alert(`Something went wrong when trying to get the tablecards: \n${handleError(error)}`);
         }
@@ -682,29 +643,8 @@ class GameScreen extends React.Component {
     }
 
 
-    /*
-    {this.state.inputfieldvisible ? <Slider
-        color={"#C14E4E"}
-        /> : null}
-
-        {this.state.inputfieldvisible ? <InputFieldRaise
-                            placeholder="Enter here.."
-                            onChange={e => {
-                                this.handleInputChange('raiseAmountInput', e.target.value);
-                            }}
-                        /> : null}
-     */
     render() {
-        /*window.onbeforeunload = function() {
-            localStorage.removeItem('spectatorId');
-            localStorage.removeItem('gameId');
-            localStorage.removeItem('token');
-            localStorage.removeItem('winner');
-            localStorage.removeItem('playerId');
-            localStorage.removeItem('id');
 
-            return '';
-        };*/
         if(this.state.popup === true){
             alert(this.state.winnerName + ' won with ' + this.state.winnerComboValue);
             this.handleInputChange('popup',false);
@@ -1011,13 +951,3 @@ class GameScreen extends React.Component {
  */
 export default withRouter(GameScreen);
 
-/*   <h1>Player Chat</h1>
-
-                    <InputField
-                        placeholder="new message"
-                        onChange={e => {
-                            this.handleInputChange('message', e.target.value);
-                        }}
-                    />
-
-  */

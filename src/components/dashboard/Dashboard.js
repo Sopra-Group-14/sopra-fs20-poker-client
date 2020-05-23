@@ -60,10 +60,6 @@ class Dashboard extends React.Component {
                 spectator: this.state.spectator,
             });
             await api.put('/users/' + localStorage.getItem("id") + '/mode', requestBody,{headers:{ Authorization: localStorage.getItem("token")}});
-            //Backend with Postman: const response = await api.put('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/' + localStorage.getItem("id") + '/mode', requestBody);
-            //const user = new User(response.data);
-            //alert(user.id)
-
 
         } catch (error) {
             alert(`Something went wrong when trying to watch a game: \n${handleError(error)}`);
@@ -73,9 +69,7 @@ class Dashboard extends React.Component {
 
     async getUser() {
         try {
-            //localStorage.setItem("playerId", "4");
-            // const response = await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/users/' + localStorage.getItem("playerId"));
-            const response = await api.get('/users/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
+              const response = await api.get('/users/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
             const user = new User(response.data);
             this.handleInputChange('balance', user.balance);
 
@@ -110,16 +104,6 @@ class Dashboard extends React.Component {
                 localStorage.removeItem('username');
                 localStorage.removeItem('id');
                 this.props.history.push('/login');
-
-            /*
-            const requestBody = JSON.stringify({
-                token: localStorage.getItem("token")
-            });
-            await api.put('/logout', requestBody);
-            localStorage.setItem("token", null);
-            localStorage.setItem("id", null);
-
-             */
 
         } catch (error) {
             alert(`Something went wrong when trying to logout: \n${handleError(error)}`);
