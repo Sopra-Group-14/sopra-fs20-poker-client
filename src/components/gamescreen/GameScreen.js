@@ -358,7 +358,7 @@ class GameScreen extends React.Component {
         if(oldSmallBLindId !== newSmallBLindId){
             //Happens whenever a new round starts
             this.blind();
-           if(!(this.state.gameRound === null)) {
+           if(!(this.state.transactionNr === 0)) {
                this.handleInputChange('popup', true);
                this.handleInputChange('winnerName', this.state.winners.playerName);
 
