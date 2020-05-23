@@ -5,7 +5,6 @@ import { api, handleError } from '../../helpers/api';
 import User from '../shared/models/User';
 import { withRouter } from 'react-router-dom';
 import { Button } from '../../views/design/Button';
-import GameModel from "../shared/models/GameModel";
 
 const ButtonGreen = styled.div`
     &:hover {

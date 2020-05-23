@@ -3,12 +3,10 @@ import styled from 'styled-components';
 import {BaseContainer} from '../../helpers/layout';
 import {api, handleError} from '../../helpers/api';
 import {withRouter} from 'react-router-dom';
-//import {Button} from '../../views/design/Button';
 import chips from '../../graphics/chips.png';
 import GameLog from "../shared/models/GameLog";
 import {graphicsList} from '../../images'
 import Card from "../shared/models/Card";
-import Slider from "../Slider/Slider";
 import User from "../shared/models/User";
 import {Chat} from "../chat/Chat";
 import PreFlopOdds from "../shared/models/OddsPreFlop";
@@ -84,9 +82,9 @@ const PlayerContainer = styled.div`
       align-items: center;
       justify-content: center;
   `;
+
 const ActivePlayerContainer = styled.div`
-     background: rgba(0,0,0,0.85); 
-     border: 1px solid #FFFFFF;
+     border: 2px solid rgba(189,47,12,.85);
      width: 100px;
      height: 119px;
      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -96,6 +94,7 @@ const ActivePlayerContainer = styled.div`
       align-items: center;
       justify-content: center;
   `;
+
 
 const PotContainer = styled.div`
   margin: auto;
@@ -245,7 +244,7 @@ class GameScreenSpectator extends React.Component {
             //ActivePlayer
             activePlayerId:null,
             activeCredit:null,
-            activeUsername:null,
+            activeUsername: null,
             activehandcards: null,
 
             //Cards
@@ -269,7 +268,7 @@ class GameScreenSpectator extends React.Component {
             currentPlayerName: null,
             currentPlayerId : null,
             players:[],
-
+            lastPlayerId: null,
             playerPot: null,
             transactionNr : null,
             gameRound : null,
@@ -312,6 +311,8 @@ class GameScreenSpectator extends React.Component {
     }
 
     async getGamelog(){
+        this.handleInputChange('lastPlayerId',this.state.nextPlayerId);
+
         const response = await api.get('/games/' + localStorage.getItem("gameId"));
         let gamelog = new GameLog(response.data);
 
@@ -354,32 +355,15 @@ class GameScreenSpectator extends React.Component {
 
     async displayHandCards() {
         try {
-            //Backend with Postman:
-            //localStorage.setItem("gameId", "2");
-            //localStorage.setItem("playerId", "1");
-            //Lara  const response =  await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
-
-            //const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
-
             const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+this.state.activePlayerId,{headers:{ Authorization: localStorage.getItem("token")}});
-            //debugger;
-            //console.log("response body " + response);
             const player = response.data;
             this.state.handcards = player.hand;
             this.state.apihand = player.apiHand;
-
-            /*
-            alert("playerhand"+player.hand);
-            alert("player"+player);
-            alert("response"+response.data);
-             */
-            //alert(localStorage.getItem("id"));
 
             this.setState({ ["posh1"]: this.getImageOfCard(this.state.handcards[0])});
             this.setState({ ["posh2"]: this.getImageOfCard(this.state.handcards[1])});
             this.handleInputChange("playerCredit", player.credit);
             this.handleInputChange("showHandCardSpinner", false);
-
 
 
         } catch (error) {
@@ -402,43 +386,6 @@ class GameScreenSpectator extends React.Component {
         this.setState({['preflop_4K']: Math.round(preflop.data.hit['4K']*10000)/100});
         this.setState({['preflop_SF']: Math.round(preflop.data.hit['SF']*10000)/100});
         this.handleInputChange("showOddsSpinner", false);
-
-
-
-
-        /*
-        const data = null;
-
-        const xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-        xhr.responseType = 'json';
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === this.DONE) {
-                console.log(this.responseText);
-            }
-        });
-
-        xhr.open("GET", "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/pre-flop?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1]);
-        xhr.setRequestHeader("x-rapidapi-host", "sf-api-on-demand-poker-odds-v1.p.rapidapi.com");
-        xhr.setRequestHeader("x-rapidapi-key", "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0");
-
-        await xhr.send(data);
-
-        xhr.onload = function () {
-            const preflop = new PreFlopOdds(xhr.response);
-            //alert(preflop.data.hit['3K']);
-
-            localStorage.setItem('preflop_HC', preflop.data.hit['HC'].toFixed(2)*100);
-            localStorage.setItem('preflop_1P', preflop.data.hit['1P'].toFixed(2)*100);
-            localStorage.setItem('preflop_2P', preflop.data.hit['2P'].toFixed(2)*100);
-            localStorage.setItem('preflop_3K', preflop.data.hit['3K'].toFixed(2)*100);
-            localStorage.setItem('preflop_ST', preflop.data.hit['ST'].toFixed(5 )*100);
-            localStorage.setItem('preflop_FL', preflop.data.hit['FL'].toFixed(5)*100);
-            localStorage.setItem('preflop_FH', preflop.data.hit['FH'].toFixed(5)*100);
-            localStorage.setItem('preflop_4K', preflop.data.hit['4K'].toFixed(5)*100);
-            localStorage.setItem('preflop_SF', preflop.data.hit['SF'].toFixed(5)*100);
-        };
-        */
     }
 
     async getOddsFlop(){
@@ -448,23 +395,6 @@ class GameScreenSpectator extends React.Component {
         const flop = new OddsFlopTurnRiver(response.data);
         this.setState({ ['flop_prob']: Math.round(flop.data.winning.average['probability']*10000)/100});
         this.handleInputChange("showOddsSpinner", false);
-
-
-
-        /*
-        const data = null;
-        const xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-        xhr.responseType = 'json';
-        xhr.open("GET", "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/flop?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1] + '&board=' + this.state.apitable[0]  + "%2C" + this.state.apitable[1]  + "%2C" + this.state.apitable[2]);
-        xhr.setRequestHeader("x-rapidapi-host", "sf-api-on-demand-poker-odds-v1.p.rapidapi.com");
-        xhr.setRequestHeader("x-rapidapi-key", "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0");
-        xhr.send(data);
-        xhr.onload = function () {
-            const flop = new OddsFlopTurnRiver(xhr.response);
-            localStorage.setItem('flop_prob', flop.data.winning.average['probability']);
-        };
-         */
     }
 
     async getOddsTurn(){
@@ -474,24 +404,6 @@ class GameScreenSpectator extends React.Component {
         const flop = new OddsFlopTurnRiver(response.data);
         this.setState({ ['turn_prob']: Math.round(flop.data.winning.average['probability']*10000)/100});
         this.handleInputChange("showOddsSpinner", false);
-
-
-        /*
-        const data = null;
-        const xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-        xhr.responseType = 'json';
-        //flop?hole=Ac%252C3c&board=As%252C2h%252CTh
-        xhr.open("GET", "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/turn?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1] + '&board=' + this.state.apitable[0]  + "%2C" + this.state.apitable[1]  + "%2C" + this.state.apitable[2] + "%2C" + this.state.apitable[3]);
-        xhr.setRequestHeader("x-rapidapi-host", "sf-api-on-demand-poker-odds-v1.p.rapidapi.com");
-        xhr.setRequestHeader("x-rapidapi-key", "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0");
-        xhr.send(data);
-        xhr.onload = function () {
-            const flop = new OddsFlopTurnRiver(xhr.response);
-            localStorage.setItem('turn_prob', flop.data.winning.average['probability']);
-            //alert(localStorage.getItem('flop_prob'))
-        };
-        */
     }
 
     async getOddsRiver(){
@@ -502,21 +414,6 @@ class GameScreenSpectator extends React.Component {
         this.setState({ ['river_prob']: Math.round(flop.data.winning['probability']*10000)/100});
         this.handleInputChange("showOddsSpinner", false);
 
-
-        /*
-        const data = null;
-        const xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-        xhr.responseType = 'json';
-        xhr.open("GET", "https://sf-api-on-demand-poker-odds-v1.p.rapidapi.com/river?hole=" + this.state.apihand[0] + "%2C" + this.state.apihand[1] + '&board=' + this.state.apitable[0]  + "%2C" + this.state.apitable[1]  + "%2C" + this.state.apitable[2] + "%2C" + this.state.apitable[3]  + "%2C" + this.state.apitable[4]);
-        xhr.setRequestHeader("x-rapidapi-host", "sf-api-on-demand-poker-odds-v1.p.rapidapi.com");
-        xhr.setRequestHeader("x-rapidapi-key", "0e8a2198bcmshfdab5782d98fb8fp19cd2djsnaa0933d2edf0");
-        xhr.send(data);
-        xhr.onload = function () {
-            const flop = new OddsFlopTurnRiver(xhr.response);
-            localStorage.setItem('river_prob', flop.data.winning['probability']);
-        };
-         */
     }
 
     async displayTableCards() {
@@ -562,7 +459,6 @@ class GameScreenSpectator extends React.Component {
         else{
             this.props.history.push('/dashboard')
         }
-        //await api.put( '/games/'+localStorage.getItem("gameId")+'/spectator/'+localStorage.getItem("spectatorId")+'/leave')
     }
 
     handleInputChange(key, value) {
@@ -571,9 +467,6 @@ class GameScreenSpectator extends React.Component {
         this.setState({ [key]: value });
     }
 
-    callbackFunction = (data) => {
-        this.setState({raiseAmountInput: data})
-    };
 
     playRound(){
         if(this.state.activePlayerId === null){
@@ -589,9 +482,7 @@ class GameScreenSpectator extends React.Component {
     }
 
     tick() {
-        //alert("Everything gets refreshed");
         this.playRound();
-        //this.displayHandCards();
     }
 
     componentWillUnmount() {
@@ -608,16 +499,6 @@ class GameScreenSpectator extends React.Component {
 
 
     render() {
-      /*  window.onbeforeunload = function() {
-            localStorage.removeItem('spectatorId');
-            localStorage.removeItem('gameId');
-            localStorage.removeItem('token');
-            localStorage.removeItem('winner');
-            localStorage.removeItem('playerId');
-            localStorage.removeItem('id');
-
-            return '';
-        };*/
         return (
             <StyledBody>
                 <BaseContainer
@@ -626,25 +507,58 @@ class GameScreenSpectator extends React.Component {
 
                 <PlayersContainer>
                     {this.state.players.map(user => {
-                        if(user.id === this.state.activePlayerId){
-                            this.state.activehandcards = user.handcards;
-                            this.state.activeplayerCredit = user.credit;
-                            this.state.activeUsername = user.playerName;
-                            return(
-                                <PlayerContainer key={user.id} >
-                                    <Label>{user.playerName}</Label>
-                                    <img width={80}  src={chips} />
-                                    <Label> {user.credit} </Label>
-                                    <Label>{user.action}</Label>
-                                </PlayerContainer>
-                            )
-                        } else {
+
+                     if (user.id === this.state.nextPlayerId){
+                                    return(
+                                        <ActivePlayerContainer key={user.id} style={{cursor: "pointer"}} key={user.id}  onClick={() => {
+                                            this.handleInputChange("showHandCardSpinner", true);
+                                            this.handleInputChange("activePlayerId", user.id);
+                                            this.handleInputChange('showOdds', false);
+                                            this.handleInputChange('activeUsername',user.playerName);
+                                        }}  >
+                                            <Label>{user.playerName}</Label>
+                                            <img width={80}  src={chips} />
+                                            <Label> {user.credit} </Label>
+                                            <Label>  </Label>
+                                        </ActivePlayerContainer>
+                                    )
+                     } else if(user.id === this.state.lastPlayerId){
+                                    return(
+                                        <PlayerContainer key={user.id} style={{cursor: "pointer"}} key={user.id}  onClick={() => {
+                                            this.handleInputChange("showHandCardSpinner", true);
+                                            this.handleInputChange("activePlayerId",user.id);
+                                            this.handleInputChange('showOdds', false);
+                                            this.handleInputChange('activeUsername',user.playerName);
+                                        }}  >
+                                            <Label>{user.playerName}</Label>
+                                            <img width={80}  src={chips} />
+                                            <Label> {user.credit} </Label>
+                                            <Label>{this.state.action}</Label>
+                                        </PlayerContainer>
+                                    )
+                                }
+                     else {
+                         return(
+                             <PlayerContainer key={user.id}style={{cursor: "pointer"}} key={user.id}  onClick={() => {
+                                 this.handleInputChange("showHandCardSpinner", true);
+                                 this.handleInputChange("activePlayerId",user.id);
+                                 this.handleInputChange('showOdds', false);
+                                 this.handleInputChange('activeUsername',user.playerName);
+
+                             }}  >
+                                 <Label>{user.playerName}</Label>
+                                 <img width={80}  src={chips} />
+                                 <Label> {user.credit} </Label>
+                                 <Label></Label>
+                             </PlayerContainer>
+                         );
+                     }
+                       if(user.id === this.state.activePlayerId) {
+                               this.state.activehandcards = user.handcards;
+                               this.state.activeplayerCredit = user.credit;
+                               this.state.activeUsername = user.playerName;
                             return (
-                                <PlayerContainer style={{cursor: "pointer"}} key={user.id}  onClick={() => {
-                                    this.handleInputChange("showHandCardSpinner", true);
-                                    this.handleInputChange("activePlayerId",user.id);
-                                    this.handleInputChange('showOdds', false);
-                                }}   >
+                                <PlayerContainer  >
                                     <Label>{user.playerName}</Label>
                                     <img width={80}  src={chips} />
                                     <Label> {user.credit} </Label>
@@ -681,7 +595,6 @@ class GameScreenSpectator extends React.Component {
 
                 <ControlContainer>
                     <BoxText><Label>{this.state.activeUsername }</Label></BoxText>
-
                     {!this.state.showHandCardSpinner ?  <ContainerRow>
                         <HandCardContainer>
                         <CardContainer>

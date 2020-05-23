@@ -70,22 +70,9 @@ const ButtonContainer = styled.div`
   align-items: center;
 `;
 
-/**
- * Classes in React allow you to have an internal state within the class and to have the React life-cycle for your component.
- * You should have a class (instead of a functional component) when:
- * - You need an internal state that cannot be achieved via props from other parent components
- * - You fetch data from the server (e.g., in componentDidMount())
- * - You want to access the DOM via Refs
- * https://reactjs.org/docs/react-component.html
- * @Class
- */
+
 class Registration extends React.Component {
-    /**
-     * If you don’t initialize the state and you don’t bind methods, you don’t need to implement a constructor for your React component.
-     * The constructor for a React component is called before it is mounted (rendered).
-     * In this case the initial state is defined in the constructor. The state is a JS object containing two fields: name and username
-     * These fields are then handled in the onChange() methods in the resp. InputFields
-     */
+
     constructor() {
         super();
         this.state = {
@@ -94,11 +81,7 @@ class Registration extends React.Component {
             repeat_password: null
         };
     }
-    /**
-     * HTTP POST request is sent to the backend.
-     * If the request is successful, a new user is returned to the front-end
-     * and its token is stored in the localStorage.
-     */
+
     async registration() {
         try {
             const requestBody = JSON.stringify({
@@ -107,7 +90,6 @@ class Registration extends React.Component {
             });
 
             const response = await api.post('/registration', requestBody);
-            //Backend with Postman: const response = await api.post('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/registration', requestBody);
 
             // Get the returned user and update a new object.
             const user = new User(response.data);
@@ -131,14 +113,6 @@ class Registration extends React.Component {
 
 
 
-
-    /**
-     * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
-     * Initialization that requires DOM nodes should go here.
-     * If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
-     * You may call setState() immediately in componentDidMount().
-     * It will trigger an extra rendering, but it will happen before the browser updates the screen.
-     */
     componentDidMount() {}
 
     render() {

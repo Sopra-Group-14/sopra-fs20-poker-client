@@ -81,15 +81,6 @@ class JoinGameSpectator extends React.Component {
     async watch(){
 
 
-   /*    if (localStorage.getItem('id')!= null){
-           const requestBody = JSON.stringify({
-               userId: localStorage.getItem("id"),
-               mode:"spectator",
-           });
-           const response = await api.put('/games/'+ this.state.gameId , requestBody, {headers:{ Authorization: localStorage.getItem("token")}});
-
-       }
-       else {*/
 
            const response = await api.put('/games/' + this.state.gameId + '/spectator');
            let gamelog = new GameLog(response.data);

@@ -83,15 +83,10 @@ class EndScreen extends React.Component {
 
     }
     async getWinner(){
-        // Winner should be in local storage after game ended
+    // Winner should be in local storage after game ended
       const response = await api.get('/games/' + localStorage.getItem("gameId"));
       let gamelog = new GameLog(response.data);
       this.state.winner = gamelog.winners;
-
-
-     // alert(this.state.winner.playerName);
-     // this.setState({ ["winner"]: winner.playerName});
-
 
     }
     componentWillMount() {

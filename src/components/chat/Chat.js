@@ -10,19 +10,10 @@ import 'react-chat-elements/dist/main.css';
 
 import {
     MessageBox,
-    ChatItem,
-    ChatList,
-    SystemMessage,
-    MessageList,
     Input,
     Button,
-    Avatar,
-    Navbar,
-    SideBar,
-    Dropdown,
-    Popup,
+
 } from 'react-chat-elements';
-import GameLog from "../shared/models/GameLog";
 
 const ChatContainer = styled.div`
   position: absolute;
@@ -48,37 +39,8 @@ const ScrollBox = styled.div`
   max-height: 600px; 
   overflow-y: scroll; 
 `;
-const ChatButton = styled.div`
- 
-  line-height: 4px;
-  font-family: 'Roboto', sans-serif;
-  font-style: 1rem;
-  font-size: 15px;
-  text-align: center;
-  padding: 10px;
-  margin-top: 15px; 
-  color: #000000;
-  margin-left: 5%
-  margin-right: 5%
-  width: 30%;
-  height: 30px;
-  border: none;
-  border-radius: 8px;
-  cursor: ${props => (props.disabled ? "default" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.4 : 1)};
-  transition: all 0.3s ease;
-  color: #FFFFFF;
-  text-transform: uppercase;
-  
-  
-`;
 
-const ButtonContainerRow = styled.div`
-  flex-direction: row;
-  width: 180px;
-  display: flex;
-  justify-content: 'center';  
-`;
+
 export class Chat extends React.Component {
 
     constructor(props) {

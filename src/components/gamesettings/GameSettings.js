@@ -103,15 +103,6 @@ const ButtonContainer = styled.div`
   border-radius: 10px;
 `;
 
-/**
- * Classes in React allow you to have an internal state within the class and to have the React life-cycle for your component.
- * You should have a class (instead of a functional component) when:
- * - You need an internal state that cannot be achieved via props from other parent components
- * - You fetch data from the server (e.g., in componentDidMount())
- * - You want to access the DOM via Refs
- * https://reactjs.org/docs/react-component.html
- * @Class
- */
 class GameSettings extends React.Component {
     constructor() {
         super();
@@ -133,9 +124,7 @@ class GameSettings extends React.Component {
                 potType: this.state.limit,
             });
             const response = await api.post('/games', requestBody);
-            //Backend with Postman: const response = const response = await api.post('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games', requestBody);
-          /*  const user = new User(response.data);
-            alert(user.id)*/
+
             const game = new GameModel(response.data);
 
             localStorage.setItem("gameId", game.gameId);
