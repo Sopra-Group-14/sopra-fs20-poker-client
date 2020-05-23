@@ -12,6 +12,7 @@ import {Chat} from "../chat/Chat";
 import PreFlopOdds from "../shared/models/OddsPreFlop";
 import OddsFlopTurnRiver from "../shared/models/OddsFlopTurnRiver";
 import {Spinner} from "../../views/design/Spinner";
+import Popup from "reactjs-popup";
 
 const Button = styled.div`
   &:hover {
@@ -305,8 +306,13 @@ class GameScreenSpectator extends React.Component {
             river_prob : null,
 
             showHandCardSpinner : true,
-            showOddsSpinner : false
+            showOddsSpinner : false,
 
+            popup:false,
+            winnerName: null,
+            winnerComboValue: null,
+            winners: null,
+            roundWinnerText: null,
         };
     }
 
@@ -317,6 +323,10 @@ class GameScreenSpectator extends React.Component {
         let gamelog = new GameLog(response.data);
 
         let oldGameround = this.state.gameRound;
+
+        let oldSmallBlind = new User(this.state.smallBlind);
+        let oldSmallBLindId = oldSmallBlind.id;
+
 
         this.handleInputChange('players', gamelog.players);
         this.handleInputChange('currentPlayerName', gamelog.playerName);
@@ -337,10 +347,51 @@ class GameScreenSpectator extends React.Component {
         this.handleInputChange('activePlayers', gamelog.activePlayers);
         this.handleInputChange('thisPlayersTurn', gamelog.thisPlayersTurn);
         this.handleInputChange('nextPlayersTurn', gamelog.nextPlayersTurn);
+        this.handleInputChange('bigBlind', gamelog.bigBlind);
+        this.handleInputChange('smallBlind', gamelog.smallBlind);
+        this.handleInputChange('possibleRaiseAndBetAmount', gamelog.possibleRaiseAndBetAmount);
+        this.handleInputChange('gameRules', gamelog.gameRules);
+        this.handleInputChange('winners', gamelog.winners);
+        this.handleInputChange('winnerComboValue', gamelog.winnerComboValue);
+        this.handleInputChange('wonAmount', gamelog.wonAmount);
+
+        let newSmallBlind = new User(this.state.smallBlind);
+        let newSmallBLindId = newSmallBlind.id;
 
         if(oldGameround !== this.state.gameRound){
             this.handleInputChange('showOdds', false);
         }
+
+        if(oldSmallBLindId !== newSmallBLindId){
+            //Happens whenever a new round starts
+            if(!(this.state.transactionNr === 0)) {
+
+                if(this.state.winners.length === 1){
+                    let winner = new User(this.state.winners[0]);
+                    this.handleInputChange('winnerName', winner.playerName);
+                    this.handleInputChange('roundWinnerText', ' won the pot of ' + this.state.wonAmount + ' Credits ');
+                }
+
+                else {
+                    this.handleInputChange('roundWinnerText', ' split the pot of ' + this.state.wonAmount + ' Credits ');
+                    let winner = new User(this.state.winners[0]);
+                    this.handleInputChange('winnerName', winner.playerName);
+                    for (let i = 1; i < this.state.winners.length; i++){
+                        let winner = new User(this.state.winners[i]);
+                        this.state.winnerName += ' & ' + winner.playerName
+                    }
+                }
+                this.handleInputChange('popup', true);
+
+            }
+            setTimeout(() => {
+                this.setState({popup: false});
+            }, 10000);
+
+        }
+
+
+
     }
 
         async nextRound(){
@@ -591,9 +642,38 @@ class GameScreenSpectator extends React.Component {
 
                 </TableCardContainer>
 
+                    <Popup
+                        open={this.state.popup}
+                    >
+                        {close => (
+                            <div className="modal">
+                                <a className="close" onClick={close}>
+                                    &times;
+                                </a>
+                                <div className="header"> Round over </div>
+                                <div className="content"
+                                     style={{"text-align": 'center'}}>
+                                    <p>{this.state.winnerName} {this.state.roundWinnerText}</p>
+                                    <p>Hand: {this.state.winnerComboValue}</p>
+                                </div>
+                                <button
+                                    className="button"
+                                    onClick={() => {
+                                        console.log("closed ");
+                                        this.handleInputChange('popup',false);
+                                        close();
+                                    }}
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        )}
+                    </Popup>
 
 
-                <ControlContainer>
+
+
+                    <ControlContainer>
                     <BoxText><Label>{this.state.activeUsername }</Label></BoxText>
                     {!this.state.showHandCardSpinner ?  <ContainerRow>
                         <HandCardContainer>
