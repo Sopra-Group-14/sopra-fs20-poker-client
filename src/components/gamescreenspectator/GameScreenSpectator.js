@@ -82,9 +82,9 @@ const PlayerContainer = styled.div`
       align-items: center;
       justify-content: center;
   `;
+
 const ActivePlayerContainer = styled.div`
-     background: rgba(0,0,0,0.85); 
-     border: 1px solid #FFFFFF;
+     border: 2px solid rgba(189,47,12,.85);
      width: 100px;
      height: 119px;
      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -94,6 +94,7 @@ const ActivePlayerContainer = styled.div`
       align-items: center;
       justify-content: center;
   `;
+
 
 const PotContainer = styled.div`
   margin: auto;
@@ -243,7 +244,7 @@ class GameScreenSpectator extends React.Component {
             //ActivePlayer
             activePlayerId:null,
             activeCredit:null,
-            activeUsername:null,
+            activeUsername: null,
             activehandcards: null,
 
             //Cards
@@ -267,7 +268,7 @@ class GameScreenSpectator extends React.Component {
             currentPlayerName: null,
             currentPlayerId : null,
             players:[],
-
+            lastPlayerId: null,
             playerPot: null,
             transactionNr : null,
             gameRound : null,
@@ -310,6 +311,8 @@ class GameScreenSpectator extends React.Component {
     }
 
     async getGamelog(){
+        this.handleInputChange('lastPlayerId',this.state.nextPlayerId);
+
         const response = await api.get('/games/' + localStorage.getItem("gameId"));
         let gamelog = new GameLog(response.data);
 
@@ -504,25 +507,58 @@ class GameScreenSpectator extends React.Component {
 
                 <PlayersContainer>
                     {this.state.players.map(user => {
-                        if(user.id === this.state.activePlayerId){
-                            this.state.activehandcards = user.handcards;
-                            this.state.activeplayerCredit = user.credit;
-                            this.state.activeUsername = user.playerName;
-                            return(
-                                <PlayerContainer key={user.id} >
-                                    <Label>{user.playerName}</Label>
-                                    <img width={80}  src={chips} />
-                                    <Label> {user.credit} </Label>
-                                    <Label>{user.action}</Label>
-                                </PlayerContainer>
-                            )
-                        } else {
+
+                     if (user.id === this.state.nextPlayerId){
+                                    return(
+                                        <ActivePlayerContainer key={user.id} style={{cursor: "pointer"}} key={user.id}  onClick={() => {
+                                            this.handleInputChange("showHandCardSpinner", true);
+                                            this.handleInputChange("activePlayerId", user.id);
+                                            this.handleInputChange('showOdds', false);
+                                            this.handleInputChange('activeUsername',user.playerName);
+                                        }}  >
+                                            <Label>{user.playerName}</Label>
+                                            <img width={80}  src={chips} />
+                                            <Label> {user.credit} </Label>
+                                            <Label>  </Label>
+                                        </ActivePlayerContainer>
+                                    )
+                     } else if(user.id === this.state.lastPlayerId){
+                                    return(
+                                        <PlayerContainer key={user.id} style={{cursor: "pointer"}} key={user.id}  onClick={() => {
+                                            this.handleInputChange("showHandCardSpinner", true);
+                                            this.handleInputChange("activePlayerId",user.id);
+                                            this.handleInputChange('showOdds', false);
+                                            this.handleInputChange('activeUsername',user.playerName);
+                                        }}  >
+                                            <Label>{user.playerName}</Label>
+                                            <img width={80}  src={chips} />
+                                            <Label> {user.credit} </Label>
+                                            <Label>{this.state.action}</Label>
+                                        </PlayerContainer>
+                                    )
+                                }
+                     else {
+                         return(
+                             <PlayerContainer key={user.id}style={{cursor: "pointer"}} key={user.id}  onClick={() => {
+                                 this.handleInputChange("showHandCardSpinner", true);
+                                 this.handleInputChange("activePlayerId",user.id);
+                                 this.handleInputChange('showOdds', false);
+                                 this.handleInputChange('activeUsername',user.playerName);
+
+                             }}  >
+                                 <Label>{user.playerName}</Label>
+                                 <img width={80}  src={chips} />
+                                 <Label> {user.credit} </Label>
+                                 <Label></Label>
+                             </PlayerContainer>
+                         );
+                     }
+                       if(user.id === this.state.activePlayerId) {
+                               this.state.activehandcards = user.handcards;
+                               this.state.activeplayerCredit = user.credit;
+                               this.state.activeUsername = user.playerName;
                             return (
-                                <PlayerContainer style={{cursor: "pointer"}} key={user.id}  onClick={() => {
-                                    this.handleInputChange("showHandCardSpinner", true);
-                                    this.handleInputChange("activePlayerId",user.id);
-                                    this.handleInputChange('showOdds', false);
-                                }}   >
+                                <PlayerContainer  >
                                     <Label>{user.playerName}</Label>
                                     <img width={80}  src={chips} />
                                     <Label> {user.credit} </Label>
@@ -559,7 +595,6 @@ class GameScreenSpectator extends React.Component {
 
                 <ControlContainer>
                     <BoxText><Label>{this.state.activeUsername }</Label></BoxText>
-
                     {!this.state.showHandCardSpinner ?  <ContainerRow>
                         <HandCardContainer>
                         <CardContainer>

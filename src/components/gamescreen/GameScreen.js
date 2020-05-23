@@ -360,7 +360,6 @@ class GameScreen extends React.Component {
             this.blind();
            if(!(this.state.transactionNr === 0)) {
                this.handleInputChange('popup', true);
-               this.handleInputChange('winnerName', this.state.winners.playerName);
 
            }
 
