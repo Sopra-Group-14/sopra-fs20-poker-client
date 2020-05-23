@@ -25,7 +25,7 @@ install npm <br/>
 npm install reactjs-popup --save<br/>
 npm install react-chat-elements --save<br/>
 
-To Launch the project use: <br/>
+To deploy the project use: <br/>
 npm run dev <br/>
 
 ## Illustrations
