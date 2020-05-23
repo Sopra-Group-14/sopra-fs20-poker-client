@@ -302,8 +302,11 @@ class GameScreen extends React.Component {
             showBigBlindButton: null,
 
             popup:false,
-            winnerName: null,
-            winnerHand: null,
+
+            isFirstRound : true,
+            winnersUsername : null,
+            winnerComboValue : null,
+            winners : null,
 
         };
     }
@@ -340,7 +343,10 @@ class GameScreen extends React.Component {
         this.handleInputChange('smallBlind', gamelog.smallBlind);
         this.handleInputChange('possibleRaiseAndBetAmount', gamelog.possibleRaiseAndBetAmount);
         this.handleInputChange('gameRules', gamelog.gameRules);
-        this.handleInputChange('winnerList', gamelog.winners);
+        this.handleInputChange('winners', gamelog.winners);
+        this.handleInputChange('winnerComboValue', gamelog.winnerComboValue);
+        this.handleInputChange('wonAmount', gamelog.wonAmount);
+
 
 
         let newSmallBlind = new User(this.state.smallBlind);
@@ -357,7 +363,11 @@ class GameScreen extends React.Component {
         if(oldSmallBLindId !== newSmallBLindId){
             //Happens whenever a new round starts
             this.blind();
-            this.handleInputChange('popup',true);
+
+            if(!this.state.isFirstRound) {
+                this.handleInputChange('popup', true);
+            }
+            this.handleInputChange('isFirstRound', false);
 
 
         }
@@ -701,9 +711,11 @@ class GameScreen extends React.Component {
 
             return '';
         };*/
+
+
         if(this.state.popup === true){
-            alert(this.state.winnerName + ' won with ' + this.state.winnerHand);
-            this.handleInputChange('popup',false);
+           alert(this.state.winners + ' won the pot of' + this.state.wonAmount + 'with' + this.state.winnerComboValue);
+           this.handleInputChange('popup',false);
 
         }
         return (

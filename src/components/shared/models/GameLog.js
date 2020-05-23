@@ -29,6 +29,8 @@ class GameLog {
         this.possibleRaiseAndBetAmount = null;
         this.gameRules = null;
         this.createdSpectatorId = null;
+        this.winnerComboValue = null;
+        this.wonAmount = null;
 
         Object.assign(this, data);
     }
