@@ -305,6 +305,7 @@ class GameScreen extends React.Component {
             winnerName: null,
             winnerComboValue: null,
             winners: null,
+            roundWinnerText: null,
 
         };
     }
@@ -361,12 +362,40 @@ class GameScreen extends React.Component {
         if(oldSmallBLindId !== newSmallBLindId){
             //Happens whenever a new round starts
             this.blind();
-           if(!(this.state.transactionNr === 0)) {
-               this.handleInputChange('popup', true);
-               this.handleInputChange('winnerName', this.state.winners.playerName);
+            if(!(this.state.transactionNr === 0)) {
 
-           }
+                if(this.state.winners.length === 1){
+                    let winner = new User(this.state.winners[0]);
+                    this.handleInputChange('winnerName', winner.playerName);
+                    this.handleInputChange('roundWinnerText', ' won the pot of ' + this.state.wonAmount + ' Credits ');
+                }
 
+                else {
+                    this.handleInputChange('roundWinnerText', ' split the pot of ' + this.state.wonAmount + ' Credits ');
+                    let winner = new User(this.state.winners[0]);
+                    this.handleInputChange('winnerName', winner.playerName);
+                    for (let i = 1; i < this.state.winners.length; i++){
+                        let winner = new User(this.state.winners[i]);
+                        this.state.winnerName += ' & ' + winner.playerName
+                    }
+                }
+                this.handleInputChange('popup', true);
+
+
+
+
+
+
+                /*for (let i = 0; i < this.state.tablecards.length; i++){
+                    this.setState({["tablecard"+(i+1)]: this.getImageOfCard(this.state.tablecards[i])});
+                }
+
+                 */
+
+            }
+            setTimeout(() => {
+                this.setState({popup: false});
+            }, 10000);
 
         }
 
@@ -385,7 +414,7 @@ class GameScreen extends React.Component {
         this.handleInputChange('username', user.username);
 
         //this.handleInputChange("playerCredit", user.credit);
-       //alert(this.state.playerCredit);
+        //alert(this.state.playerCredit);
 
         //alert(user.credit);
     }
@@ -396,7 +425,7 @@ class GameScreen extends React.Component {
         if (gamelog.winner != null){
             let name = gamelog.winner.playerName;
             localStorage.setItem("winner", name);
-            }
+        }
 
 
     }
@@ -409,7 +438,7 @@ class GameScreen extends React.Component {
             //Lara  const response =  await api.get('https://55ce2f77-077f-4f6d-ad1a-8309f37a15f3.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
 
             //const response =  await api.get('https://aab96a46-4df2-44e5-abf3-1fc6f1042b6c.mock.pstmn.io/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("playerId"));
-            
+
             const response =  await api.get('/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
             console.log("response body " + response);
             const player = response.data;
@@ -461,24 +490,24 @@ class GameScreen extends React.Component {
             }
 
 
-/*
-            if(this.state.tablecards[0] !== undefined) {
-                this.setState({["tablecard1"]: this.getImageOfCard(this.state.tablecards[0])});
-            }
-            if(this.state.tablecards[1] !== undefined) {
-                this.setState({["tablecard2"]: this.getImageOfCard(this.state.tablecards[1])})
-            }
-            if(this.state.tablecards[2] !== undefined) {
-                this.setState({["tablecard3"]: this.getImageOfCard(this.state.tablecards[2])});
-            }
-            if(this.state.tablecards[3] !== undefined) {
-                this.setState({["tablecard4"]: this.getImageOfCard(this.state.tablecards[3])});
-            }
-            if(this.state.tablecards[4] !== undefined) {
-                this.setState({["tablecard5"]: this.getImageOfCard(this.state.tablecards[4])});
-            }
+            /*
+                        if(this.state.tablecards[0] !== undefined) {
+                            this.setState({["tablecard1"]: this.getImageOfCard(this.state.tablecards[0])});
+                        }
+                        if(this.state.tablecards[1] !== undefined) {
+                            this.setState({["tablecard2"]: this.getImageOfCard(this.state.tablecards[1])})
+                        }
+                        if(this.state.tablecards[2] !== undefined) {
+                            this.setState({["tablecard3"]: this.getImageOfCard(this.state.tablecards[2])});
+                        }
+                        if(this.state.tablecards[3] !== undefined) {
+                            this.setState({["tablecard4"]: this.getImageOfCard(this.state.tablecards[3])});
+                        }
+                        if(this.state.tablecards[4] !== undefined) {
+                            this.setState({["tablecard5"]: this.getImageOfCard(this.state.tablecards[4])});
+                        }
 
-*/
+            */
         } catch (error) {
             alert(`Something went wrong when trying to get the tablecards: \n${handleError(error)}`);
         }
@@ -639,7 +668,7 @@ class GameScreen extends React.Component {
                 this.handleInputChange('showBigBlindButton', true);
             }
 
-    }
+        }
         if ((localStorage.getItem("id") !== String(sB.id)) && (localStorage.getItem("id") !== String(bB.id))) {
             this.state.userState = "";
         }
@@ -708,32 +737,28 @@ class GameScreen extends React.Component {
 
             return '';
         };*/
-        if(this.state.popup === true){
-           alert(this.state.winners + ' won the pot of' + this.state.wonAmount + 'with' + this.state.winnerComboValue);
-           this.handleInputChange('popup',false);
 
-        }
         return (
-         <StyledBody>
-            <BaseContainer
-                style = {{"margin-top": '10px'}}
-            >
-                <PlayersContainer>
-                    {this.state.players.map(user => {
-                        if(user.playerName === this.state.username){
-                            return;
-                        }
-                        else if (user.id === this.state.nextPlayerId){
-                            return(
-                                <ActivePlayerContainer key={user.id}>
-                                    <Label>{user.playerName}</Label>
-                                    <img width={80}  src={chips} />
-                                    <Label> {user.credit} </Label>
-                                    <Label>  </Label>
-                                </ActivePlayerContainer>
-                            )
-                        }
-                        else if(user.id === this.state.lastPlayerId){
+            <StyledBody>
+                <BaseContainer
+                    style = {{"margin-top": '10px'}}
+                >
+                    <PlayersContainer>
+                        {this.state.players.map(user => {
+                            if(user.playerName === this.state.username){
+                                return;
+                            }
+                            else if (user.id === this.state.nextPlayerId){
+                                return(
+                                    <ActivePlayerContainer key={user.id}>
+                                        <Label>{user.playerName}</Label>
+                                        <img width={80}  src={chips} />
+                                        <Label> {user.credit} </Label>
+                                        <Label>  </Label>
+                                    </ActivePlayerContainer>
+                                )
+                            }
+                            else if(user.id === this.state.lastPlayerId){
                                 return(
                                     <PlayerContainer key={user.id}>
                                         <Label>{user.playerName}</Label>
@@ -743,267 +768,265 @@ class GameScreen extends React.Component {
                                     </PlayerContainer>
                                 )
                             }
-                         
-                        else {
-                            return (
-                                <PlayerContainer key={user.id}>
-                                    <Label>{user.playerName}</Label>
-                                    <img width={80}  src={chips} />
-                                    <Label> {user.credit} </Label>
-                                    <Label></Label>
-                                </PlayerContainer>
-                            );
-                        }
-                    })}
+
+                            else {
+                                return (
+                                    <PlayerContainer key={user.id}>
+                                        <Label>{user.playerName}</Label>
+                                        <img width={80}  src={chips} />
+                                        <Label> {user.credit} </Label>
+                                        <Label></Label>
+                                    </PlayerContainer>
+                                );
+                            }
+                        })}
 
 
 
-                </PlayersContainer>
+                    </PlayersContainer>
 
-                <TableCardContainer>
-                    <PotContainer>  <img width={80}  src={chips} />
-                        <Label>{this.state.potAmount} </Label></PotContainer>
-                    <CardContainer>
-                        <img width={95}  src={this.state.tablecard1} />
-                    </CardContainer>
-                    <CardContainer>
-                        <img width={95}  src={this.state.tablecard2} />
-                    </CardContainer>
-                    <CardContainer>
-                        <img width={95}  src={this.state.tablecard3} />
-                    </CardContainer>
-                    <CardContainer>
-                        <img width={95}  src={this.state.tablecard4} />
-                    </CardContainer>
-                    <CardContainer>
-                        <img width={95}  src={this.state.tablecard5} />
-                    </CardContainer>
+                    <TableCardContainer>
+                        <PotContainer>  <img width={80}  src={chips} />
+                            <Label>{this.state.potAmount} </Label></PotContainer>
+                        <CardContainer>
+                            <img width={95}  src={this.state.tablecard1} />
+                        </CardContainer>
+                        <CardContainer>
+                            <img width={95}  src={this.state.tablecard2} />
+                        </CardContainer>
+                        <CardContainer>
+                            <img width={95}  src={this.state.tablecard3} />
+                        </CardContainer>
+                        <CardContainer>
+                            <img width={95}  src={this.state.tablecard4} />
+                        </CardContainer>
+                        <CardContainer>
+                            <img width={95}  src={this.state.tablecard5} />
+                        </CardContainer>
 
-                </TableCardContainer>
+                    </TableCardContainer>
 
 
-                <Popup
-                    open={this.state.popup}
-                >
-                    {close => (
-                        <div className="modal">
-                            <a className="close" onClick={close}>
-                                &times;
-                            </a>
-                            <div className="header"> Round over </div>
-                            <div className="content">
-                                <p>
-                                    The winner of this Round was:{this.state.winner} <br/>
-                                    with:
-                                </p>
-
+                    <Popup
+                        open={this.state.popup}
+                    >
+                        {close => (
+                            <div className="modal">
+                                <a className="close" onClick={close}>
+                                    &times;
+                                </a>
+                                <div className="header"> Round over </div>
+                                <div className="content"
+                                     style={{"text-align": 'center'}}>
+                                    <p>{this.state.winnerName} {this.state.roundWinnerText}</p>
+                                    <p>Hand: {this.state.winnerComboValue}</p>
+                                </div>
+                                <button
+                                    className="button"
+                                    onClick={() => {
+                                        console.log("closed ");
+                                        this.handleInputChange('popup',false);
+                                        close();
+                                    }}
+                                >
+                                    Close
+                                </button>
                             </div>
-                            <button
-                                className="button"
-                                onClick={() => {
-                                    console.log("closed ");
-                                    this.handleInputChange('popup',false);
-                                    close();
-                                }}
-                            >
-                                close
-                            </button>
-                        </div>
-                    )}
-                </Popup>
+                        )}
+                    </Popup>
 
 
 
 
-                <ControlContainer
-                    style={{"border": this.state.controlContainerBorder}}>
-                    <BoxText><Label>{this.state.username+ "     " +this.state.userState} </Label></BoxText>
+                    <ControlContainer
+                        style={{"border": this.state.controlContainerBorder}}>
+                        <BoxText><Label>{this.state.username+ "     " +this.state.userState} </Label></BoxText>
 
-                    <ContainerRow>
+                        <ContainerRow>
 
-                        <ButtonContainer>
-                            {!this.state.showSmallBlindButton && !this.state.showBigBlindButton ? <ButtonContainer>
-                        {this.state.call_visible ? <Button
-                            height="30%"
-                            disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
-                            onClick={() => {
-                                this.call();
-                                this.handleInputChange("inputfieldvisible", false);
-                                this.handleInputChange("input_cancel_visible", false);
-                            }}
-                        >
-                            Call
-                        </Button> : null}
+                            <ButtonContainer>
+                                {!this.state.showSmallBlindButton && !this.state.showBigBlindButton ? <ButtonContainer>
+                                    {this.state.call_visible ? <Button
+                                        height="30%"
+                                        disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
+                                        onClick={() => {
+                                            this.call();
+                                            this.handleInputChange("inputfieldvisible", false);
+                                            this.handleInputChange("input_cancel_visible", false);
+                                        }}
+                                    >
+                                        Call
+                                    </Button> : null}
 
-                        {this.state.check_visible ? <Button
-                            height="30%"
-                            disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
-                            onClick={() => {
-                                this.check();
-                                this.handleInputChange("inputfieldvisible", false);
-                                this.handleInputChange("input_cancel_visible", false);
-                            }}
-                        >
-                            Check
-                        </Button> : null}
+                                    {this.state.check_visible ? <Button
+                                        height="30%"
+                                        disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
+                                        onClick={() => {
+                                            this.check();
+                                            this.handleInputChange("inputfieldvisible", false);
+                                            this.handleInputChange("input_cancel_visible", false);
+                                        }}
+                                    >
+                                        Check
+                                    </Button> : null}
 
-                        {this.state.bet_visible ? <Button
-                            height="30%"
-                            disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
-                            onClick={() => {
-                                    this.handleInputChange("inputfieldvisible", true);
-                                    this.handleInputChange("input_cancel_visible", true);
-                                    this.handleInputChange("bet_visible", false);
-                                    this.handleInputChange("raiseAmountInput", 0);
-                            }}
-                        >
-                            Bet
-                        </Button> : null}
+                                    {this.state.bet_visible ? <Button
+                                        height="30%"
+                                        disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
+                                        onClick={() => {
+                                            this.handleInputChange("inputfieldvisible", true);
+                                            this.handleInputChange("input_cancel_visible", true);
+                                            this.handleInputChange("bet_visible", false);
+                                            this.handleInputChange("raiseAmountInput", 0);
+                                        }}
+                                    >
+                                        Bet
+                                    </Button> : null}
 
-                        {this.state.raise_visible ? <Button
-                            height="30%"
-                            disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
-                            onClick={() => {
-                                    this.handleInputChange("inputfieldvisible", true);
-                                    this.handleInputChange("input_cancel_visible", true);
-                                    this.handleInputChange("raise_visible", false);
-                                    this.handleInputChange("raiseAmountInput", 0);
-                            }}
-                        >
-                            Raise
-                        </Button> : null}
+                                    {this.state.raise_visible ? <Button
+                                        height="30%"
+                                        disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
+                                        onClick={() => {
+                                            this.handleInputChange("inputfieldvisible", true);
+                                            this.handleInputChange("input_cancel_visible", true);
+                                            this.handleInputChange("raise_visible", false);
+                                            this.handleInputChange("raiseAmountInput", 0);
+                                        }}
+                                    >
+                                        Raise
+                                    </Button> : null}
 
-                        {this.state.input_cancel_visible ? <ButtonContainerRow>
-                            {this.state.input_cancel_visible ? <Button
-                                height="30%"
-                                width="50%"
-                                disabled={this.state.raiseAmountInput === null || this.state.raiseAmountInput === ""}
-                                onClick={() => {
-                                    if(this.state.betraisebuttontext === "Raise") {
+                                    {this.state.input_cancel_visible ? <ButtonContainerRow>
+                                        {this.state.input_cancel_visible ? <Button
+                                            height="30%"
+                                            width="50%"
+                                            disabled={this.state.raiseAmountInput === null || this.state.raiseAmountInput === ""}
+                                            onClick={() => {
+                                                if(this.state.betraisebuttontext === "Raise") {
+                                                    this.handleInputChange("nextPlayerId", null);
+                                                    this.raise();
+                                                    //alert("raise" + this.state.raiseAmountInput)
+                                                }
+                                                if(this.state.betraisebuttontext === "Bet") {
+                                                    this.handleInputChange("nextPlayerId", null);
+                                                    this.bet();
+                                                    //alert("bet" + this.state.raiseAmountInput)
+                                                }
+                                                if(this.state.betraisebuttontext === "Raise") {
+                                                    this.handleInputChange("raise_visible", true);
+                                                }
+                                                if(this.state.betraisebuttontext === "Bet") {
+                                                    this.handleInputChange("bet_visible", true);
+                                                }
+                                                this.handleInputChange("input_cancel_visible", false);
+                                                this.handleInputChange("inputfieldvisible", false);
+                                            }}
+                                        >
+                                            {this.state.betraisebuttontext}
+                                        </Button> : null}
+
+                                        {this.state.input_cancel_visible ? <Button
+                                            height="30%"
+                                            width="50%"
+                                            style = {{marginLeft: 5}}
+                                            disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
+                                            onClick={() => {
+                                                if(this.state.betraisebuttontext === "Raise") {
+                                                    this.handleInputChange("raise_visible", true);
+                                                }
+                                                if(this.state.betraisebuttontext === "Bet") {
+                                                    this.handleInputChange("bet_visible", true);
+                                                }
+                                                this.handleInputChange("input_cancel_visible", false);
+                                                this.handleInputChange("inputfieldvisible", false);
+                                            }}
+                                        >
+                                            Cancel
+                                        </Button> : null}
+                                    </ButtonContainerRow> : null}
+
+                                    {(this.state.inputfieldvisible && this.state.gameRules !== 'fixed limit') ?
+                                        <Slider max={this.state.possibleRaiseAndBetAmount}
+                                                handleraiseAmountInput={this.callbackFunction}
+                                                key={'raiseAmountInput'}
+                                                color={"#c14e4e"}
+                                        /> : null}
+
+                                    {(this.state.inputfieldvisible && this.state.gameRules === 'fixed limit') ?
+                                        <Label>Fixed Limit to: {this.state.possibleRaiseAndBetAmount}</Label> : null}
+
+                                    {this.state.fold_visible ? <Button
+                                        height="30%"
+                                        disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
+                                        onClick={() => {
+                                            this.handleInputChange("nextPlayerId", null);
+                                            this.handleInputChange("input_cancel_visible", false);
+                                            this.handleInputChange("inputfieldvisible", false);
+                                            this.fold();
+                                        }}
+                                    >
+                                        Fold
+                                    </Button> : null}
+
+                                </ButtonContainer> : null}
+                                {this.state.showSmallBlindButton ? <Button
+                                    height="30%"
+                                    disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
+                                    onClick={() => {
                                         this.handleInputChange("nextPlayerId", null);
-                                        this.raise();
-                                        //alert("raise" + this.state.raiseAmountInput)
-                                    }
-                                    if(this.state.betraisebuttontext === "Bet") {
+                                        this.betSmallBlind();
+                                    }}
+                                >
+                                    Small Blind
+                                </Button> : null}
+
+                                {this.state.showBigBlindButton ? <Button
+                                    height="30%"
+                                    disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
+                                    onClick={() => {
                                         this.handleInputChange("nextPlayerId", null);
-                                        this.bet();
-                                        //alert("bet" + this.state.raiseAmountInput)
-                                    }
-                                    if(this.state.betraisebuttontext === "Raise") {
-                                        this.handleInputChange("raise_visible", true);
-                                    }
-                                    if(this.state.betraisebuttontext === "Bet") {
-                                        this.handleInputChange("bet_visible", true);
-                                    }
-                                    this.handleInputChange("input_cancel_visible", false);
-                                    this.handleInputChange("inputfieldvisible", false);
-                                }}
-                            >
-                                {this.state.betraisebuttontext}
-                            </Button> : null}
+                                        this.betBigBlind();
+                                    }}
+                                >
+                                    Big Blind
+                                </Button> : null}
+                            </ButtonContainer>
 
-                            {this.state.input_cancel_visible ? <Button
-                                height="30%"
-                                width="50%"
-                                style = {{marginLeft: 5}}
-                                disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
-                                onClick={() => {
-                                    if(this.state.betraisebuttontext === "Raise") {
-                                        this.handleInputChange("raise_visible", true);
-                                    }
-                                    if(this.state.betraisebuttontext === "Bet") {
-                                        this.handleInputChange("bet_visible", true);
-                                    }
-                                    this.handleInputChange("input_cancel_visible", false);
-                                    this.handleInputChange("inputfieldvisible", false);
-                                }}
-                            >
-                                Cancel
-                            </Button> : null}
-                        </ButtonContainerRow> : null}
+                            <HandCardContainer>
+                                <CardContainer>
+                                    <img width={95}  src={this.state.posh1} />
+                                </CardContainer>
+                                <CardContainer>
+                                    <img width={95}  src={this.state.posh2} />
+                                </CardContainer>
+                            </HandCardContainer>
+                            <PotContainer>
+                                <img width={80}  src={chips} />
+                                <label>{this.state.playerCredit}</label>
+                            </PotContainer>
+                        </ContainerRow>
+                    </ControlContainer>
 
-                        {(this.state.inputfieldvisible && this.state.gameRules !== 'fixed limit') ?
-                            <Slider max={this.state.possibleRaiseAndBetAmount}
-                                    handleraiseAmountInput={this.callbackFunction}
-                                    key={'raiseAmountInput'}
-                                    color={"#c14e4e"}
-                            /> : null}
+                    <Button
+                        style = {{width: '15%'}}
+                        margin-bottom="40px"
+                        height="30%"
+                        onClick={() => {
+                            this.leave();
+                            localStorage.removeItem('gameId');
+                            this.props.history.push(`/dashboard`);
+                        }}
+                    >
+                        Leave Game
+                    </Button>
+                    <ChatContainer>
+                        <Chat >
+                        </Chat>
 
-                        {(this.state.inputfieldvisible && this.state.gameRules === 'fixed limit') ?
-                            <Label>Fixed Limit to: {this.state.possibleRaiseAndBetAmount}</Label> : null}
+                    </ChatContainer>
 
-                                {this.state.fold_visible ? <Button
-                            height="30%"
-                            disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
-                            onClick={() => {
-                                this.handleInputChange("nextPlayerId", null);
-                                this.handleInputChange("input_cancel_visible", false);
-                                this.handleInputChange("inputfieldvisible", false);
-                                this.fold();
-                            }}
-                        >
-                            Fold
-                        </Button> : null}
-
-                    </ButtonContainer> : null}
-                            {this.state.showSmallBlindButton ? <Button
-                                height="30%"
-                                disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
-                                onClick={() => {
-                                    this.handleInputChange("nextPlayerId", null);
-                                    this.betSmallBlind();
-                                }}
-                            >
-                                Small Blind
-                            </Button> : null}
-
-                            {this.state.showBigBlindButton ? <Button
-                                height="30%"
-                                disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
-                                onClick={() => {
-                                    this.handleInputChange("nextPlayerId", null);
-                                    this.betBigBlind();
-                                }}
-                            >
-                                Big Blind
-                            </Button> : null}
-                        </ButtonContainer>
-
-                    <HandCardContainer>
-                        <CardContainer>
-                            <img width={95}  src={this.state.posh1} />
-                        </CardContainer>
-                        <CardContainer>
-                            <img width={95}  src={this.state.posh2} />
-                        </CardContainer>
-                    </HandCardContainer>
-                    <PotContainer>
-                        <img width={80}  src={chips} />
-                        <label>{this.state.playerCredit}</label>
-                    </PotContainer>
-                    </ContainerRow>
-                </ControlContainer>
-
-                <Button
-                    style = {{width: '15%'}}
-                margin-bottom="40px"
-                    height="30%"
-                    onClick={() => {
-                        this.leave();
-                        localStorage.removeItem('gameId');
-                        this.props.history.push(`/dashboard`);
-                    }}
-                >
-                    Leave Game
-                </Button>
-                <ChatContainer>
-                    <Chat >
-                    </Chat>
-
-                </ChatContainer>
-
-            </BaseContainer>
-         </StyledBody>
+                </BaseContainer>
+            </StyledBody>
         );
     }
 }
