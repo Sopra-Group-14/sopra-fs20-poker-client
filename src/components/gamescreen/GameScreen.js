@@ -779,6 +779,7 @@ class GameScreen extends React.Component {
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
+                                this.handleInputChange("nextPlayerId", null);
                                 this.call();
                                 this.handleInputChange("inputfieldvisible", false);
                                 this.handleInputChange("input_cancel_visible", false);
@@ -791,6 +792,7 @@ class GameScreen extends React.Component {
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
+                                this.handleInputChange("nextPlayerId", null);
                                 this.check();
                                 this.handleInputChange("inputfieldvisible", false);
                                 this.handleInputChange("input_cancel_visible", false);
