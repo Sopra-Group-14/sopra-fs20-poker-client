@@ -381,12 +381,6 @@ class GameScreen extends React.Component {
                 }
                 this.handleInputChange('popup', true);
 
-
-
-
-
-                 */
-
             }
             setTimeout(() => {
                 this.setState({popup: false});
@@ -673,11 +667,6 @@ class GameScreen extends React.Component {
 
 
     render() {
-
-            return '';
-        };
-
-        }
         return (
             <StyledBody>
                 <BaseContainer
