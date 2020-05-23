@@ -302,11 +302,9 @@ class GameScreen extends React.Component {
             showBigBlindButton: null,
 
             popup:false,
-
-            isFirstRound : true,
-            winnersUsername : null,
-            winnerComboValue : null,
-            winners : null,
+            winnerName: null,
+            winnerComboValue: null,
+            winners: null,
 
         };
     }
@@ -363,11 +361,11 @@ class GameScreen extends React.Component {
         if(oldSmallBLindId !== newSmallBLindId){
             //Happens whenever a new round starts
             this.blind();
+           if(!(this.state.transactionNr === 0)) {
+               this.handleInputChange('popup', true);
+               this.handleInputChange('winnerName', this.state.winners.playerName);
 
-            if(!this.state.isFirstRound) {
-                this.handleInputChange('popup', true);
-            }
-            this.handleInputChange('isFirstRound', false);
+           }
 
 
         }
@@ -398,7 +396,6 @@ class GameScreen extends React.Component {
         if (gamelog.winner != null){
             let name = gamelog.winner.playerName;
             localStorage.setItem("winner", name);
-            alert("this is name:" + name);
             }
 
 
@@ -662,8 +659,8 @@ class GameScreen extends React.Component {
         }
         this.nextRound();
         if(this.state.gameOver === true){
-            //localStorage.setItem("winner", this.state.winner);
-            //this.props.history.push(`/endscreen`);
+            localStorage.setItem("winner", this.state.winnerName);
+            this.props.history.push(`/endscreen`);
 
         }
     }
@@ -711,8 +708,6 @@ class GameScreen extends React.Component {
 
             return '';
         };*/
-
-
         if(this.state.popup === true){
            alert(this.state.winners + ' won the pot of' + this.state.wonAmount + 'with' + this.state.winnerComboValue);
            this.handleInputChange('popup',false);
