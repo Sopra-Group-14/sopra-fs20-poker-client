@@ -136,7 +136,7 @@ class JoinGameSpectator extends React.Component {
                             <div>
                                 {this.state.games.map(game => {
                                     this.log = new GameModel(game.gameLog);
-                                    if(this.log.gameStarted === true) {
+                                    if(this.log.gameStarted === true && this.log.gameOver === false) {
                                         return (
                                             <GameContainer key={game.gameId} onClick={() => {
                                                 this.state.gameId = game.gameId;

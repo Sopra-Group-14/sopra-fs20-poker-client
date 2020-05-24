@@ -14,6 +14,7 @@ class GameModel {
         this.hostToken = null;
         this.gameLimit = null;
         this.gameStarted = null;
+        this.gameOver = null;
 
         Object.assign(this, data);
     }
