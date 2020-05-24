@@ -504,6 +504,8 @@ class GameScreenSpectator extends React.Component {
     async leave(){
         localStorage.removeItem('spectatorId');
         localStorage.removeItem('Spectator');
+        localStorage.removeItem('gameId');
+        
         if (localStorage.getItem('id') === null){
             this.props.history.push(`/welcomepage`);
         }
