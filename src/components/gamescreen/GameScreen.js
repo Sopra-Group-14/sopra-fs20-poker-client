@@ -798,10 +798,12 @@ class GameScreen extends React.Component {
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
-                                this.handleInputChange("nextPlayerId", null);
-                                this.call();
-                                this.handleInputChange("inputfieldvisible", false);
-                                this.handleInputChange("input_cancel_visible", false);
+                                if((localStorage.getItem("id") === String(this.state.nextPlayerId))){
+                                    this.handleInputChange("nextPlayerId", null);
+                                    this.call();
+                                    this.handleInputChange("inputfieldvisible", false);
+                                    this.handleInputChange("input_cancel_visible", false);
+                                }
                             }}
                         >
                             Call
@@ -811,10 +813,12 @@ class GameScreen extends React.Component {
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
-                                this.handleInputChange("nextPlayerId", null);
-                                this.check();
-                                this.handleInputChange("inputfieldvisible", false);
-                                this.handleInputChange("input_cancel_visible", false);
+                                if((localStorage.getItem("id") === String(this.state.nextPlayerId))) {
+                                    this.handleInputChange("nextPlayerId", null);
+                                    this.check();
+                                    this.handleInputChange("inputfieldvisible", false);
+                                    this.handleInputChange("input_cancel_visible", false);
+                                }
                             }}
                         >
                             Check
@@ -824,10 +828,12 @@ class GameScreen extends React.Component {
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
+                                if((localStorage.getItem("id") === String(this.state.nextPlayerId))) {
                                     this.handleInputChange("inputfieldvisible", true);
                                     this.handleInputChange("input_cancel_visible", true);
                                     this.handleInputChange("bet_visible", false);
                                     this.handleInputChange("raiseAmountInput", 0);
+                                }
                             }}
                         >
                             Bet
@@ -837,10 +843,12 @@ class GameScreen extends React.Component {
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
+                                if((localStorage.getItem("id") === String(this.state.nextPlayerId))) {
                                     this.handleInputChange("inputfieldvisible", true);
                                     this.handleInputChange("input_cancel_visible", true);
                                     this.handleInputChange("raise_visible", false);
                                     this.handleInputChange("raiseAmountInput", 0);
+                                }
                             }}
                         >
                             Raise
@@ -852,24 +860,26 @@ class GameScreen extends React.Component {
                                 width="50%"
                                 disabled={this.state.raiseAmountInput === null || this.state.raiseAmountInput === ""}
                                 onClick={() => {
-                                    if(this.state.betraisebuttontext === "Raise") {
-                                        this.handleInputChange("nextPlayerId", null);
-                                        this.raise();
-                                        //alert("raise" + this.state.raiseAmountInput)
+                                    if((localStorage.getItem("id") === String(this.state.nextPlayerId))) {
+                                        if (this.state.betraisebuttontext === "Raise") {
+                                            this.handleInputChange("nextPlayerId", null);
+                                            this.raise();
+                                            //alert("raise" + this.state.raiseAmountInput)
+                                        }
+                                        if (this.state.betraisebuttontext === "Bet") {
+                                            this.handleInputChange("nextPlayerId", null);
+                                            this.bet();
+                                            //alert("bet" + this.state.raiseAmountInput)
+                                        }
+                                        if (this.state.betraisebuttontext === "Raise") {
+                                            this.handleInputChange("raise_visible", true);
+                                        }
+                                        if (this.state.betraisebuttontext === "Bet") {
+                                            this.handleInputChange("bet_visible", true);
+                                        }
+                                        this.handleInputChange("input_cancel_visible", false);
+                                        this.handleInputChange("inputfieldvisible", false);
                                     }
-                                    if(this.state.betraisebuttontext === "Bet") {
-                                        this.handleInputChange("nextPlayerId", null);
-                                        this.bet();
-                                        //alert("bet" + this.state.raiseAmountInput)
-                                    }
-                                    if(this.state.betraisebuttontext === "Raise") {
-                                        this.handleInputChange("raise_visible", true);
-                                    }
-                                    if(this.state.betraisebuttontext === "Bet") {
-                                        this.handleInputChange("bet_visible", true);
-                                    }
-                                    this.handleInputChange("input_cancel_visible", false);
-                                    this.handleInputChange("inputfieldvisible", false);
                                 }}
                             >
                                 {this.state.betraisebuttontext}
@@ -881,14 +891,16 @@ class GameScreen extends React.Component {
                                 style = {{marginLeft: 5}}
                                 disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                                 onClick={() => {
-                                    if(this.state.betraisebuttontext === "Raise") {
-                                        this.handleInputChange("raise_visible", true);
+                                    if((localStorage.getItem("id") === String(this.state.nextPlayerId))) {
+                                        if (this.state.betraisebuttontext === "Raise") {
+                                            this.handleInputChange("raise_visible", true);
+                                        }
+                                        if (this.state.betraisebuttontext === "Bet") {
+                                            this.handleInputChange("bet_visible", true);
+                                        }
+                                        this.handleInputChange("input_cancel_visible", false);
+                                        this.handleInputChange("inputfieldvisible", false);
                                     }
-                                    if(this.state.betraisebuttontext === "Bet") {
-                                        this.handleInputChange("bet_visible", true);
-                                    }
-                                    this.handleInputChange("input_cancel_visible", false);
-                                    this.handleInputChange("inputfieldvisible", false);
                                 }}
                             >
                                 Cancel
@@ -909,10 +921,12 @@ class GameScreen extends React.Component {
                             height="30%"
                             disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                             onClick={() => {
-                                this.handleInputChange("nextPlayerId", null);
-                                this.handleInputChange("input_cancel_visible", false);
-                                this.handleInputChange("inputfieldvisible", false);
-                                this.fold();
+                                if((localStorage.getItem("id") === String(this.state.nextPlayerId))) {
+                                    this.handleInputChange("nextPlayerId", null);
+                                    this.handleInputChange("input_cancel_visible", false);
+                                    this.handleInputChange("inputfieldvisible", false);
+                                    this.fold();
+                                }
                             }}
                         >
                             Fold
@@ -923,8 +937,10 @@ class GameScreen extends React.Component {
                                 height="30%"
                                 disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                                 onClick={() => {
-                                    this.handleInputChange("nextPlayerId", null);
-                                    this.betSmallBlind();
+                                    if((localStorage.getItem("id") === String(this.state.nextPlayerId))) {
+                                        this.handleInputChange("nextPlayerId", null);
+                                        this.betSmallBlind();
+                                    }
                                 }}
                             >
                                 Small Blind
@@ -934,8 +950,10 @@ class GameScreen extends React.Component {
                                 height="30%"
                                 disabled={!(localStorage.getItem("id") === String(this.state.nextPlayerId))}
                                 onClick={() => {
-                                    this.handleInputChange("nextPlayerId", null);
-                                    this.betBigBlind();
+                                    if((localStorage.getItem("id") === String(this.state.nextPlayerId))) {
+                                        this.handleInputChange("nextPlayerId", null);
+                                        this.betBigBlind();
+                                    }
                                 }}
                             >
                                 Big Blind
