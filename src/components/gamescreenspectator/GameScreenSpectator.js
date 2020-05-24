@@ -505,7 +505,7 @@ class GameScreenSpectator extends React.Component {
         localStorage.removeItem('spectatorId');
         localStorage.removeItem('Spectator');
         localStorage.removeItem('gameId');
-        
+
         if (localStorage.getItem('id') === null){
             this.props.history.push(`/welcomepage`);
         }
