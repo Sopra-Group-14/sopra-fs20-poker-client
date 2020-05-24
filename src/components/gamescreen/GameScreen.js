@@ -387,6 +387,13 @@ class GameScreen extends React.Component {
                 this.setState({popup: false});
             }, 10000);
 
+            const response = await api.get('/users/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
+            const user = new User(response.data);
+            if(user.credit < 9){
+                this.props.history.push(`/dashboard`);
+            }
+
+
         }
 
         if(this.state.gameRules === 'fixed limit'){
@@ -398,7 +405,6 @@ class GameScreen extends React.Component {
     async getUser(){
 
         const response = await api.get('/users/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
-
         const user = new User(response.data);
 
         this.handleInputChange('username', user.username);

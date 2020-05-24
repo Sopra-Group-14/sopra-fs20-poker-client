@@ -797,7 +797,6 @@ class GameScreenSpectator extends React.Component {
                                     'margin-left': '40%',
                                     'margin-top':'15%'}}
                             ><Spinner /></div>}
-
                             {this.state.gameRound === 'RiverCard' && !this.state.showOdds? <Button
                                 style = {{width: '80%', 'margin-left': '15px', 'margin-right': '15px'}}
                                 margin-bottom="40px"
