@@ -388,6 +388,11 @@ class GameScreenSpectator extends React.Component {
                 this.setState({popup: false});
             }, 10000);
 
+            if(this.state.gameOver){
+                this.props.history.push(`/welcomepage`);
+                alert('The Game you were spectating ended')
+            }
+
         }
 
 

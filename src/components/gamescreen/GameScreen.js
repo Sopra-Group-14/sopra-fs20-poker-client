@@ -387,11 +387,17 @@ class GameScreen extends React.Component {
                 this.setState({popup: false});
             }, 10000);
 
-            const response = await api.get('/users/' + localStorage.getItem("id"),{headers:{ Authorization: localStorage.getItem("token")}});
-            const user = new User(response.data);
-            if(user.credit < 9){
-                this.props.history.push(`/dashboard`);
+
+            let playerlist = this.state.players;
+            for (let i = 0; i < playerlist.length; i++){
+                let user = new User(playerlist[i]);
+                if(localStorage.getItem("id") === String(user.id) && user.credit < 10){
+                    await api.put( '/games/'+localStorage.getItem("gameId")+'/players/'+localStorage.getItem("id")+'/leave',{}, {headers:{ Authorization: localStorage.getItem("token")}})
+                    this.props.history.push(`/dashboard`);
+                    alert('You got kicked from the round because you dont have any credits left')
+                }
             }
+
 
 
         }
