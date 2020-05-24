@@ -92,8 +92,7 @@ class EndScreen extends React.Component {
     }
 
     async getWinner(){
-    // Winner should be in local storage after game ended
-      const response = await api.get('/games/' + localStorage.getItem("gameId"));
+/*      const response = await api.get('/games/' + localStorage.getItem("gameId"));
       let gamelog = new GameLog(response.data);
       this.handleInputChange('players',gamelog.players);
 
@@ -109,8 +108,9 @@ class EndScreen extends React.Component {
         console.log(this.state.credit);
         console.log(this.state.balance);
 
-        let won = this.state.credit - this.state.balance;
-        this.handleInputChange('wonCredit',won)
+        let won = this.state.credit - this.state.balance;*/
+
+        this.handleInputChange('wonCredit',localStorage.getItem('win'))
 
         this.handleInputChange('text', "you made "+this.state.wonCredit+" credit in this Game.")
 
