@@ -160,8 +160,8 @@ class Dashboard extends React.Component {
                                     <div className="content">
                                             <p>
                                             <h3>The Basics</h3>
-                                            In Poker the highest 5 card poker hand wins. Meaning the Person who can get the highest combination of
-                                            cards between their hand cards and the table cards gets the pot.<br/>
+                                            In Poker the highest 5 card poker hand wins. Meaning the person who can get the highest combination of
+                                            cards between their hand cards and the table cards wins the pot.<br/>
                                             During the Game you have the following options: <br/>
                                             Bet: you can choose an amount to put in the pot<br/>
                                             Raise: somebody already made a bet, you can raise it by putting more in the pot <br/>
@@ -169,23 +169,17 @@ class Dashboard extends React.Component {
                                             Check: if nobody has made a bet, you can check, nothing happens and you are still in the game <br/>
                                             Fold: if you fold you are out of the current round. You loose the credit you might already have bet.<br/>
                                             <br/>
-                                            The first player of first round (preflop) has to bet the small blind.<br/>
-                                            The second player of first round has to raise (preflop) at least as high as the bigblind or higher<br/>
+                                            The first player of first round (Preflop) has to bet the small blind.<br/>
+                                            The second player of first round has to raise (Preflop) at least as high as the big blind or higher<br/>
                                             </p>
                                             <h3>There are different Limits</h3>
                                             <p>
-                                               no limit: There is no limit, the player can raise or bet as much as he has. (all in)<br/>
-                                               fixed limit: In the rounds preflop and flop the betted amount must be the lower limit. in the other
-                                                -             rounds it must be high limit. <br/>
-                                                -             lower limit = big blind<br/>
-                                                -             higher limit = 2* big blind <br/>
-                                                -             it isnt possible to reaise more then three times per round. <br/>
-                                               pot limit: The betted/raised amount mustn't be bigger than the amount that is in the pot. <br/>
-                                               split limit: In the rounds preflop and flop, the betted amount can't be higher then high limit.<br/>
-                                               -              lower limit = big blind<br/>
-                                               -              higher limit = 2* big blind <br/>
-                                               -              per round it is not possible to raise more than three times.
-
+                                               No limit:    Recommended to experts. Players' bets is only restricted by the their remaining stake.<br/>
+                                               Fixed limit: Recommended to beginners. A Players can only decide whether to bet or not. In the first two rounds (Preflop and Flop) a bet equals the lower limit (Big Blind).
+                                                            In the following two rounds (Turn and River), a bet must equal the higher limit (twice the Big Blind). Additionally, players are not allowed to raise more than three times a round, including the blind bets.<br/>
+                                               Pot limit:   Recommended to intermediates. Players cannot place bets greater than the pot limit. The pot limit is determined by the all the amount that has been betted beforehand.<br/>
+                                               Split limit: Recommended to beginners. A players in the first two rounds (Preflop and Flop) is restricted by the higher limit (twice the big blind); bets can be placed that are smaller or equal the higher limimt.
+                                               In the remaining two rounds (Turn and River), the same logic applies with the maximum amount being the higher limit (twice the big blind). Additionally, a round has a maximum of three raises including the blind bets. <br/>
                                             </p>
 
                                     </div>
