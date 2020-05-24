@@ -112,7 +112,7 @@ class EndScreen extends React.Component {
 
         this.handleInputChange('wonCredit',localStorage.getItem('win'))
 
-        this.handleInputChange('text', "you made "+this.state.wonCredit+" credit in this Game.")
+        this.handleInputChange('text', "you made "+localStorage.getItem('win')+" credit in this Game.")
 
     }
     componentWillMount() {
@@ -137,6 +137,8 @@ class EndScreen extends React.Component {
                             height="30%"
                             onClick={() => {
                                 localStorage.removeItem('gameId');
+                                localStorage.removeItem('win');
+
                                 this.props.history.push(`/Dashboard`);
                             }}
                         >

@@ -306,7 +306,7 @@ class GameScreen extends React.Component {
             winnerComboValue: null,
             winners: null,
             roundWinnerText: null,
-            balance: null,
+            userBalance: null,
 
         };
     }
@@ -402,7 +402,13 @@ class GameScreen extends React.Component {
         const user = new User(response.data);
 
         this.handleInputChange('username', user.username);
-        this.handleInputChange('userBalance',user.balance);
+
+
+        if((this.state.transactionNr === 0)) {
+
+            this.handleInputChange('userBalance',user.balance);
+            console.log(user.balance);
+        }
     }
 
     async nextRound(){
@@ -629,14 +635,15 @@ class GameScreen extends React.Component {
     }
 
     async addToAccount(){
-        let win = this.state.playerCredit - this.state.balance;
+        let win = this.state.playerCredit - this.state.userBalance;
         console.log(win);
         localStorage.setItem('win',win);
-        const requestBody = JSON.stringify({
+
+     /*   const requestBody = JSON.stringify({
             amount: win,
         });
         await api.put('/users/' + localStorage.getItem("id") + '/balance', requestBody,{headers:{ Authorization: localStorage.getItem("token")}});
-
+        */
     }
 
     playRound(){

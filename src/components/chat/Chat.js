@@ -103,17 +103,19 @@ export class Chat extends React.Component {
     }
     async getMessages(){
         //Get Messages
-        if(this.state.messageList !== []){
-            this.handleInputChange('chatEmpty',false);
-        }
-        if(this.state.PlayerChat === true ) {
-            const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/players',{headers:{ Authorization: localStorage.getItem("token")}});
-            this.state.messageList = response.data;
+        if(localStorage.getItem('gameId')!=null) {
+            if (this.state.messageList !== []) {
+                this.handleInputChange('chatEmpty', false);
+            }
+            if (this.state.PlayerChat === true) {
+                const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/players', {headers: {Authorization: localStorage.getItem("token")}});
+                this.state.messageList = response.data;
 
-        }else  if(this.state.PlayerChat === false) {
-            const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/spectators' ,{headers:{ Authorization: localStorage.getItem("token")}});
-            this.state.messageList =  response.data;
+            } else if (this.state.PlayerChat === false) {
+                const response = await api.get('/games/' + localStorage.getItem("gameId") + '/chats/spectators', {headers: {Authorization: localStorage.getItem("token")}});
+                this.state.messageList = response.data;
 
+            }
         }
     }
     handleInputChange(key, value) {
