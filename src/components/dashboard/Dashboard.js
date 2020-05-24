@@ -174,11 +174,11 @@ class Dashboard extends React.Component {
                                             </p>
                                             <h3>There are different Limits</h3>
                                             <p>
-                                               No limit:    Recommended to experts. Players' bets is only restricted by the their remaining stake.<br/>
-                                               Fixed limit: Recommended to beginners. A Players can only decide whether to bet or not. In the first two rounds (Preflop and Flop) a bet equals the lower limit (Big Blind).
+                                               No limit:\t Recommended to experts. Players' bets is only restricted by the their remaining stake.<br/>
+                                               Fixed limit:\tRecommended to beginners. A Players can only decide whether to bet or not. In the first two rounds (Preflop and Flop) a bet equals the lower limit (Big Blind).
                                                             In the following two rounds (Turn and River), a bet must equal the higher limit (twice the Big Blind). Additionally, players are not allowed to raise more than three times a round, including the blind bets.<br/>
-                                               Pot limit:   Recommended to intermediates. Players cannot place bets greater than the pot limit. The pot limit is determined by the all the amount that has been betted beforehand.<br/>
-                                               Split limit: Recommended to beginners. A players in the first two rounds (Preflop and Flop) is restricted by the higher limit (twice the big blind); bets can be placed that are smaller or equal the higher limimt.
+                                               Pot limit:\tRecommended to intermediates. Players cannot place bets greater than the pot limit. The pot limit is determined by the all the amount that has been betted beforehand.<br/>
+                                               Split limit:\tRecommended to beginners. A players in the first two rounds (Preflop and Flop) is restricted by the higher limit (twice the big blind); bets can be placed that are smaller or equal the higher limimt.
                                                In the remaining two rounds (Turn and River), the same logic applies with the maximum amount being the higher limit (twice the big blind). Additionally, a round has a maximum of three raises including the blind bets. <br/>
                                             </p>
 
