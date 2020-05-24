@@ -13,10 +13,9 @@ react-chat-elements <br/>
 reactjs-popup
 
 ## High-level components: 
-
-GameScreen: the main game: src/components/gamescreen/GameScreen.js  <br/>
-Chat: the Chat feature used in both Game and Spectator Screen  src/components/chat/Chat.js  <br/>
-Account: the account of the user, where he can check on his credit src/components/account/Account.js
+[GameScreen](src/components/gamescreen/GameScreen.js) the main game<br/>
+[Chat](src/components/chat/Chat.js) the Chat feature used in both Game and Spectator Screen    <br/>
+[Account](src/components/account/Account.js) the account of the user, where he can check on his credit <br/>
 
 
 ## Launch and Deployment.
@@ -26,7 +25,7 @@ npm install reactjs-popup --save<br/>
 npm install react-chat-elements --save<br/>
 
 To deploy the project use: <br/>
-npm run dev <br/>
+the project is deployed on heroku <br/>
 
 ## Illustrations
 To play poker the user needs to register or log in. Then he can create or join a pokergame. The user has an account where he can top up his credit once every 24h. As a not logged in (as well as a logged in) user it is possible to join a game as a spectator and see the hand cards of the different Players as well as some winning odds. 
