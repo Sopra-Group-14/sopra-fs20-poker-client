@@ -149,7 +149,9 @@ class GameSettings extends React.Component {
                             if(!(this.state.limit === null || this.state.gamename === null || this.state.gamename === "")){
                             if (e.key === "Enter") {
                                 this.createGame();
-                                this.props.history.push(`/lobby`);
+
+                                    this.props.history.push(`/lobby`);
+
 
                             }}
                         }}

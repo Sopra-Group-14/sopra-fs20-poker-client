@@ -76,15 +76,16 @@ class Lobby extends React.Component {
 
     async getPlayers() {
         try {
-             const response = await api.get("/games/"+ localStorage.getItem("gameId"), /*{headers:{ Authorization: localStorage.getItem("token")}}*/);
-          let gameModel = new GameModel(response.data);
+          if(localStorage.getItem('gameId')!= null) {
+              const response = await api.get("/games/" + localStorage.getItem("gameId"), /*{headers:{ Authorization: localStorage.getItem("token")}}*/);
+              let gameModel = new GameModel(response.data);
 
-            this.setState({["players"]: gameModel.players});
-            this.setState({["gameName"]: gameModel.gameName});
-            this.setState({["bigBlind"]: gameModel.bigBlind});
-            this.setState({["smallBlind"]: gameModel.smallBlind});
-            this.setState({["gameStarted"]: gameModel.gameStarted});
-
+              this.setState({["players"]: gameModel.players});
+              this.setState({["gameName"]: gameModel.gameName});
+              this.setState({["bigBlind"]: gameModel.bigBlind});
+              this.setState({["smallBlind"]: gameModel.smallBlind});
+              this.setState({["gameStarted"]: gameModel.gameStarted});
+          }
         } catch (error) {
             alert(`Something went wrong when getting the players: \n${handleError(error)}`);
         }
@@ -115,11 +116,11 @@ class Lobby extends React.Component {
 
 
     async startGame(){
-        try {
+       try {
+           const response = await api.put('/games/' + localStorage.getItem("gameId") + '/gameStart', {headers: {Authorization: localStorage.getItem("token")}});
+           this.props.history.push("/gameScreen")
 
-            const response = await api.put('/games/'+localStorage.getItem("gameId")+'/gameStart', {headers:{ Authorization: localStorage.getItem("token")}});
-            this.props.history.push("/gameScreen")
-        }
+       }
         catch(error){
             alert(`Something went wrong when starting the game: \n${handleError(error)}`);
 
@@ -138,6 +139,7 @@ class Lobby extends React.Component {
 
 
     componentDidMount() {
+
         this.getPlayers();
         this.playerReady();
 
